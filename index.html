@@ -1,11 +1,3 @@
 ---
-layout: default
-title: Home
+layout: home
 ---
-
-{% for post in site.p %}
-    <div class="post">
-        <a href="{{ post.url | remove: 'index.html'}}">{{ post.title }}</a>
-        <p>{{ post.brief }}</p>
-    </div>
-{% endfor %}
