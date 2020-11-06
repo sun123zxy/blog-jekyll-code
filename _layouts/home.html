@@ -2,9 +2,10 @@
 layout: default
 title: Home
 ---
-<div class="postList">
-    {% for post in site.p %}
-        <div class="post">
+<div class="postPreviewList">
+    {% assign sorted_p = site.p | sort: "post_time" | reverse %}
+    {% for post in sorted_p %}
+        <div class="postPreview">
             <a href="{{ post.url | remove: 'index.html'}}">{{ post.title }}</a>
             <p>{{ post.brief }}</p>
         </div>

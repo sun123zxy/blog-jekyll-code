@@ -25,7 +25,8 @@ collections:
   p:
     output: true
 # Build settings
-
+kramdown:
+        math: true
 # theme: 
 # plugins:
 #  - jekyll-feed
