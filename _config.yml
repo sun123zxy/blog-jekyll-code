@@ -25,8 +25,13 @@ collections:
   p:
     output: true
 # Build settings
-kramdown:
-        math: true
+gems:
+  - jekyll-pandoc
+
+markdown: Pandoc
+pandoc:
+  extensions:
+    - mathjax
 # theme: 
 # plugins:
 #  - jekyll-feed
