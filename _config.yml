@@ -25,13 +25,9 @@ collections:
   p:
     output: true
 # Build settings
-gems:
-  - jekyll-pandoc
 
-markdown: Pandoc
-pandoc:
-  extensions:
-    - mathjax
+# exclude: ['_p/*.md']
+
 # theme: 
 # plugins:
 #  - jekyll-feed
