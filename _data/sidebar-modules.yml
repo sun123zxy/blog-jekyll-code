@@ -1,4 +1,4 @@
 - id: sidebar-news
-  src: sidebar-news.html
+  src: sidebar_news.html
 - id: sidebar-friends
-  src: sidebar-friends.html
+  src: sidebar_friends.html
