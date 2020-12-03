@@ -1,0 +1,4 @@
+- id: sidebar-news
+  src: sidebar-news.html
+- id: sidebar-friends
+  src: sidebar-friends.html

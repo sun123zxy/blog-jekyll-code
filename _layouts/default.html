@@ -3,12 +3,14 @@ layout: root
 ---
 <div id="home">
     <div id="header">
-        <h1><a href="/">{{ site.blog-title }}</a></h1>
+        <h1><a href="/">{{ site.data.global.blog_title }}</a></h1>
     </div>
-    <div id="sideBar">
-        <div id="news">
-            {% include news.html %}
-        </div>
+    <div id="sidebar">
+        {% for module in site.data.sidebar-modules %}
+            <div id="{{ module.id }}">
+                {% include {{ module.src }} %}
+            </div>
+        {% endfor %}
     </div>
     <div id="main">
         {{ content }}
