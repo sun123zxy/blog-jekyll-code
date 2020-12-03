@@ -8,6 +8,8 @@ title: Home
         <div class="postPreview">
             <a href="{{ post.url | remove: 'index.html'}}">{{ post.title }}</a>
             <p>{{ post.brief }}</p>
+            <p>post on {{ post.post_time }}</p>
+            <p>last modified on {{ post.last_modified_time }}</p>
         </div>
     {% endfor %}
 </div>
