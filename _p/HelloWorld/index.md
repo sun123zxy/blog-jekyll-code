@@ -1,15 +1,15 @@
-
+---
 layout: post
 title: Hello World!
 brief: My new blog is here!
 post_time: 2020/11/04
 last_modified_time: 2020/11/05
-
+---
 ## Markdown Test
 
 ahhhhhhhh
 
-$ \gcd(a,b) $
+$\gcd(a,b)$
 
 $$
 \sum_{d|n} \varphi(d) = n

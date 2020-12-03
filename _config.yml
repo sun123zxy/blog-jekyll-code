@@ -29,8 +29,14 @@ collections:
 # exclude: ['_p/*.md']
 
 # theme: 
-# plugins:
+plugins:
 #  - jekyll-feed
+   - jekyll-pandoc
+
+markdown: Pandoc
+pandoc:
+  extensions:
+    - mathjax
 
 # Exclude from processing.
 # The following items will not be processed, by default.
