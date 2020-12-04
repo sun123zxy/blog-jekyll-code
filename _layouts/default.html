@@ -6,7 +6,7 @@ layout: root
         <h1><a href="/">sun123zxy's Blog</a></h1>
     </div>
     <div id="sidebar">
-        {% for module in site.data.sidebar-modules %}
+        {% for module in site.data.sidebar_modules %}
             <div id="{{ module.id }}">
                 {% include {{ module.src }} %}
             </div>
