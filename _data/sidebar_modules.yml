@@ -2,3 +2,5 @@
   src: sidebar_news.html
 - id: sidebar-friends
   src: sidebar_friends.html
+- id: sidebar-tags
+  src: sidebar_tags.html

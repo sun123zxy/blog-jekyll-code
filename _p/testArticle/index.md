@@ -4,6 +4,10 @@ title: Test Article
 brief: markdown渲染测试文章。 A test article with a bunch of maths.
 post_time: 2020/11/06
 last_modified_time: 2020/12/03
+tags:
+  - Test
+  - OI
+  - 学习笔记
 ---
 本文绝大多数定理都有做理性证明，请放心食用。~~强迫症福利~~ 不过多数定义和证明未参考标准文献，可能有少许纰漏，有错误敬请指正
 

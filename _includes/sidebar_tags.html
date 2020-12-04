@@ -1,0 +1,6 @@
+<h2><a href="/tags">Tags</a></h2>
+<ul>
+    {% for tag in site.data.tags %}
+    <li><a href= "/tags#{{ tag }}" >{{ tag }}</a></li>
+    {% endfor %}
+</ul>
