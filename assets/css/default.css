@@ -12,12 +12,12 @@
 :root {
     --text-color: #222;
     --text-color-vice: #666;
-    --theme-color-text-first: #3f5057;
-    --theme-color-text-second: #182124;
+    --theme-color-text-first: #385f6f;
+    --theme-color-text-second: #1f3640;
     --theme-color-background-first: #a1a1a1;
     --theme-color-background-second: #3c003c;
     --background-color: #ffffffc9;
-    --background-image: url(/assets/images/ゆきどけアゼリア.png);
+    --background-image: url(/assets/images/fgsHakugyokurou.jpg);
     --background-postion: 0% 0%;
 }
 
