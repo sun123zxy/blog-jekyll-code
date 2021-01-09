@@ -1,15 +1,26 @@
-:root{
+/*:root{
     --text-color: #eee;
     --text-color-vice: #999;
-    --theme-color-text-light: #ff90ee;
-    --theme-color-text-dark: #df5bcb;
-    --theme-color-background-light: #600050;
-    --theme-color-background-dark: #3c003c;
-    --background-color: black;
-    --opacity: 0.8;
-    --background-image: url(/assets/images/stairsOfHakugyokurou_touhouCraft.png);
+    --theme-color-text-first: #ff90ee;
+    --theme-color-text-second: #df5bcb;
+    --theme-color-background-first: #600050;
+    --theme-color-background-second: #3c003c;
+    --background-color: #000000b5;
+    --background-image: url(/assets/images/stairsOfHakugyokurou.png);
+    --background-postion: 0% 0%;
+}*/
+:root {
+    --text-color: #222;
+    --text-color-vice: #666;
+    --theme-color-text-first: #3f5057;
+    --theme-color-text-second: #182124;
+    --theme-color-background-first: #a1a1a1;
+    --theme-color-background-second: #3c003c;
+    --background-color: #ffffffc9;
+    --background-image: url(/assets/images/ゆきどけアゼリア.png);
     --background-postion: 0% 0%;
 }
+
 body{
     background-image: var(--background-image);
     background-position: var(--background-postion);
@@ -20,9 +31,8 @@ body{
 #home{
     background-color: var(--background-color);
     margin: 15px auto;
-    width: 80%;
-    min-width: 900px;
-    opacity: var(--opacity);
+    width: 75%;
+    min-width: 800px;
     padding: 10px 70px 10px 30px;
     box-shadow: 0 0 25px black;
 }
@@ -39,12 +49,12 @@ body{
     clear: both; /*为footer清除浮动*/
 }
 #footer{
-    border-top: 2px solid var(--theme-color-background-light);
+    border-top: 2px solid var(--theme-color-background-first);
     margin-top: 50px;
     text-align: center;
 }
 
-.smallInfo{
+.text-vice{
     color: var(--text-color-vice);
     font-size: 90%;
 }
@@ -53,8 +63,8 @@ img{
     max-width: 100%!important; /*防止图片溢出*/
 }
 a{
-    color: var(--theme-color-text-light);
+    color: var(--theme-color-text-first);
 }
 a:hover{
-    color: var(--theme-color-text-dark);
+    color: var(--theme-color-text-second);
 }

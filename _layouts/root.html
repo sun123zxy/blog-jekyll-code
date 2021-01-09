@@ -3,13 +3,16 @@
     <head>
         <meta charset="utf-8">
         <title>{{ page.title }} - {{ site.data.global.blog_title }}</title>
-        <link rel="stylesheet" href="/assets/css/default.css">
-        
+
+        <script src="/assets/js/jquery-3.5.1.min.js"></script>
+
         <link rel="stylesheet" href="/assets/katex/katex.min.css">
         <!-- The loading of KaTeX is deferred to speed up page rendering -->
         <script defer src="/assets/katex/katex.min.js"></script>
         <!-- To automatically render math in text elements, include the auto-render extension -->
         <script defer src="/assets/katex/auto-render.min.js" onload="renderMathInElement(document.getElementById('postBody'));"></script>
+    
+        <link rel="stylesheet" href="/assets/css/default.css">
     </head>
     <body>
         {{ content }}
