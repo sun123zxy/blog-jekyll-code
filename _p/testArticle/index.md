@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Test Article
-brief: markdown渲染测试文章。 A test article with a bunch of maths.
+abstract: markdown渲染测试文章。 A test article with a bunch of maths.
 post_time: 2020/11/06
 last_modified_time: 2020/12/03
 tags:
