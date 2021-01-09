@@ -1,3 +1,60 @@
+:root{
+    --text-color: #eee;
+    --text-color-vice: #999;
+    --theme-color-text-light: #ff90ee;
+    --theme-color-text-dark: #df5bcb;
+    --theme-color-background-light: #600050;
+    --theme-color-background-dark: #3c003c;
+    --background-color: black;
+    --opacity: 0.8;
+    --background-image: url(/assets/images/stairsOfHakugyokurou_touhouCraft.png);
+    --background-postion: 0% 0%;
+}
+body{
+    background-image: var(--background-image);
+    background-position: var(--background-postion);
+    background-size: cover;
+    background-attachment: fixed; /*固定背景*/
+    color: var(--text-color);
+}
 #home{
-    background-color: ghostwhite;
+    background-color: var(--background-color);
+    margin: 15px auto;
+    width: 80%;
+    min-width: 900px;
+    opacity: var(--opacity);
+    padding: 10px 70px 10px 30px;
+    box-shadow: 0 0 25px black;
+}
+#sidebar{
+    float: left;
+    width: 20%;
+}
+#main{
+    float: right;
+    width: 80%; /*防止环绕*/
+}
+
+#fclean{
+    clear: both; /*为footer清除浮动*/
+}
+#footer{
+    border-top: 2px solid var(--theme-color-background-light);
+    margin-top: 50px;
+    text-align: center;
+}
+
+.smallInfo{
+    color: var(--text-color-vice);
+    font-size: 90%;
+}
+
+img{
+    max-width: 100%!important; /*防止图片溢出*/
+}
+a{
+    color: var(--theme-color-text-light);
+}
+a:hover{
+    color: var(--theme-color-text-dark);
 }
