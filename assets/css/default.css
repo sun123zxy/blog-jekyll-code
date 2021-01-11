@@ -21,6 +21,16 @@
     --background-postion: 0% 0%;
 }
 
+img{
+    max-width: 100%!important; /*防止图片溢出*/
+}
+a{
+    color: var(--theme-color-text-first);
+}
+a:hover{
+    color: var(--theme-color-text-second);
+}
+
 body{
     background-image: var(--background-image);
     background-position: var(--background-postion);
@@ -36,6 +46,22 @@ body{
     padding: 10px 70px 10px 30px;
     box-shadow: 0 0 25px black;
 }
+/*
+#portal a{
+    color: var(--text-color-vice);
+    font-size: 140%;
+    text-decoration: none;
+}
+#portal li{
+    list-style: none;
+    float: left;
+    margin-right: 12px;
+}
+#portal ul{
+    padding: 0;
+    margin: 0;
+}
+*/
 #sidebar{
     float: left;
     width: 20%;
@@ -45,8 +71,8 @@ body{
     width: 80%; /*防止环绕*/
 }
 
-#fclean{
-    clear: both; /*为footer清除浮动*/
+.fclean{
+    clear: both; /*清除浮动*/
 }
 #footer{
     border-top: 2px solid var(--theme-color-background-first);
@@ -57,14 +83,4 @@ body{
 .text-vice{
     color: var(--text-color-vice);
     font-size: 90%;
-}
-
-img{
-    max-width: 100%!important; /*防止图片溢出*/
-}
-a{
-    color: var(--theme-color-text-first);
-}
-a:hover{
-    color: var(--theme-color-text-second);
 }

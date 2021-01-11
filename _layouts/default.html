@@ -7,6 +7,11 @@ layout: root
     <div id="header">
         {% include header.html %}
     </div>
+    <!--
+        <div id="portal">
+            {% include portal.html %}
+        </div>
+    -->
     <div id="sidebar">
         {% for module in site.data.sidebar_modules %}
             <div id="{{ module.id }}">
@@ -17,7 +22,7 @@ layout: root
     <div id="main">
         {{ content }}
     </div>
-    <div id="fclean"></div>
+    <div class="fclean"></div>
     <div id="footer" class="text-vice">
         {% include footer.html %}
     </div>
