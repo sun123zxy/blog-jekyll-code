@@ -1,3 +1,5 @@
+- id: sidebar-profile
+  src: sidebar_profile.html
 - id: sidebar-news
   src: sidebar_news.html
 - id: sidebar-friends
