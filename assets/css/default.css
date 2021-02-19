@@ -1,18 +1,6 @@
-/*:root{
-    --text-color: #eee;
-    --text-color-vice: #999;
-    --theme-color-text-first: #ff90ee;
-    --theme-color-text-second: #df5bcb;
-    --theme-color-background-first: #600050;
-    --theme-color-background-second: #3c003c;
-    --background-color: #000000b5;
-    --background-image: url(/assets/images/stairsOfHakugyokurou.png);
-    --background-postion: 0% 0%;
-}*/
 :root {
     --text-color: #222;
     --text-color-vice: #666;
-    --border-color: #acacac;
     --theme-color-text-first: #385f6f;
     --theme-color-text-second: #1f3640;
     --theme-color-background-first: #a1a1a1;
@@ -38,7 +26,6 @@
 .fclean{
     clear: both; /*清除浮动*/
 }
-
 
 img{
     max-width: 100%; /*防止图片溢出*/
@@ -67,12 +54,11 @@ body{
 }
 #sidebar{
     float: left;
-    width: 17%;
+    width: 250px;
     margin-top: 30px;
 }
 #main{
-    float: right;
-    width: 80%; /*防止环绕*/
+    margin-left: 290px; 
 }
 
 #footer{
@@ -90,8 +76,14 @@ body{
     line-height: 150%;
 }
 #postBody blockquote{
-    border-left: 5px solid var(--border-color);
+    border-left: 5px solid var(--theme-color-background-first);
     padding: 1px 0px 1px 30px;
+}
+/*small objects*/
+#theme-switch{
+    position: fixed;
+    left: 5px;
+    bottom: 5px;
 }
 /*---modules---*/
 #sidebar-profile{
@@ -99,10 +91,11 @@ body{
     margin-bottom: 30px;
 }
 #sidebar-profile .avatar {
-    width: 150px;
-    border: 3px solid var(--border-color);
+    width: 61%;
+    border: 3px solid var(--theme-color-background-first);
     border-radius: 50%;
     padding: 10px;
+    background-image: radial-gradient(var(--background-color) 60%, var(--theme-color-background-first) 100%);
 }
 #sidebar-profile p {
     font-size: 110%;

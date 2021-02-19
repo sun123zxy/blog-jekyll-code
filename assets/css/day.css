@@ -1,0 +1,12 @@
+:root {
+    --text-color: #222;
+    --text-color-vice: #666;
+    --border-color: #acacac;
+    --theme-color-text-first: #385f6f;
+    --theme-color-text-second: #1f3640;
+    --theme-color-background-first: #a1a1a1;
+    --theme-color-background-second: #3c003c;
+    --background-color: #ffffffc9;
+    --background-image: url(/assets/images/fgsHakugyokurou.jpg);
+    --background-postion: 0% 0%;
+}
