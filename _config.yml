@@ -24,7 +24,7 @@ collections:
     output: true
 # Build settings
 
-# exclude: ['_p/*.md']
+exclude: ['README.md']
 
 # theme: 
 plugins:
