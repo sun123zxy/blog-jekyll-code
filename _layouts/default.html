@@ -1,15 +1,8 @@
 ---
 layout: root
 ---
-<link rel="stylesheet" href="/assets/css/default.css">
-<link rel="stylesheet" id="theme-container">
-
-<button id="theme-switch">Change the Theme!</button>
-<script src="/assets/js/theme.js"></script>
-
-<div id="mask"></div>
-
-<div id="home">
+{% include theme.html %}
+<div id="home" class="panel">
     <div id="header">
         {% include header.html %}
     </div>

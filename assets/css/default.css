@@ -23,10 +23,10 @@
     float: left;
 }*/
 
+/*Universal*/
 .fclean{
     clear: both; /*清除浮动*/
 }
-
 img{
     max-width: 100%; /*防止图片溢出*/
 }
@@ -35,6 +35,14 @@ a{
 }
 a:hover{
     color: var(--theme-color-text-second);
+}
+.text-vice{
+    color: var(--text-color-vice);
+    font-size: 90%;
+}
+.panel{
+    box-shadow: 0 0 25px black;
+    padding: 0px 10px 10px 20px;
 }
 
 body{
@@ -50,7 +58,6 @@ body{
     width: 75%;
     min-width: 800px;
     padding: 10px 70px 10px 30px;
-    box-shadow: 0 0 25px black;
 }
 #sidebar{
     float: left;
@@ -60,22 +67,17 @@ body{
 #main{
     margin-left: 290px; 
 }
-
 #footer{
     border-top: 2px solid var(--theme-color-background-first);
     margin-top: 50px;
     text-align: center;
 }
 
-.text-vice{
-    color: var(--text-color-vice);
-    font-size: 90%;
-}
-/*postBody*/
-#postBody{
+/*post-body*/
+#post-body{
     line-height: 150%;
 }
-#postBody blockquote{
+#post-body blockquote{
     border-left: 5px solid var(--theme-color-background-first);
     padding: 1px 0px 1px 30px;
 }
@@ -84,6 +86,20 @@ body{
     position: fixed;
     left: 5px;
     bottom: 5px;
+}
+/*contents*/
+#contents{
+    background-color: var(--background-color);
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    width: 300px;
+    height: 400px;
+}
+#contents-detail{
+    padding-left: 10px;
+    height: 80%;
+    overflow-y: auto;
 }
 /*---modules---*/
 #sidebar-profile{
