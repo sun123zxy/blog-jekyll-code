@@ -2,18 +2,20 @@
 layout: root
 ---
 {% include theme.html %}
-<div id="home" class="panel">
-    <div id="header">
-        {% include header.html %}
-    </div>
+<div id="home">
     <div id="sidebar">
         {% for module in site.data.sidebar_modules %}
-            <div id="{{ module.id }}">
-                {% include {{ module.src }} %}
+            <div id="{{ module.id }}" class="panel">
+                {% if module.title %}
+                <h2 class="panel-title">{{ module.title }}</h2>
+                {% endif %}
+                <div class="panel-content">
+                    {% include {{ module.src }} %}
+                </div>
             </div>
         {% endfor %}
     </div>
-    <div id="main">
+    <div id="main" class="panel panel-content">
         {{ content }}
     </div>
     <div class="fclean"></div>

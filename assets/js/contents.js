@@ -6,5 +6,5 @@ titles.each(function(i){
                 + '<a href=#' + id + '>' + $(this).html() + '</a>' 
              + '</div>';
     console.log(text);
-    $("#contents-detail").html($("#contents-detail").html() + text);
+    $("#sidebar-contents .panel-content").append(text);
 });

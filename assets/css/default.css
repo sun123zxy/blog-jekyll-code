@@ -1,10 +1,10 @@
 :root {
     --text-color: #222;
-    --text-color-vice: #666;
+    --text-color-vice: #999;
     --theme-color-text-first: #385f6f;
     --theme-color-text-second: #1f3640;
-    --theme-color-background-first: #a1a1a1;
-    --theme-color-background-second: #3c003c;
+    --theme-color-background-first: #a1a1a1c9;
+    --theme-color-background-second: #dfdfdfc9;
     --background-color: #ffffffc9;
     --background-image: url(/assets/images/fgsHakugyokurou.jpg);
     --background-postion: 0% 0%;
@@ -41,8 +41,17 @@ a:hover{
     font-size: 90%;
 }
 .panel{
+    background-color: var(--background-color);
     box-shadow: 0 0 25px black;
-    padding: 0px 10px 10px 20px;
+}
+.panel-title{
+    background-color: var(--theme-color-background-second);
+    margin: 0;
+    padding: 10px 0px 10px 0px;
+    text-align: center;
+}
+.panel-content{
+    padding: 10px 20px 20px 20px;
 }
 
 body{
@@ -53,19 +62,20 @@ body{
     color: var(--text-color);
 }
 #home{
-    background-color: var(--background-color);
     margin: 15px auto;
-    width: 75%;
+    width: 80%;
     min-width: 800px;
-    padding: 10px 70px 10px 30px;
 }
 #sidebar{
     float: left;
-    width: 250px;
-    margin-top: 30px;
+    width: 280px;
+}
+#sidebar .panel{
+    margin-bottom: 20px;
 }
 #main{
-    margin-left: 290px; 
+    margin-left: 310px; 
+    padding: 20px 60px 20px 40px;
 }
 #footer{
     border-top: 2px solid var(--theme-color-background-first);
@@ -87,24 +97,10 @@ body{
     left: 5px;
     bottom: 5px;
 }
-/*contents*/
-#contents{
-    background-color: var(--background-color);
-    position: fixed;
-    right: 10px;
-    bottom: 10px;
-    width: 300px;
-    height: 400px;
-}
-#contents-detail{
-    padding-left: 10px;
-    height: 80%;
-    overflow-y: auto;
-}
 /*---modules---*/
 #sidebar-profile{
     text-align: center;
-    margin-bottom: 30px;
+    padding-top: 20px;
 }
 #sidebar-profile .avatar {
     width: 61%;
@@ -113,11 +109,19 @@ body{
     padding: 10px;
     background-image: radial-gradient(var(--background-color) 60%, var(--theme-color-background-first) 100%);
 }
-#sidebar-profile p {
+#sidebar-profile .nickname {
     font-size: 110%;
+    font-weight: bold;
     margin-top: 6px;
     margin-bottom: 10px;
 }
 #sidebar-profile .nav{
     color: var(--text-color-vice);
+}
+#sidebar-contents{
+    padding-bottom: 10px;
+}
+#sidebar-contents .panel-content{
+    height: 700px;
+    overflow-y: auto;
 }

@@ -2,7 +2,13 @@
   src: sidebar_profile.html
 - id: sidebar-news
   src: sidebar_news.html
+  title: "News"
 - id: sidebar-friends
   src: sidebar_friends.html
+  title: "My Friends"
 - id: sidebar-tags
   src: sidebar_tags.html
+  title: "Tags"
+- id: sidebar-contents
+  src: sidebar_contents.html
+  title: Contents
