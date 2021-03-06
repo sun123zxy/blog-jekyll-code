@@ -14,6 +14,9 @@ layout: root
                 </div>
             </div>
         {% endfor %}
+        {% if page.layout == "post" %}
+            <div id="contents" class="panel">{% include contents.html %}</div>
+        {% endif %}
     </div>
     <div id="main" class="panel panel-content">
         {{ content }}

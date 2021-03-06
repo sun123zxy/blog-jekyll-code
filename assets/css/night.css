@@ -4,8 +4,22 @@
     --theme-color-text-first: #d976ca;
     --theme-color-text-second: #b952aa;
     --theme-color-background-first: #8a327cb5;
-    --theme-color-background-second: #3c003cb5;
+    --theme-color-background-second: #4d004d7d;
     --background-color: #000000b5;
     --background-image: url(/assets/images/stairsOfHakugyokurou.png);
     --background-postion: 0% 0%;
+}
+
+/*Chrome scrollbar darkize*/
+::-webkit-scrollbar{
+    width: unset;
+}
+::-webkit-scrollbar-thumb{
+    background-color: rgb(50,50,50,.5);
+}
+::-webkit-scrollbar-thumb:hover{
+    background-color: rgb(50,50,50,.7);
+}
+::-webkit-scrollbar-track{
+    background-color: rgba(50,50,50,.1);
 }

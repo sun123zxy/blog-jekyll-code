@@ -9,6 +9,3 @@
 - id: sidebar-tags
   src: sidebar_tags.html
   title: "Tags"
-- id: sidebar-contents
-  src: sidebar_contents.html
-  title: Contents

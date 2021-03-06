@@ -32,9 +32,6 @@ function SwitchTheme(themeId){
             "left": "unset"
         });
     });
-    
-    
-    
 }
 
 function ThemeId(value=-1){

@@ -4,7 +4,7 @@
     --theme-color-text-first: #385f6f;
     --theme-color-text-second: #1f3640;
     --theme-color-background-first: #a1a1a1c9;
-    --theme-color-background-second: #dfdfdfc9;
+    --theme-color-background-second: #d2d2d28a;
     --background-color: #ffffffc9;
     --background-image: url(/assets/images/fgsHakugyokurou.jpg);
     --background-postion: 0% 0%;
@@ -96,6 +96,7 @@ body{
     position: fixed;
     left: 5px;
     bottom: 5px;
+    z-index: 233;
 }
 /*---modules---*/
 #sidebar-profile{
@@ -118,10 +119,13 @@ body{
 #sidebar-profile .nav{
     color: var(--text-color-vice);
 }
-#sidebar-contents{
-    padding-bottom: 10px;
+#contents{
+    position: relative;
+    top: 0px;
 }
-#sidebar-contents .panel-content{
-    height: 700px;
+#contents .panel-content{
+    min-height: 250px;
     overflow-y: auto;
+    padding-left: 12px;
+    padding-right: 25px;
 }
