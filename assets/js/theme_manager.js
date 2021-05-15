@@ -1,13 +1,14 @@
 var themes = [
-    "/assets/css/day.css",
-    "/assets/css/night.css"
+    "/assets/css/fgsHkgkr.css",
+    "/assets/css/snowyTorii.css",
+    "/assets/css/mcHkgkr.css"
 ];
 function LoadTheme(themeId){
     $("#theme-container").attr("href", themes[themeId]);
 }
 function SwitchTheme(themeId){
-    var maskColor = $(":root").css("--background-color").trim().substring(0, 7); //kill spaces and ignore alpha
-    //var maskColor = themeId?"black":"white";
+    var maskColor = "black";
+    //var maskColor = $(":root").css("--background-color").trim().substring(0, 7); //kill spaces and ignore alpha
     console.log("maskColor: " + maskColor);
     $("#mask").css({
         "z-index": "233", //put on top

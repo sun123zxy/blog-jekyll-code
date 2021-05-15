@@ -1,13 +1,16 @@
 :root{
     --text-color: #ddd;
-    --text-color-vice: #999;
-    --theme-color-text-first: #d976ca;
-    --theme-color-text-second: #b952aa;
-    --theme-color-background-first: #8a327cb5;
-    --theme-color-background-second: #4d004d7d;
+
+    --text-color-theme-first: #d976ca;
+    --text-color-theme-second: #b952aa;
+    --strip-color: #8a327cb5;
+    --background-color-theme: #4d004d7d;
     --background-color: #000000b5;
-    --background-image: url(/assets/images/stairsOfHakugyokurou.png);
+    --background-image: url(/assets/images/mcHkgkr.png);
     --background-postion: 0% 0%;
+
+    --highlight-color-comment: #64c164;
+    --highlight-color-name: #96cddf;
 }
 
 /*Chrome scrollbar darkize*/

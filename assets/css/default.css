@@ -1,13 +1,20 @@
 :root {
     --text-color: #222;
-    --text-color-vice: #999;
-    --theme-color-text-first: #385f6f;
-    --theme-color-text-second: #1f3640;
-    --theme-color-background-first: #a1a1a1c9;
-    --theme-color-background-second: #d2d2d28a;
+    --text-color-vice: #777;
+    --text-color-title: var(--text-color);
+
+    --text-color-theme-first: #173d4d;
+    --text-color-theme-second: #000;
+
+    --strip-color: #a1a1a1c9;
+    --background-color-theme: #fbfafaad;
     --background-color: #ffffffc9;
-    --background-image: url(/assets/images/fgsHakugyokurou.jpg);
+
+    --background-image: radial-gradient(#aaa,#000);
     --background-postion: 0% 0%;
+
+    --highlight-color-comment: #004000;
+    --highlight-color-name: #354866;
 }
 
 /*
@@ -31,26 +38,27 @@ img{
     max-width: 100%; /*防止图片溢出*/
 }
 a{
-    color: var(--theme-color-text-first);
+    color: var(--text-color-theme-first);
 }
 a:hover{
-    color: var(--theme-color-text-second);
+    color: var(--text-color-theme-second);
 }
 .text-vice{
     color: var(--text-color-vice);
     font-size: 90%;
 }
 .panel{
-    background-color: var(--background-color);
     box-shadow: 0 0 25px black;
 }
 .panel-title{
-    background-color: var(--theme-color-background-second);
+    background-color: var(--background-color-theme);
     margin: 0;
     padding: 10px 0px 10px 0px;
     text-align: center;
+    color: var(--text-color-title);
 }
 .panel-content{
+    background-color: var(--background-color);
     padding: 10px 20px 20px 20px;
 }
 
@@ -78,19 +86,68 @@ body{
     padding: 20px 60px 20px 40px;
 }
 #footer{
-    border-top: 2px solid var(--theme-color-background-first);
+    border-top: 2px solid var(--strip-color);
     margin-top: 50px;
     text-align: center;
+    color: #bbb;
 }
 
 /*post-body*/
 #post-body{
     line-height: 150%;
 }
+#post-body h2 {
+    background-image: linear-gradient(to right,var(--background-color-theme),#0000);
+    padding: 10px 0px 13px 20px;
+    border-radius: 10px;
+    color: var(--text-color-title);
+    margin: 0px 0px -2px -10px;
+}
 #post-body blockquote{
-    border-left: 5px solid var(--theme-color-background-first);
+    border-left: 5px solid var(--strip-color);
     padding: 1px 0px 1px 30px;
 }
+/*code shell*/
+pre{
+    border: 5px solid var(--strip-color);
+    border-radius: 10px;
+    padding: 15px;
+}
+code{
+    font-family: "Consolas", sans-serif;
+    overflow-x: auto;
+}
+/*code highlight*/
+.hljs-addition,
+.hljs-attribute,
+.hljs-bullet,
+.hljs-link,
+.hljs-section,
+.hljs-string,
+.hljs-symbol,
+.hljs-template-variable,
+.hljs-variable,
+.hljs-title {
+    color: var(--highlight-color-name); /*customize*/
+}
+.hljs-comment,
+.hljs-deletion,
+.hljs-meta,
+.hljs-quote {
+    color:var(--highlight-color-comment); /*customize*/
+}
+.hljs-keyword,
+.hljs-name,
+.hljs-section,
+.hljs-selector-tag,
+.hljs-strong,
+.hljs-type{
+    color: var(--text-color-theme-first);
+    font-weight: bold;
+}
+.hljs-emphasis {
+    font-style:italic;
+} 
 /*small objects*/
 #theme-switch{
     position: fixed;
@@ -99,16 +156,16 @@ body{
     z-index: 233;
 }
 /*---modules---*/
-#sidebar-profile{
+#sidebar-profile .panel-content{
     text-align: center;
     padding-top: 20px;
 }
 #sidebar-profile .avatar {
     width: 61%;
-    border: 3px solid var(--theme-color-background-first);
+    border: 3px solid var(--strip-color);
     border-radius: 50%;
     padding: 10px;
-    background-image: radial-gradient(var(--background-color) 60%, var(--theme-color-background-first) 100%);
+    background-image: radial-gradient(var(--background-color) 60%, var(--strip-color) 100%);
 }
 #sidebar-profile .nickname {
     font-size: 110%;
@@ -122,6 +179,9 @@ body{
 #contents{
     position: relative;
     top: 0px;
+}
+#contents a{
+    text-decoration: none;
 }
 #contents .panel-content{
     min-height: 250px;

@@ -1,0 +1,9 @@
+:root {
+    --text-color-title: #eee;
+    --text-color-theme-first: #014616;
+    --text-color-theme-second: #000;
+    --strip-color: #3b824d;
+    --background-color-theme: #0b311ac9;
+    --background-image: url(/assets/images/snowyTorii.png);
+    --background-postion: 0% 0%;
+}
