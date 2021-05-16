@@ -1,10 +1,5 @@
-var themes = [
-    "/assets/css/fgsHkgkr.css",
-    "/assets/css/snowyTorii.css",
-    "/assets/css/mcHkgkr.css"
-];
 function LoadTheme(themeId){
-    $("#theme-container").attr("href", themes[themeId]);
+    $("#theme-container").attr("href", themesDat[themeId].src);
 }
 function SwitchTheme(themeId){
     var maskColor = "black";
@@ -49,7 +44,13 @@ function ThemeId(value=-1){
 if(ThemeId() == null) ThemeId(0);
 LoadTheme(ThemeId());
 
-$("#theme-switch").click(function(){
-    ThemeId((ThemeId() + 1) % themes.length);
+$("#theme-switch .round-button").click(function(){
+    ThemeId((ThemeId() + 1) % themesDat.length);
     SwitchTheme(ThemeId());
+});
+$("#theme-info .round-button").click(function(){
+    $("#theme-info .hover-info").text(themesDat[ThemeId()].info);
+});
+$("#theme-info").hover(function(){
+    $("#theme-info .hover-info").text("Theme Info");
 });
