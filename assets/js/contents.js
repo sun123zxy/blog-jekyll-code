@@ -1,9 +1,10 @@
 //---contents content---
 var titles = $("#post-body h1, #post-body h2, #post-body h3, #post-body h4, #post-body h5, #post-body h6");
+var curIdx = 0;
 titles.each(function(i){
     var lv = parseInt(this.tagName[1]);
     var id = $(this).attr("id");
-    var text = '<div style="padding-left: ' + 10 * (lv - 1) + 'px">'
+    var text = '<div id="contents-link-' + i + '" class="contents-link" style="padding-left: ' + 10 * (lv - 1) + 'px">'
                 + '<a href=#' + id + '>' + $(this).html() + '</a>' 
              + '</div>';
     console.log(text);
@@ -32,7 +33,20 @@ function UpdateSize(){
     $("#contents .panel-content").outerMaxHeight(calcMaxHeight);
 }
 function UpdateHighlight(){
-    
+    var winTop = $(window).scrollTop();
+    var myTop = winTop + 10;
+    var preIdx = curIdx;
+    while(curIdx < titles.length - 1 && myTop >= titles.eq(curIdx + 1).offset().top){
+        curIdx ++;
+    }
+    while(curIdx > 0 && myTop < titles.eq(curIdx).offset().top){
+        curIdx --;
+    }
+    if(preIdx != curIdx || curIdx == 0){
+        $("#contents-link-" + preIdx).removeClass("contents-link-highlight").addClass("contents-link");
+        $("#contents-link-" + curIdx).removeClass("contents-link").addClass("contents-link-highlight");
+    }
+    //console.log("current title: " + curIdx);
 }
 function Update(){
     UpdateSize();

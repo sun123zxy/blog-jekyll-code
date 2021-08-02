@@ -210,12 +210,20 @@ code{
     position: relative;
     top: 0px;
 }
-#contents a{
-    text-decoration: none;
-}
 #contents .panel-content{
     min-height: 250px;
     overflow-y: auto;
     padding-left: 12px;
     padding-right: 25px;
+}
+.contents-link a{
+    text-decoration: none;
+}
+.contents-link a:hover{
+    text-decoration: underline;
+}
+.contents-link-highlight a{
+    text-decoration: underline;
+    font-weight: bold;
+    color: var(--text-color-theme-second);
 }
