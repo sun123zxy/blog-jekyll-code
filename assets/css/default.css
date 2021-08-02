@@ -117,7 +117,8 @@ body{
     margin-bottom: 20px;
 }
 #main{
-    margin-left: 310px; 
+    float: right;
+    width: calc(100% - 410px);
     padding: 20px 60px 20px 40px;
 }
 #footer{

@@ -21,7 +21,7 @@ function StTop(){
 $.fn.outerMaxHeight = function(value){
     this.css("max-height", value - (this.outerHeight() - this.height()));
 };
-function Update(){
+function UpdateSize(){
     var winTop = $(window).scrollTop();
     var winHeight =  $(window).height();
     var winBottom = winTop + winHeight;
@@ -31,7 +31,13 @@ function Update(){
     $("#contents").css("top", Math.max(0, calcTop));
     $("#contents .panel-content").outerMaxHeight(calcMaxHeight);
 }
-
+function UpdateHighlight(){
+    
+}
+function Update(){
+    UpdateSize();
+    UpdateHighlight();
+}
 $(window).scroll(function(e){
     Update();
 });
