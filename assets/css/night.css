@@ -1,13 +1,12 @@
 :root{
     --text-color: #ddd;
-
-    --text-color-theme-first: #d976ca;
-    --text-color-theme-second: #b952aa;
-    --strip-color: #8a327cb5;
-    --background-color-theme: #4d004d7d;
     --background-color: #000000b5;
-    --background-image: url(/assets/images/mcHkgkr.png);
-    --background-postion: 0% 0%;
+
+    --text-color-theme-first: #85b4e6;
+    --text-color-theme-second: #ceddec;
+
+    --strip-color: #3c5b84;
+    --background-color-theme: #084468ad;
 
     --highlight-color-comment: #64c164;
     --highlight-color-name: #96cddf;

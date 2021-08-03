@@ -1,5 +1,11 @@
 function LoadTheme(themeId){
     $("#theme-container").attr("href", themesDat[themeId].src);
+    if(themesDat[themeId].night == true){
+        $("#night-container").attr("href", "/assets/css/night.css");
+        console.log("Night mode enabled!")
+    }else{
+        $("#night-container").attr("href", "");
+    }
 }
 function SwitchTheme(themeId){
     var maskColor = "black";
@@ -41,9 +47,13 @@ function ThemeId(value=-1){
     }
 }
 
-if(ThemeId() == null) ThemeId(0);
+console.log("theme manager activated")
+if(ThemeId() == null){
+    console.log("no cache detected, initializing themeId...")
+    ThemeId(0);
+}
 LoadTheme(ThemeId());
-
+console.log("theme deployed")
 $("#theme-switch .round-button").click(function(){
     ThemeId((ThemeId() + 1) % themesDat.length);
     SwitchTheme(ThemeId());

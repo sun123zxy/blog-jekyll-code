@@ -1,14 +1,18 @@
+themeSrc = "/assets/css/theme/";
 themesDat = [
     {
-        "src": "/assets/css/fgsHkgkr.css",
-        "info": "fgsHkgkr, ゆきどけアゼリア, pixiv pid=50046630, modified"
-    },
-    {
-        "src": "/assets/css/snowyTorii.css",
-        "info": "snowyTorii, 鳥居＋雪＋妖夢＋霊夢, pixiv pid=87148061"
-    },
-    {
-        "src": "/assets/css/mcHkgkr.css",
-        "info": "mcHkgkr, Touhou Gensokyo Minecraft Project, https://www.youtube.com/watch?v=Ui-jotZYJJA"
+        "src": themeSrc + "netherStairs.css",
+        "info": "netherStairs, ゆきどけアゼリア, pixiv pid=50046630, modified"
+    },{
+        "src": themeSrc + "bambooForest.css",
+        "info": "bambooForest, 月下の永遠亭, pixiv pid=26565744",
+        "night": true
+    },{
+        "src": themeSrc + "cherryBlossom.css",
+        "info": "cherryBlossom, 春の唄, pixiv pid=41812040"
+    },{
+        "src": themeSrc + "torriMorning.css",
+        "info": "torriMorning, 幻想博麗神社の朝, pixiv pid=16439136",
+        "night": true
     }
 ]
