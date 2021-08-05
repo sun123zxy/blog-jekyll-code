@@ -1,10 +1,10 @@
 :root {
     --text-color-title: #eee;
-    --text-color-theme-first: #933852;
-    --text-color-theme-second: #e63b6b;
+    --text-color-theme-first: #1c5527;
+    --text-color-theme-second: #091e00;
 
-    --strip-color: #b08793;
-    --background-color-theme: #ae537ca1;
+    --strip-color: #2d6631;
+    --background-color-theme: #154010a1;
 
     --background-image: url(/assets/images/bg/cherryBlossom.jpg);
 }

@@ -3,7 +3,7 @@ layout: default
 ---
 <div id="post-body">
     <h1 id="post-title">{{ page.title }}</h1>
-    <div class="text-vice" align="right">
+    <div class="text-vice" style="text-align: right">
         <p>tags: 
             {% for tag in page.tags %}
                 <a href= "/tags#{{ tag }}" >{{ tag }}</a>{% unless forloop.last %}, {% endunless %}

@@ -6,7 +6,7 @@
     --text-color-theme-first: #173d4d;
     --text-color-theme-second: #000;
 
-    --strip-color: #a1a1a1c9;
+    --strip-color: #a1a1a1;
     --background-color-theme: #fbfafaad;
     --background-color: #ffffffc9;
 
@@ -133,7 +133,7 @@ body{
     line-height: 150%;
 }
 #post-body h2 {
-    background-image: linear-gradient(to right,var(--background-color-theme),#0000);
+    background-image: linear-gradient(to right,var(--strip-color),#0000);
     padding: 10px 0px 13px 20px;
     border-radius: 10px;
     color: var(--text-color-title);
