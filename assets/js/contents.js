@@ -1,6 +1,6 @@
 //---contents content---
 console.log("detecting titles...")
-var titles = $("#post-body h1, #post-body h2, #post-body h3, #post-body h4, #post-body h5, #post-body h6");
+var titles = $(".post-body h1, .post-body h2, .post-body h3, .post-body h4, .post-body h5, .post-body h6");
 var curIdx = 0;
 console.log(titles.length + " titles founded")
 titles.each(function(i){

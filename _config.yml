@@ -20,7 +20,7 @@
 
 # Collections
 collections:
-  p:
+  post:
     output: true
 # Build settings
 

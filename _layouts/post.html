@@ -1,9 +1,19 @@
 ---
 layout: default
 ---
-<div id="post-body">
-    <h1 id="post-title">{{ page.title }}</h1>
-    <div class="text-vice" style="text-align: right">
+<div class="post-body">
+    <div class="post-head">
+        <h1 id="post-title">{{ page.title }}</h1>
+        <p class="abstract text-vice">
+            {% if page.abstract == black %}
+                No abstract provided here.
+            {% else %}
+                {{ page.abstract }}
+            {% endif %}
+        </p>
+    </div>
+    <div class="post-content">{{ content }}</div>
+    <div class="post-tail text-vice" style="text-align: right">
         <p>tags: 
             {% for tag in page.tags %}
                 <a href= "/tags#{{ tag }}" >{{ tag }}</a>{% unless forloop.last %}, {% endunless %}
@@ -11,5 +21,4 @@ layout: default
         </p>
         <p>posted on {{ page.post_time }} | last modified on {{ page.last_modified_time }}</p>
     </div>
-    {{ content }}
 </div>

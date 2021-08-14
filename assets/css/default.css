@@ -1,6 +1,6 @@
 :root {
     --text-color: #222;
-    --text-color-vice: #777;
+    --text-color-vice: #666;
     --text-color-title: var(--text-color);
 
     --text-color-theme-first: #173d4d;
@@ -43,7 +43,7 @@ a{
 a:hover{
     color: var(--text-color-theme-second);
 }
-.text-vice{
+.text-vice, .post-body figcaption{
     color: var(--text-color-vice);
     font-size: 90%;
 }
@@ -129,29 +129,47 @@ body{
 }
 
 /*post-body*/
-#post-body{
-    line-height: 150%;
+.post-content{
+    line-height: 23px;
 }
-#post-body h2 {
+.post-head{
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+.post-tail{
+    margin-top: 25px;
+}
+.post-body h2 {
     background-image: linear-gradient(to right,var(--strip-color),#0000);
     padding: 10px 0px 13px 20px;
     border-radius: 10px;
     color: var(--text-color-title);
     margin: 0px 0px -2px -10px;
 }
-#post-body blockquote{
+.post-body blockquote{
     border-left: 5px solid var(--strip-color);
     padding: 1px 0px 1px 30px;
+    margin-left: 20px;
 }
 /*code shell*/
 pre{
     border: 5px solid var(--strip-color);
     border-radius: 10px;
     padding: 15px;
-}
-code{
-    font-family: "Consolas", sans-serif;
     overflow-x: auto;
+}
+/*inline code*/
+code {
+    font-family: "Consolas", sans-serif;
+    border: 2px solid var(--strip-color);
+    border-radius: 10px;
+    padding: 1px 5px 1px 5px;
+}
+/*code in pre*/
+pre code{
+    border: unset;
+    border-radius: unset;
+    padding: unset;
 }
 /*code highlight*/
 .hljs-addition,

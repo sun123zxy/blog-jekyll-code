@@ -3,11 +3,17 @@ layout: default
 title: Home
 ---
 <div class="postPreviewList">
-    {% assign sorted_p = site.p | sort: "post_time" | reverse %}
-    {% for post in sorted_p %}
+    {% assign sorted_post = site.post | sort: "post_time" | reverse %}
+    {% for post in sorted_post %}
         <div class="postPreview">
             <h2><a href="{{ post.url | remove: 'index.html'}}">{{ post.title }}</a></h2>
-            <p class="abstract">{{ post.abstract }}</p>
+            <p class="abstract">
+                {% if post.abstract == black %}
+                    No abstract provided here.
+                {% else %}
+                    {{ post.abstract }}
+                {% endif %}
+            </p>
             <div class="text-vice" style="text-align: right">
                 <p>tags: 
                     {% for tag in post.tags %}

@@ -5,11 +5,12 @@ title: Tags
 <div id="post-body">
     <h1>Tags</h1>
     <ul>
+        {% assign sorted_post = site.post | sort: "post_time" | reverse %}
         {% for tag in site.data.tags %}
         <li>
             <h3 id="{{ tag }}">{{ tag }}</h3>
             <ul>
-                {% for post in site.p %}
+                {% for post in sorted_post %}
                 {% if post.tags contains tag %}
                 <li><a href="{{ post.url | remove: 'index.html'}}">{{ post.title }}</a></li>
                 {% endif %}

@@ -1,13 +1,12 @@
 ---
 layout: post
-title: Test Article
-abstract: markdown渲染、目录锚点系统测试文章。 A test article with a bunch of maths.
-post_time: 2020/11/06
-last_modified_time: 2020/02/21
+title: "等价类计数：Burnside引理 & Polya定理"
+abstract: "《同分异构体计数从入门到精通》（笑）"
+post_time: 2020/03/21
+last_modified_time: 2020/12/21
 tags:
-  - Test
-  - OI
-  - 学习笔记
+- OI
+- 学习笔记
 ---
 PS: 写的时候博主比较naive，所有的变换都是向右结合的，还请谅解（
 
@@ -249,7 +248,7 @@ $$
 
 ### 2.5 Burnside的本质{#s-2.5}
 
-![来自zkx学长的课件《Polya计数.pptx》](burnside-001.jpg)
+![来自zkx学长的课件《Polya计数.pptx》](burnside.jpg)
 
 >直接除以4不行，因为前四种找不到4个等价的情况
 >
@@ -313,7 +312,7 @@ $$
 
 移位置换 $\tau_n^k$ 所形成的图：考虑将 $n$ 个点排成一个圆圈， $1$ 连 $k$ ， $2$ 连 $k+1$ ，...，$n$ 连 $k-1$ 。
 
-![$tau_6^2$移位置换图](polya-001.png)
+![$tau_6^2$移位置换图](tau62.png)
 
 如图便是 $\tau_6^2$ 形成的移位置换图，共有两个环。
 
@@ -579,7 +578,7 @@ int main(){
 
 彳亍来讲课的那个暑假可以说是真正让我在OI数学这一块有很多新的收获，orz orz orz
 
-2020/10/23 update: keke学长的PPT应该参考了《组合数学》，回头去翻翻。
+2020/10/23 update: keke学长的PPT应该参考了《组合数学》，回头对照一下。
 
 ### 《算法导论》第三版 31章 数论算法
 
@@ -598,5 +597,3 @@ Burnside & Polya 最开始是去年暑假keke学长为我们讲授。当时云�
 Burnside弱化版是整理笔记时灵光一闪生造出来的一个中间步骤，希望对大家的理解有所帮助。
 
 多次用到了“将等价类计数问题转换为有多少个元素与某个确定的元素等价，并利用等价传递性导出封闭性说明形成连通块”这一思想，很具有推广性；另外遇到一些不太好证的命题可以试试反证法。
-
-<p style="text-align: right">2020/03/21</p>
