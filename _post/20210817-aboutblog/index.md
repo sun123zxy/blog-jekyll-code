@@ -2,32 +2,19 @@
 layout: post
 title: "博客搭建随想"
 abstract: Something about this blog.
-post_time: 2021/05/20
-last_modified_time: 2021/08/14
+post_time: 2021/08/17
+last_modified_time: 2021/08/17
 tags:
   - 站点相关
   - 前端
 ---
-
-博客源代码：[github.com/sun123zxy/behind-blog.sun123zxy.top](https://github.com/sun123zxy/behind-blog.sun123zxy.top)
-
-## 新技术
-
-+ 基于 [Jekyll](https://jekyllrb.com/) 和 [jekyll-pandoc](https://github.com/mfenner/jekyll-pandoc) 插件，配合自制小工具 [InlineMathSpaceKiller](https://github.com/sun123zxy/InlineMathSpaceKiller) 的静态 markdown 博客。
-+ 基于 [JQuery](https://jquery.com/) 的主题切换动画。
-+ 支持锚点跳转的目录系统。
-+ 数学公式使用 [KaTeX](https://katex.org/) 渲染。
-+ 代码高亮使用 [highlight.js](https://highlightjs.org/) 分析代码结构，配合魔改后的样式表实现。
-
 ## 一些历史
 
-可能是对博客自定义有着不明不白的执念，也可能是想趁此机会玩玩前端，很早就在考虑自建博客的事情了。
+可能是对高强度自定义有着不明不白的执念，也可能是想趁此机会玩玩前端，很早就在考虑自建博客的事情了。
 
 记得一开始在博客园开博，就是看中它高度自定义的博客系统，当然还有隔壁广告泛滥的 CSDN 的同行衬托（笑）
 
-只是光一套主题似乎还不能让咱满意，于是之后又逐渐完善了一套修改博客园自带皮肤的自定义主题切换系统。
-
-然而因为改版太多次，代码逻辑已然一团乱麻。想来想去，改别人的东西总是有极限的，与其推倒重构，还不如自己去搭个新的。
+只是光一套主题似乎还不能让咱满意，于是之后又逐渐完善了一套修改博客园自带皮肤的自定义主题切换系统。然而因为改版太多次，代码逻辑已然一团乱麻。想来想去，改别人的东西总是有极限的，与其推倒重构，还不如自己去搭个新的。
 
 这么想着又咕了几个月（笑）
 
@@ -37,11 +24,27 @@ tags:
 
 以前用 markdown 写的文章都搬过来了，其他的回头再说吧。~~好像也没啥保留价值~~
 
-那么，之后就在这边安家了。博客园那边应该还会同步发布，但后续的更新和修改就不好说了。静态博客的评论系统要托管，感觉不太好弄，想评论什么的还是去博客园吧。（这博客真的有人看吗）
+那么，之后就在这边安家了。博客园那边应该还会同步发布，但后续的更新和修改就不能保证了。静态博客的评论系统要托管，感觉不太好弄，想评论什么的还是去博客园吧。（这博客真的有人看吗）
+
+还有，话说正式启用博客的时间正好是8月17日，这个时间...
+
+~~是妖妖梦、风神录正式版发售时间~~
+
+算了我还是给国家省点子弹吧（
 
 ## 搭建随想
 
-随便聊聊搭建过程中碰到的各种有趣的事情。
+随便聊聊搭建过程中遇到的各种有趣的事情。
+
+博客源代码：[github.com/sun123zxy/behind-blog.sun123zxy.top](https://github.com/sun123zxy/behind-blog.sun123zxy.top)
+
+### 新技术
+
++ 基于 [Jekyll](https://jekyllrb.com/) 和 [jekyll-pandoc](https://github.com/mfenner/jekyll-pandoc) 插件，配合自制小工具 [InlineMathSpaceKiller](https://github.com/sun123zxy/InlineMathSpaceKiller) 的静态 markdown 博客。
++ 基于 [JQuery](https://jquery.com/) 的主题切换动画。
++ 支持锚点跳转的目录系统。
++ 数学公式使用 [KaTeX](https://katex.org/) 渲染。
++ 代码高亮使用 [highlight.js](https://highlightjs.org/) 分析代码结构，配合魔改后的样式表实现。
 
 ### 数学公式、jekyll-pandoc 和 InlineMathSpaceKiller
 
@@ -53,13 +56,13 @@ tags:
 
 不料还有个问题——pandoc 没法解析形如 `$ \gcd(a,b) $` 这样 `$` 旁边紧跟着空格的行内公式——而 Typora 会忽视这个问题。
 
-翻到这个 [issue](https://github.com/jgm/pandoc/issues/5672)，Pandoc 官方似乎不打算修复这个问题。就只好自己写个 SpaceKiller 做预处理了。代码确实很丑，但至少能用。
+翻到这个 [issue](https://github.com/jgm/pandoc/issues/5672)，Pandoc 官方似乎不打算修复这个问题。就只好自己写个 SpaceKiller 做预处理了。没咋认真写，但至少能用。
 
 ### 文章存储结构
 
 并没有使用 Jekyll 自带的 posts。
 
-我不喜欢这种图文分离的组织格式。文章的文本和图片本来就是一个整体，强行拆开放到 `/assets/images/.../` 里面既不合逻辑，又丧失了可移植性，还很麻烦。
+我不喜欢这种图文分离的组织格式。文本和图片本来就同属一篇文章，强行把图片拆开放到 `/assets/images/.../` 里面既不合逻辑，又丧失了可移植性，简直匪夷所思。
 
 最后使用了打开 output 选项的 collection 来实现，每篇文章都有一个独立的文件夹，包含 `index.md` （文本）和所需图片、文件等所有内容。`index.md` 里面直接使用相对引用插入图片，和无博客状态下写作体验完全一致，爽到飞起。
 

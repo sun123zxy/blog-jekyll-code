@@ -3,7 +3,7 @@ layout: post
 title: "About Me"
 abstract: 
 post_time: 2020/10/24
-last_modified_time: 2021/08/14
+last_modified_time: 2021/08/17
 tags:
   - 站点相关
 ---
@@ -38,6 +38,6 @@ STG 打的还行，妖妖梦专精，大概 Hard 稳通 Lunatic 混关的水准�
 + [cnblogs](https://www.cnblogs.com/sun123zxy/)
 + [luogu](https://www.luogu.com.cn/user/23632)
 
-就这些吧。博客技术相关的内容，请移步[博客搭建随想](http://localhost:4000/post/20210520-aboutblog/)。
+就这些吧。关于博客本身的一些想法，请移步[博客搭建随想](/post/20210817-aboutblog/)。
 
 **Next Phantasm...**
