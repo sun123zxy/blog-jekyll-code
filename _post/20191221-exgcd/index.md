@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "扩展欧几里得算法（ExGCD）"
-abstract: "重学普及组内容（"
+abstract: 
 post_time: 2019/12/21
 last_modified_time: 2019/12/21
 tags:

@@ -9,7 +9,8 @@ title: Home
             <h2><a href="{{ post.url | remove: 'index.html'}}">{{ post.title }}</a></h2>
             <p class="abstract">
                 {% if post.abstract == black %}
-                    No abstract provided here.
+                    {{ post.content | strip_html | slice: 0, 125}}
+                    ...
                 {% else %}
                     {{ post.abstract }}
                 {% endif %}
