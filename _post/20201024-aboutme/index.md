@@ -23,9 +23,9 @@ tags:
 
 东方众。熟悉的作品大概从下图能看出来吧
 
-[2021/08/07 原曲认知测验 弹幕作 0.5s 50题](https://cd.thwiki.cc/quiz?ea91f9ec0143857efa75694ab8705ecd)
+[2021/08/23 原曲认知测验 弹幕作 0.5s 100题](https://cd.thwiki.cc/quiz?95e9020143d5b2eed57029875fe0e90d)
 
-![原曲认知测验](music_test.png)
+![原曲认知测验](music_test.jpg)
 
 STG 打的还行，妖妖梦专精，大概 Hard 稳通 Lunatic 混关的水准吧。打过 Extra、Phantasm 的 NMNBNR。目前在懒散的尝试 Lunatic NB。~~差不多咕了~~
 

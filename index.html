@@ -2,10 +2,10 @@
 layout: default
 title: Home
 ---
-<div class="postPreviewList">
+<div class="post-preview-list">
     {% assign sorted_post = site.post | sort: "post_time" | reverse %}
     {% for post in sorted_post %}
-        <div class="postPreview">
+        <div class="post-preview">
             <h2><a href="{{ post.url | remove: 'index.html'}}">{{ post.title }}</a></h2>
             <p class="abstract">
                 {% if post.abstract == black %}
