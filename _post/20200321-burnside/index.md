@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "等价类计数：Burnside引理 & Polya定理"
 abstract: "《同分异构体计数从入门到精通》（笑）"
 post_time: 2020/03/21

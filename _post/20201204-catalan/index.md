@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "卡特兰数 题解"
 abstract: 
 post_time: 2020/12/04

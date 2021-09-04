@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "约数个数函数的一个性质证明，以及其推广"
 abstract: '关于 \(d(AB) = \sum_{x|A} \sum_{y|B} [\gcd (x,y) = 1]\) 的一系列推导。'
 post_time: 2020/02/20

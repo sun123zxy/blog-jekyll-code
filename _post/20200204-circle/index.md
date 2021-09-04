@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "浅析一类要求相邻不同的环上染色问题"
 abstract: "一类神烦的dp边界题。"
 post_time: 2020/02/04

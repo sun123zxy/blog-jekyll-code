@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "从不定方程的非负整数解个数谈起"
 abstract: "你从未见过的全新解法。"
 post_time: 2021/05/01

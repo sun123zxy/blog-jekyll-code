@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "终末之章——CSP-S2020&NOIP2020退役记"
 abstract: "完结撒花。"
 post_time: 2020/12/06

@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "bsoj5988 [Achen模拟赛]期望 题解"
 abstract: "“套着期望皮的容斥题。”"
 post_time: 2019/12/18

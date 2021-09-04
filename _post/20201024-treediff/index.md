@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "树上差分的两种形式（相遇 or 行程的交集 题解）"
 abstract: 
 post_time: 2020/10/24

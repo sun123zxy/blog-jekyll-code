@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "CSP-S2019游记"
 abstract: "你们这个CSP啊，Exciting！"
 post_time: 2019/11/17

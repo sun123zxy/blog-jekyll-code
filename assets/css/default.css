@@ -46,6 +46,7 @@ a:hover{
 .text-vice, .post-body figcaption{
     color: var(--text-color-vice);
     font-size: 90%;
+    line-height: 90%;
 }
 
 .panel{
@@ -61,6 +62,7 @@ a:hover{
 .panel-content{
     background-color: var(--background-color);
     padding: 10px 20px 20px 20px;
+    overflow-x: auto;
 }
 /*round buttons*/
 #round-button-container{

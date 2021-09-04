@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "[JZOJ A组]球 题解"
 abstract: 
 post_time: 2019/10/12

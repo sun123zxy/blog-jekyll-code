@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "原创OI题目 GCD卷积 Problem and Solution"
 abstract: 
 post_time: 2020/12/06

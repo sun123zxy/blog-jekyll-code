@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "博客搭建随想"
 abstract: Something about this blog.
 post_time: 2021/08/17

@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "CodeChef-RNDRATIO Mysterious Ratio 题解"
 abstract: "积性函数推式子纪念题。"
 post_time: 2020/11/16

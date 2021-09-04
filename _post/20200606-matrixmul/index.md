@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "关于矩阵乘法结合律的证明"
 abstract: 
 post_time: 2020/06/06

@@ -37,6 +37,19 @@ pandoc:
     - mathjax
     - no-highlight
 
+defaults:
+  -
+    scope:
+      path: "_post"
+    values:
+      layout: post
+      title: 
+      abstract:
+      post_time: 
+      last_modified_time: 
+      priority: 1
+      tags:
+
 # Exclude from processing.
 # The following items will not be processed, by default.
 # Any item listed under the `exclude:` key here will be automatically added to

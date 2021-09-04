@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "涂色游戏 题解"
 abstract: "容斥、二项式反演、minmax容斥和树形dp，人类智慧神题。"
 post_time: 2019/12/09

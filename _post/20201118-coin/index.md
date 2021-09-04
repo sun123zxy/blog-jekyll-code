@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "CodeChef-LECOINS Little Elephant and Colored Coins 题解"
 abstract: 
 post_time: 2020/11/18

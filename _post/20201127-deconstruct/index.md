@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "树的解构 题解"
 abstract: "一道并不是特别难但没有切掉的期望题。"
 post_time: 2020/11/27

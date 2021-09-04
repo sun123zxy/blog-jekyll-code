@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "原创OI题目 白银之春 Problem and Solution"
 abstract: 
 post_time: 2020/12/06

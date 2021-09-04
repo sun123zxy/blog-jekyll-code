@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "由 [SDOI2012]Longge的问题 探讨欧拉函数和莫比乌斯函数的一些性质和关联"
 abstract: 
 post_time: 2019/09/22

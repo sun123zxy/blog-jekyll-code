@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "扩展欧几里得算法（ExGCD）"
 abstract: 
 post_time: 2019/12/21

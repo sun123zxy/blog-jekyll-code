@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "中国剩余定理（CRT）及其扩展（ExCRT）"
 abstract: 
 post_time: 2019/12/21

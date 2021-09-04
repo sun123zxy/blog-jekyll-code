@@ -1,9 +1,9 @@
 ---
-layout: post
 title: "Post Model"
 abstract: "A post model."
 post_time: 0000/00/00
 last_modified_time: 0000/00/00
+priority: 0
 tags:
 - 站点相关
 ---

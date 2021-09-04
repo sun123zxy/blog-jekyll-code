@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "[NOIP模拟]文本编辑器 题解"
 abstract: 
 post_time: 2019/08/28
