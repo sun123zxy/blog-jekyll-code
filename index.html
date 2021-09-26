@@ -3,7 +3,7 @@ layout: default
 title: Home
 ---
 <div class="post-preview-list">
-    {% assign grouped_post = site.post | group_by: "priority" | sort: "name" | reverse %}
+    {% assign grouped_post = site.p | group_by: "priority" | sort: "name" | reverse %}
     {% for post_group in grouped_post %}
         {% assign sorted_post = post_group.items | sort: "post_time" | reverse %}
         {% for post in sorted_post %}

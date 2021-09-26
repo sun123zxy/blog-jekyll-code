@@ -35,9 +35,9 @@ STG 打的还行，妖妖梦专精，大概 Hard 稳通 Lunatic 混关的水准�
 
 + [Github](https://github.com/sun123zxy)
 + [Bilibili](https://space.bilibili.com/70234413)
-+ [cnblogs](https://www.cnblogs.com/sun123zxy/)
-+ [luogu](https://www.luogu.com.cn/user/23632)
++ [Cnblogs](https://www.cnblogs.com/sun123zxy/)
++ [Luogu](https://www.luogu.com.cn/user/23632)
 
-就这些吧。关于博客本身的一些想法，请移步[博客搭建随想](/post/20210817-aboutblog/)。
+就这些吧。关于博客本身的一些想法，请移步[博客搭建随想](/p/20210817-aboutblog/)。
 
 **Next Phantasm...**

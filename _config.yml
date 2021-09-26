@@ -20,7 +20,7 @@
 
 # Collections
 collections:
-  post:
+  p:
     output: true
 # Build settings
 
@@ -40,7 +40,7 @@ pandoc:
 defaults:
   -
     scope:
-      path: "_post"
+      path: "_p"
     values:
       layout: post
       title: 
