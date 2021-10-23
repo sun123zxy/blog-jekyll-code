@@ -1,6 +1,6 @@
 ---
-title: "红白紫薇"
-abstract: "自制整活生物遗传大题（"
+title: "原创生物遗传大题 - 红白紫薇"
+abstract: "文化课整活计划第一弹（"
 post_time: 2021/05/30
 last_modified_time: 2021/05/30
 tags:
