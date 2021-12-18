@@ -1,6 +1,4 @@
-# behind-blog.sun123zxy.top
-
-Source code for [blog.sun123zxy.top](blog.sun123zxy.top), which is kept in [here](https://github.com/sun123zxy/sun123zxy.github.io/).
+Source code for [blog.sun123zxy.top](https://blog.sun123zxy.top), which is kept [here](https://github.com/sun123zxy/sun123zxy.github.io/).
 
 ## Deployment
 
