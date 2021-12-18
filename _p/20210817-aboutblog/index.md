@@ -29,13 +29,13 @@ tags:
 
 ~~是妖妖梦、风神录正式版发售时间~~
 
-算了我还是给国家省点子弹吧（
+~~给国家省点子弹吧（~~
 
 ## 搭建随想
 
 随便聊聊搭建过程中遇到的各种有趣的事情。
 
-博客源代码：[github.com/sun123zxy/behind-blog.sun123zxy.top](https://github.com/sun123zxy/behind-blog.sun123zxy.top)
+[博客源码](https://github.com/sun123zxy/blog-code)
 
 ### 新技术
 
