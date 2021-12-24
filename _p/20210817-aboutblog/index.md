@@ -3,6 +3,7 @@ title: "博客搭建随想"
 abstract: Something about this blog.
 post_time: 2021/08/17
 last_modified_time: 2021/12/19
+priority: 2
 tags:
   - 站点相关
   - 前端

@@ -47,7 +47,7 @@ defaults:
       abstract:
       post_time: 
       last_modified_time: 
-      priority: 1
+      priority: 1 # 越大排序越靠前，负数则不显示在首页
       tags:
 
 # Exclude from processing.

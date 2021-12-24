@@ -6,7 +6,7 @@ title: Home
     {% assign grouped_post = site.p | group_by: "priority" | sort: "name" | reverse %}
     {% for post_group in grouped_post %}
         {% assign sorted_post = post_group.items | sort: "post_time" | reverse %}
-        {% for post in sorted_post %}
+        {% for post in sorted_post %} {% if post.priority >= 0 %}
             <div class="post-preview">
                 <h2><a href="{{ post.url | remove: 'index.html'}}">{{ post.title }}</a></h2>
                 <p class="abstract">
@@ -30,6 +30,6 @@ title: Home
                     <p>posted on {{ post.post_time }} | last modified on {{ post.last_modified_time }}</p>
                 </div>
             </div>
-        {% endfor %}
+        {% endif %} {% endfor %}
     {% endfor %}
 </div>

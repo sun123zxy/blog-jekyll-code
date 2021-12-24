@@ -3,7 +3,7 @@ title: "About Me"
 abstract: 
 post_time: 2020/10/24
 last_modified_time: 2021/08/17
-priority: 2
+priority: 3
 tags:
   - 站点相关
 ---
