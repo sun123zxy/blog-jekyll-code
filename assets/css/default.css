@@ -7,6 +7,7 @@
     --text-color-theme-second: #000;
 
     --strip-color: #a1a1a1;
+    --shadow-color: #aeaeae;
     --background-color-theme: #fbfafaad;
     --background-color: #ffffffc9;
 
@@ -43,10 +44,14 @@ a{
 a:hover{
     color: var(--text-color-theme-second);
 }
-.text-vice, .post-body figcaption{
+.text-vice{
     color: var(--text-color-vice);
     font-size: 90%;
     line-height: 90%;
+}
+.post-body figcaption{
+    color: var(--text-color-vice);
+    font-size: 95%;
 }
 
 .panel{
@@ -109,7 +114,7 @@ body{
 #home{
     margin: 15px auto;
     width: 80%;
-    min-width: 800px;
+    min-width: 900px;
 }
 #sidebar{
     float: left;
@@ -148,16 +153,19 @@ body{
     color: var(--text-color-title);
     margin: 0px 0px -2px -10px;
 }
-.post-body blockquote{
-    border-left: 5px solid var(--strip-color);
-    padding: 1px 0px 1px 30px;
-    margin-left: 20px;
+.post-body blockquote {
+    border-left: 6px solid var(--strip-color);
+    padding: 5px 35px 10px 35px;
+    margin: 20px 0 20px 10px;
+    border-radius: 5px;
+    box-shadow: 0 1px 10px var(--shadow-color);
 }
 /*code shell*/
 pre{
     border: 5px solid var(--strip-color);
     border-radius: 10px;
     padding: 15px;
+    box-shadow: 0 0 5px var(--shadow-color);
     overflow-x: auto;
 }
 /*inline code*/
