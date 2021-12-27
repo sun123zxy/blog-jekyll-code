@@ -73,10 +73,10 @@ jekyll-pandoc 的插件文档对 `_config.yml` 里面的参数设置给出了一
 >    - bibliography: bibliography/references.bib
 >```
 
-事实上这些参数等价于 Pandoc 的命令行参数，即上述代码等价于执行
+事实上这些参数等价于 Pandoc 的命令行参数，即上述代码等价于文件渲染时执行
 
 ```shell
-pandoc --normalize --smart --mathjax --csl=_styles/apa.csl --bibliography=bibliography/references.bib
+pandoc target.md -o target.html --normalize --smart --mathjax --csl=_styles/apa.csl --bibliography=bibliography/references.bib
 ```
 
 所以根据需求照着配就可以了。开启 `--mathjax` 可以自动把 `$` 和 `$$` 换成 `\(`、`\)` 和 `\[`、`\]`，可以直接被 KaTeX 提供的 `auto-render.min.js` 识别，非常方便。
