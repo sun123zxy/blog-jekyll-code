@@ -234,6 +234,13 @@ pre code{
 #sidebar-profile .nav{
     color: var(--text-color-vice);
 }
+#sidebar-profile .feed{
+    margin-top: 10px;
+}
+#sidebar-profile .feed img{
+    vertical-align: middle;
+    width: 25px;
+}
 #contents{
     position: relative;
     top: 0px;

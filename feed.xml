@@ -1,0 +1,31 @@
+---
+---
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title>{{ site.data.global.title | smartify | xml_escape }}</title>
+  <subtitle>{{ site.data.global.subtitle | smartify | xml_escape }}</subtitle>
+  <link href="{{ site.data.global.url }}"/>
+  <updated>{{ site.time | date_to_xmlschema }}</updated>
+  <author>
+    <name>{{ site.data.global.name | xml_escape }}</name>
+  </author>
+  <id>{{ page.url | absolute_url | xml_escape }}</id>
+  {% assign sort_p = site.p | sort: "post_time" | reverse %}
+  {% for post in sort_p %}
+  {% if post.priority >= 0 %}
+  <entry>
+    <title>{{ post.title | smartify | xml_escape }}</title>
+    <link href="{{ site.data.global.url | append: post.url }}"/>
+    <id>{{ post.id | absolute_url | xml_escape }}</id>
+    <published>{{ post.post_time | date_to_xmlschema }}</published>
+    <updated>{{ post.last_modified_time | date_to_xmlschema }}</updated>
+    <summary>{{ post.abstract | strip_html | normalize_whitespace }}</summary>
+  </entry>
+  {% endif %}
+  {% endfor %}
+
+</feed>
+
+<!-- modified from http://www.atomenabled.org/developers/syndication/#sampleFeed -->
+<!-- referring to https://github.com/jekyll/jekyll-feed -->
