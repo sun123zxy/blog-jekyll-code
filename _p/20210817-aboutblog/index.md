@@ -6,7 +6,7 @@ last_modified_time: 2021/12/25
 priority: 2
 tags:
   - 站点相关
-  - 前端
+  - Web
 ---
 
 ## 杂谈
