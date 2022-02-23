@@ -5,6 +5,7 @@ post_time: 2019/12/18
 last_modified_time: 2019/12/18
 tags:
   - OI
+  - 数学
   - 题解
 ---
 [bsoj5988](https://oj.bashu.com.cn/code/problempage.php?problem_id=5988)

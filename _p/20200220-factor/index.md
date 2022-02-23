@@ -5,6 +5,7 @@ post_time: 2020/02/20
 last_modified_time: 2020/03/08
 tags:
 - OI
+- 数学
 - 学习笔记
 ---
 [洛谷P3327 [SDOI2015]约数个数和](https://www.luogu.com.cn/problem/P3327)

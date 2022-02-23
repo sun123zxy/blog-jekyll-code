@@ -5,7 +5,8 @@ post_time: 2021/05/01
 last_modified_time: 2021/05/01
 tags:
 - OI
-- 学习笔记
+- 数学
+- 意识流
 ---
 ## 序
 

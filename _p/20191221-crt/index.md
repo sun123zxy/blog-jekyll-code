@@ -5,6 +5,7 @@ post_time: 2019/12/21
 last_modified_time: 2020/12/02
 tags:
 - OI
+- 数学
 - 学习笔记
 ---
 ## 中国剩余定理 CRT

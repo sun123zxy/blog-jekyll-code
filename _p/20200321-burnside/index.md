@@ -1,10 +1,11 @@
 ---
 title: "等价类计数：Burnside引理 & Polya定理"
-abstract: "《同分异构体计数从入门到精通》（笑）"
+abstract: "《同分异构体计数从入门到精通》（不是）"
 post_time: 2020/03/21
 last_modified_time: 2020/12/21
 tags:
 - OI
+- 数学
 - 学习笔记
 ---
 PS: 写的时候博主比较naive，所有的变换都是向右结合的，还请谅解（

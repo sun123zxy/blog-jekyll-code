@@ -5,6 +5,7 @@ post_time: 2019/07/01
 last_modified_time: 2020/05/16
 tags:
   - OI
+  - 数学
   - 题解
 ---
 [传送门](https://www.luogu.com.cn/problem/P5364)

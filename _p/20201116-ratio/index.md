@@ -5,6 +5,7 @@ post_time: 2020/11/16
 last_modified_time: 2020/11/16
 tags:
 - OI
+- 数学
 - 题解
 ---
 [CodeChef-RNDRATIO Mysterious Ratio](https://www.codechef.com/problems/RNDRATIO)

@@ -5,6 +5,7 @@ post_time: 2020/11/27
 last_modified_time: 2020/11/27
 tags:
 - OI
+- 数学
 - 题解
 ---
 [bsoj7076](https://oj.bashu.com.cn/code/problempage.php?problem_id=7076)，没找到出处...

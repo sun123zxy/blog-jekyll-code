@@ -5,6 +5,7 @@ post_time: 2019/09/22
 last_modified_time: 2019/11/04
 tags:
   - OI
+  - 数学
   - 学习笔记
   - 题解
 ---

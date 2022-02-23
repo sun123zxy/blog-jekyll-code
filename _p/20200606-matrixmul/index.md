@@ -5,6 +5,7 @@ post_time: 2020/06/06
 last_modified_time: 2021/08/13
 tags:
 - OI
+- 数学
 - 学习笔记
 ---
 upd 2021/08/13:

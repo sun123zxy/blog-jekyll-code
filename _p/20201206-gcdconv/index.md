@@ -5,6 +5,7 @@ post_time: 2020/12/06
 last_modified_time: 2020/12/06
 tags:
 - OI
+- 数学
 - 原创题目
 - 题解
 - 学习笔记
