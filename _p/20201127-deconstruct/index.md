@@ -8,6 +8,7 @@ tags:
 - 数学
 - 题解
 ---
+
 [bsoj7076](https://oj.bashu.com.cn/code/problempage.php?problem_id=7076)，没找到出处...
 
 >树的解构

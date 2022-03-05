@@ -8,6 +8,7 @@ tags:
 - 数学
 - 题解
 ---
+
 [CodeChef-RNDRATIO Mysterious Ratio](https://www.codechef.com/problems/RNDRATIO)
 
 >题意简述：

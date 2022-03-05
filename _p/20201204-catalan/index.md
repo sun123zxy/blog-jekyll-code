@@ -7,6 +7,7 @@ tags:
 - OI
 - 题解
 ---
+
 [bsoj7107](https://oj.bashu.com.cn/code/problempage.php?problem_id=7107) ，来源不明。
 
 >**卡特兰数**

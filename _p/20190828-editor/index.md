@@ -7,6 +7,7 @@ tags:
   - OI
   - 题解
 ---
+
 [bsoj5089 文本编辑器](https://oj.bashu.com.cn/code/problempage.php?problem_id=5089)
 
 ```

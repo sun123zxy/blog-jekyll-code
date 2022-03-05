@@ -1,4 +1,4 @@
----
+﻿---
 title: "洛谷P5364 [SNOI2017]礼物 题解"
 abstract: '求 \(A_1 = 1,A_n = \sum_{i=1}^{n-1} A_i + n^k\) 的通项公式。'
 post_time: 2019/07/01
@@ -8,6 +8,7 @@ tags:
   - 数学
   - 题解
 ---
+
 [传送门](https://www.luogu.com.cn/problem/P5364)
 
 >#### 题目描述

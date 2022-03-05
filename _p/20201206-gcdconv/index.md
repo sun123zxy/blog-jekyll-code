@@ -10,6 +10,7 @@ tags:
 - 题解
 - 学习笔记
 ---
+
 比赛用题面、题解、标程和数据生成器均已挂在 [git@github.com:sun123zxy/gcdconv.git](https://github.com/sun123zxy/gcdconv) 上。
 
 ## Problem

@@ -7,6 +7,7 @@ tags:
 - OI
 - 题解
 ---
+
 [CodeChef-LECOINS Little Elephant and Colored Coins](https://www.codechef.com/problems/LECOINS)
 
 >**Little Elephant and Colored Coins**

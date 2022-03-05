@@ -9,6 +9,7 @@ tags:
   - 学习笔记
   - 题解
 ---
+
 [bsoj6412](https://oj.bashu.com.cn/code/problempage.php?problem_id=6412) 没找到出处。。。
 
 >![题图](problem.png)

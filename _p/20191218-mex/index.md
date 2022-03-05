@@ -8,6 +8,7 @@ tags:
   - 数学
   - 题解
 ---
+
 [bsoj5988](https://oj.bashu.com.cn/code/problempage.php?problem_id=5988)
 
 >【题目背景】
