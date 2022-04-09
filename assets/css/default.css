@@ -69,19 +69,32 @@ a:hover{
     padding: 10px 20px 20px 20px;
     overflow-x: auto;
 }
-/*round buttons*/
+
+/*round buttons, using flex(?)*/
 #leftdown-float-container{
     position: fixed;
     left: 20px;
     bottom: 10px;
     z-index: 233;
 }
+#rightdown-float-container{
+    position: fixed;
+    right: 20px;
+    bottom: 15px;
+    z-index: 233;
+}
 .round-button-handler {
-    clear: both;
+    display: flex;
+    align-items: center;
     height: 65px;
 }
+#rightdown-float-container .round-button-handler {
+    flex-direction: row-reverse;
+}
+.music-player-activated{
+    align-self: flex-end;
+}
 .round-button{
-    float: left;
     background-color: var(--background-color);
     box-shadow: 0 0 8px var(--strip-color);
     border-radius: 50%;
@@ -101,7 +114,7 @@ a:hover{
     box-shadow: 0 0 5px var(--text-color-theme-second);
     border-radius: 5px;
     padding: 8px 15px 8px 15px;
-    margin: 8px 0 0 15px; 
+    margin: 0 15px 0 15px; 
 }
 
 body{
