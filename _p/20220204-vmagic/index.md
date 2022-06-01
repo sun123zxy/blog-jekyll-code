@@ -89,7 +89,7 @@ Let's Encrypt 是一个免费、自动化和开放的证书颁发机构，为网
 
 Webroot 是 Certbot 提供的一种认证方式，如果服务器上有网站运行且有能力修改其配置，就可以用该方式进行认证。使用这种方式获取证书时无需暂停网页服务端的运行。
 
->The webroot plugin works by creating a temporary file for each of your requested domains in `${webroot-path}/.well-known/acme-challenge`. Then the Let’s Encrypt validation server makes HTTP requests to validate that the DNS for each requested domain resolves to the server running certbot.
+> The webroot plugin works by creating a temporary file for each of your requested domains in `${webroot-path}/.well-known/acme-challenge`. Then the Let’s Encrypt validation server makes HTTP requests to validate that the DNS for each requested domain resolves to the server running certbot.
 
 首先安装 Certbot：
 
@@ -191,9 +191,9 @@ services:
 }
 ```
 
->有一个小坑点（见 [Issue #2221](https://github.com/v2ray/v2ray-core/issues/2221)）：与白话文指南不同，如果用 Docker 搭建 V2Ray，容器外的 Nginx 需要向容器内的 V2Ray 发送数据，因此容器内的 V2Ray 必须监听本机 IP `0.0.0.0` 而不是本地回环 IP `127.0.0.1`。
->
->常见的症状是客户端报 `502 Bad Gateway > websocket: bad handshake` ，Nginx 报 `upstream prematurely closed connection`，而容器内 V2Ray 没有报警日志。
+> 有一个小坑点（见 [Issue #2221](https://github.com/v2ray/v2ray-core/issues/2221)）：与白话文指南不同，如果用 Docker 搭建 V2Ray，容器外的 Nginx 需要向容器内的 V2Ray 发送数据，因此容器内的 V2Ray 必须监听本机 IP `0.0.0.0` 而不是本地回环 IP `127.0.0.1`。
+> 
+> 常见的症状是客户端报 `502 Bad Gateway > websocket: bad handshake` ，Nginx 报 `upstream prematurely closed connection`，而容器内 V2Ray 没有报警日志。
 
 最后，在之前放置 `docker-compose.yml` 的目录下执行：
 
@@ -214,19 +214,19 @@ docker-compose up -d
 server {
   listen 443 ssl;
   listen [::]:443 ssl;
-  
+
   ssl_certificate       /etc/letsencrypt/live/{[YOUR_DOMAIN]}/fullchain.pem;
   ssl_certificate_key   /etc/letsencrypt/live/{[YOUR_DOMAIN]}/privkey.pem;
   # 利用缓存重用 session 提高性能
   ssl_session_timeout 1d;
   ssl_session_cache shared:MozSSL:10m;
   ssl_session_tickets off;
-  
+
   ssl_protocols         TLSv1.2 TLSv1.3;
   # 设置加密方式，默认的已经不安全了
   ssl_ciphers           ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
   ssl_prefer_server_ciphers off; # (?) Specifies that server ciphers should be preferred over client ciphers when using the SSLv3 and TLS protocols.
-  
+
   server_name           {[YOUR_DOMAIN]};
   location {[YOUR_PATH]} { # 与 V2Ray 配置中的 path 保持一致
     if ($http_upgrade != "websocket") { # WebSocket 协商失败时返回 404
@@ -289,4 +289,3 @@ nginx -s reload
     }
 ]
 ```
-

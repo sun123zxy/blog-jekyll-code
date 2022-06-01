@@ -2,7 +2,7 @@
 title: "博客搭建随想"
 abstract: Something about this blog.
 post_time: 2021/08/17
-last_modified_time: 2021/12/25
+last_modified_time: 2022/06/01
 priority: 2
 tags:
   - 站点相关
@@ -51,45 +51,76 @@ tags:
 + 数学公式使用 [KaTeX](https://katex.org/) 渲染。
 + 代码高亮使用 [highlight.js](https://highlightjs.org/) 分析代码结构，配合魔改后的样式表实现。
 
+### 环境配置？
+
+看仓库的 `README.md` 吧，Jekyll 的官方文档也可以（其实是我有点忘了 :p）
+
 ### 数学公式、jekyll-pandoc 和 InlineMathSpaceKiller
 
 ~~用插件干啥啊好好用原生 Jekyll Github 自动帮你编译它不香吗~~
 
-本地我用 Typora 编写 markdown，希望能在上传过程中尽可能少地改动源文件，这包括内嵌的 $\LaTeX$ 数学公式。但 Jekyll 自带的 markdown 解析器老是不好使，比如公式里的 `|` 被解析成表格了之类各种怪七怪八的问题...
+~~本地我用 Typora 编写 markdown~~（最近 Typora 转付费了，现在用 MarkText），希望能在上传过程中尽可能少地改动源文件，这包括内嵌的 $\LaTeX$ 数学公式。但 Jekyll 自带的 markdown 解析器老是不好使，比如公式里的 `|` 被解析成表格了之类各种怪七怪八的问题...
 
-于是 Google 了一圈找到了 jekyll-pandoc，可以改用 [Pandoc](https://www.pandoc.org/) 的文档解析来渲染 md。正好之前下过 Pandoc，研究了一波就给装上了。
+于是想到了文档转换界的瑞士军刀——
 
-jekyll-pandoc 的插件文档对 `_config.yml` 里面的参数设置给出了一个例子（然而已经过时了），但并没有说明具体原理——
+> If you need to convert files from one markup format into another, pandoc is your swiss-army knife.
 
->Additional pandoc options can be provided in the Jekyll `_config.yml`:
->
->```yaml
->pandoc:
+Google 了一圈找到了 [jekyll-pandoc](https://github.com/mfenner/jekyll-pandoc)，可以改用 [Pandoc](https://www.pandoc.org/) 的文档解析来渲染 Markdown。
+
+#### jekyll-pandoc 的具体参数配置
+
+安装流程照着 README 里给的方法走就好了。这里主要谈一谈参数的配置。
+
+jekyll-pandoc 文档里对 `_config.yml` 里面的参数设置给出了一个例子（已经过时了）——
+
+> Additional pandoc options can be provided in the Jekyll `_config.yml`:
+> 
+> ```yaml
+> pandoc:
 >  extensions:
 >    - normalize
 >    - smart
 >    - mathjax
 >    - csl: _styles/apa.csl
 >    - bibliography: bibliography/references.bib
->```
+> ```
 
-事实上这些参数等价于 Pandoc 的命令行参数，即上述代码等价于文件渲染时执行
+这些参数等价于 Pandoc 的命令行参数，即上述代码等价于文件渲染时执行
 
-```shell
+```bash
 pandoc target.md -o target.html --normalize --smart --mathjax --csl=_styles/apa.csl --bibliography=bibliography/references.bib
 ```
 
-所以根据需求照着配就可以了。开启 `--mathjax` 可以自动把 `$` 和 `$$` 换成 `\(`、`\)` 和 `\[`、`\]`，可以直接被 KaTeX 提供的 `auto-render.min.js` 识别，非常方便。
+所以根据需求照着配就可以了。目前我用的配置是
 
-不料还有个问题——Typora 允许存在形如 `$ \gcd(a,b) $` 这样 `$` 旁边紧跟着空格的行内公式，但 Pandoc 解析不了。后来翻到这个 [issue](https://github.com/jgm/pandoc/issues/5672)，官方似乎不打算修复这个问题，就写了个预处理工具删空格，新文章上传前 `spacekiller` 一下就可以了。
+```yaml
+plugins:
+   - jekyll-pandoc
+markdown: Pandoc
+pandoc:
+  extensions:
+    - mathjax
+    - no-highlight
+    - from: markdown-smart # disable smart quotes
+```
+
+- 开启 `--mathjax` 可以自动把 `$` 和 `$$` 换成 `\(`、`\)` 和 `\[`、`\]`，可以直接被 KaTeX 提供的 `auto-render.min.js` 识别。
+
+- `--no-highlight` 之后会用别的代码高亮工具，所以这里就给它关了。
+
+- Pandoc 在转换 Markdown 时默认开启智能标点功能（参见 [Pandoc 文档 - Extensions - Typography](https://pandoc.org/MANUAL.html#typography)），会把 `""`、`''` 自动替换成 `“”`、`‘’`。用 `-smart` 关闭这个插件。
+
+#### SpaceKiller
+
+不料还有个问题——Typora （MarkText 好像有这个问题）允许存在形如 `$ \gcd(a,b) $` 这样 `$` 旁边紧跟着空格的行内公式，但 Pandoc 解析不了。后来翻到这个 [issue](https://github.com/jgm/pandoc/issues/5672)，官方似乎不打算修复这个问题，就写了个预处理工具删空格，新文章上传前 `spacekiller` 一下就可以了。
 
 ### 文章存储结构
 
-并没有使用 Jekyll 自带的 posts。
+没有使用 Jekyll 自带的 posts。
 
 我不喜欢这种图文分离的组织格式。文本和图片本来就同属一篇文章，强行把图片拆开放到 `/assets/images/.../` 里面既不合逻辑，又丧失了可移植性，匪夷所思。
 
-最后使用了打开 output 选项的 collection 来实现，每篇文章都有一个独立的文件夹，包含 `index.md` （文本）和所需图片、文件等所有内容。`index.md` 里面直接使用相对引用插入图片，和无博客状态下写作体验完全一致，岂不美哉。
+最后使用了打开 output 选项的 collection 来实现，每篇文章都有一个独立的文件夹，包含 `index.md` （文本）和所需图片、文件等所有内容。`index.md` 里面直接使用相对引用插入图片，和无博客状态下写作体验完全一致。
 
 ### 页面设计
 
@@ -108,4 +139,3 @@ pandoc target.md -o target.html --normalize --smart --mathjax --csl=_styles/apa.
 ![我高仿我自己.jpg (2021.02)](github-imitate.jpg)
 
 ![现在的样子 (2021.08, shooted in 2021.12)](github-cur.jpg)
-

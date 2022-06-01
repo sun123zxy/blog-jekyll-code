@@ -36,6 +36,7 @@ pandoc:
   extensions:
     - mathjax
     - no-highlight
+    - from: markdown-smart # disable smart quotes
 
 defaults:
   -
