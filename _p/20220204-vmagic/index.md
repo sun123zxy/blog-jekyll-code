@@ -2,7 +2,7 @@
 title: "DockerCompose+VLESS+WS+TLS+Web 方式搭建 V2Ray 代理"
 abstract: "无懈可击的超强配置搭建教程。"
 post_time: 2022/02/04
-last_modified_time: 2022/02/04
+last_modified_time: 2022/06/01
 tags:
 - Web
 ---
@@ -253,6 +253,8 @@ server {
 include /etc/nginx/sites-available/default; # 继续使用 Nginx 的默认站点配置文件
 include /etc/nginx/sites-available/{[YOUR_DOMAIN]}.conf; # 引用刚刚新建的配置文件
 ```
+
+- Update: 实际上推荐的方式是用 `ln -s` 在 `/etc/nginx/sites-enabled/` 里创建 symbolic link，当时搞的时候还不太懂，是我 naive 了（
 
 最后重新加载配置文件：
 
