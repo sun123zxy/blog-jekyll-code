@@ -7,5 +7,8 @@ themesDat = [
         "src": themeSrc + "bambooForest.css",
         "info": "bambooForest, 月下の永遠亭, pixiv pid=26565744",
         "night": true
+    },{
+        "src": themeSrc + "hakureiShrine.css",
+        "info": "hakureiShrine, 幻想回帰, pixiv pid=76561447"
     }
 ]

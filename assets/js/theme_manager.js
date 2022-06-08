@@ -48,8 +48,8 @@ function ThemeId(value=-1){
 }
 
 console.log("theme manager activated")
-if(ThemeId() == null){
-    console.log("no cache detected, initializing themeId...")
+if(ThemeId() == null || ThemeId() >= themesDat.length){
+    console.log("no valid cookie detected, initializing themeId...")
     ThemeId(0);
 }
 LoadTheme(ThemeId());
