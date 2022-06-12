@@ -1,11 +1,45 @@
+preloadCount = -1;
+preloadCountCallBack = null;
+function CountPreload(count=-1, callBack = null){
+    if(count == -1){
+        preloadCount--;
+    }else{
+        preloadCount = count;
+        preloadCountCallBack = callBack;
+    }
+
+    console.log   ("loading preloads... " + preloadCount + " remaining");
+    ShowSwitchInfo("loading preloads... " + preloadCount + " remaining");
+
+    if(preloadCount == 0){
+        preloadCount = -1;
+
+        console.log("all preloads loaded!");
+        ShowSwitchInfo("all preloads loaded!", 1000); 
+
+        preloadCountCallBack();
+    }
+}
 function LoadTheme(themeId){
-    $("#theme-container").attr("href", themesDat[themeId].src);
+    $("#theme-container").attr("href", "");
     if(themesDat[themeId].night == true){
         $("#night-container").attr("href", "/assets/css/night.css");
         console.log("Night mode enabled!")
     }else{
         $("#night-container").attr("href", "");
     }
+    
+    CountPreload(themesDat[themeId]["preloads"].length, function(){ // load theme stylesheet after all preloads are loaded
+        $("#theme-container").attr("href", themesDat[themeId].src);
+    });
+    themesDat[themeId]["preloads"].forEach(function(src){
+        var img = new Image();
+        img.onload = function(){
+            img.onload = null;
+            CountPreload();
+        }
+        img.src = src;
+    });
 }
 function SwitchTheme(themeId){
     var maskColor = "black";
@@ -37,7 +71,7 @@ function SwitchTheme(themeId){
 }
 
 function ThemeId(value=-1){
-    strId = localStorage["themeId"];
+    var strId = localStorage["themeId"];
     if(value == -1){ //get
         if(strId == null) return null;
         else return parseInt(strId);
@@ -57,10 +91,4 @@ console.log("theme deployed")
 $("#theme-switch .round-button").click(function(){
     ThemeId((ThemeId() + 1) % themesDat.length);
     SwitchTheme(ThemeId());
-});
-$("#theme-info .round-button").click(function(){
-    $("#theme-info .hover-info").text(themesDat[ThemeId()].info);
-});
-$("#theme-info").hover(function(){
-    $("#theme-info .hover-info").text("Theme Info");
 });
