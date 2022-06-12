@@ -2,7 +2,7 @@
 title: "博客搭建随想"
 abstract: Something about this blog.
 post_time: 2021/08/17
-last_modified_time: 2022/06/01
+last_modified_time: 2022/06/12
 priority: 2
 tags:
   - 站点相关
@@ -51,7 +51,7 @@ tags:
 + 数学公式使用 [KaTeX](https://katex.org/) 渲染。
 + 代码高亮使用 [highlight.js](https://highlightjs.org/) 分析代码结构，配合魔改后的样式表实现。
 
-### 环境配置？
+### 环境配置
 
 看仓库的 `README.md` 吧，Jekyll 的官方文档也可以（其实是我有点忘了 :p）
 
@@ -112,7 +112,7 @@ pandoc:
 
 #### SpaceKiller
 
-不料还有个问题——Typora （MarkText 好像有这个问题）允许存在形如 `$ \gcd(a,b) $` 这样 `$` 旁边紧跟着空格的行内公式，但 Pandoc 解析不了。后来翻到这个 [issue](https://github.com/jgm/pandoc/issues/5672)，官方似乎不打算修复这个问题，就写了个预处理工具删空格，新文章上传前 `spacekiller` 一下就可以了。
+还有一个小问题——Typora （MarkText 好像有这个问题）允许存在形如 `$ \gcd(a,b) $` 这样 `$` 旁边紧跟着空格的行内公式，但 Pandoc 解析不了。后来翻到这个 [issue](https://github.com/jgm/pandoc/issues/5672)，官方似乎不打算修复这个问题，就写了个预处理工具删空格，新文章上传前 `spacekiller` 一下就可以了。
 
 ### 文章存储结构
 
@@ -125,6 +125,24 @@ pandoc:
 ### 页面设计
 
 白模写好后就开肝 css，一开始完全参考之前魔改的博客园 iMetro 主题整出来个高仿，后来有了一些更好的想法，比如把侧边栏做成 panel 样式之类的，就成现在这个样子了。
+
+### 图片预加载与缓存
+
+国内访问 github.io 很不稳定，背景图片加载特别慢，这几天在想怎么优化这个问题。
+
+最终的方案是在切换主题时等背景图片加载完毕后再向页面引入主题 css 文件。这样在图片加载过程中，页面显示的 css 尚处于无主题的默认状态，避免了背景白屏的现象出现。
+
+于是去学了波预加载技术，最开始用 Ajax 来做，结果写完发现 Firefox 和 Chrome 都好像没看到 Ajax 的缓存一样，又在加载主题 css 时重新请求了一次图片……
+
+无奈，改用 `new Image()` 来预加载。这回 Firefox 好使了，但 Chrome 还是很顽固。想了想，这玩意居然与浏览器有关，是不是因为不同浏览器默认缓存过期时间不一样导致的呢？于是去看了响应头，终于发现原来是 `jekyll serve` 出来的服务器根本就没有设置响应的 `Expires`，然后某些浏览器就默认每次重新加载了……
+
+那刚刚 Ajax 怕不是也是这个原因……
+
+看了一下 github.io 的响应头，有 10min 的 `Expires`，应该部署上去就没问题了。
+
+其实就是个 HTTP Cache 的问题吧，看来理解还不够深刻……
+
+PS：本地测试时模拟延迟可以用 Chrome 或 Firefox DevTool 的节流（throttling）功能。
 
 ## 画廊
 
