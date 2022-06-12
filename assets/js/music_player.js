@@ -1,4 +1,4 @@
-isMusicPlayerActivated = false;
+var isMusicPlayerActivated = false;
 $("#music-player .round-button").click(function(){
     if(isMusicPlayerActivated == false){
         $("#music-player .hover-info").addClass("music-player-activated");

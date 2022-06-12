@@ -1,5 +1,5 @@
-themeSrc = "/assets/css/theme/";
-themesDat = [
+var themeSrc = "/assets/css/theme/";
+var themesDat = [
     {
         "src": themeSrc + "netherStairs.css",
         "info": "netherStairs, ゆきどけアゼリア, pixiv pid=50046630, modified",

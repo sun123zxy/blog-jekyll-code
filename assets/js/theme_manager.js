@@ -1,5 +1,5 @@
-preloadCount = -1;
-preloadCountCallBack = null;
+var preloadCount = -1;
+var preloadCountCallBack = null;
 function CountPreload(count=-1, callBack = null){
     if(count == -1){
         preloadCount--;

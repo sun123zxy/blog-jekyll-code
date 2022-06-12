@@ -1,7 +1,7 @@
-mxScrollSpeed = 0.007
-console.log("background scroller loaded")
+var mxScrollSpeed = 0.007;
+console.log("background scroller loaded");
 
-userAgent = navigator.userAgent
+var userAgent = navigator.userAgent;
 if (userAgent.indexOf("Firefox") > -1) {
     $(window).scroll(function(e) {
         var cur = $(this).scrollTop();
