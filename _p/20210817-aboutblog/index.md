@@ -2,7 +2,7 @@
 title: "博客搭建随想"
 abstract: Something about this blog.
 post_time: 2021/08/17
-last_modified_time: 2022/06/12
+last_modified_time: 2022/06/21
 priority: 2
 tags:
   - 站点相关
@@ -106,9 +106,9 @@ pandoc:
 
 - 开启 `--mathjax` 可以自动把 `$` 和 `$$` 换成 `\(`、`\)` 和 `\[`、`\]`，可以直接被 KaTeX 提供的 `auto-render.min.js` 识别。
 
-- `--no-highlight` 之后会用别的代码高亮工具，所以这里就给它关了。
+- `--no-highlight` 打算用 highlight.js 来做高亮，所以这里就不需要了。
 
-- Pandoc 在转换 Markdown 时默认开启智能标点功能（参见 [Pandoc 文档 - Extensions - Typography](https://pandoc.org/MANUAL.html#typography)），会把 `""`、`''` 自动替换成 `“”`、`‘’`。用 `-smart` 关闭这个插件。
+- Pandoc 在转换 Markdown 时默认开启智能标点功能（参见 [Pandoc 文档 - Extensions - Typography](https://pandoc.org/MANUAL.html#typography)），会把 `""`、`''` 自动替换成 `“”`、`‘’`，所以用 `-smart` 关闭这个插件。
 
 #### SpaceKiller
 
@@ -132,17 +132,33 @@ pandoc:
 
 最终的方案是在切换主题时等背景图片加载完毕后再向页面引入主题 css 文件。这样在图片加载过程中，页面显示的 css 尚处于无主题的默认状态，避免了背景白屏的现象出现。
 
-于是去学了波预加载技术，最开始用 Ajax 来做，结果写完发现 Firefox 和 Chrome 都好像没看到 Ajax 的缓存一样，又在加载主题 css 时重新请求了一次图片……
+于是去学了波预加载技术，最开始用 Ajax 来做，结果写完发现 Firefox 和 Chrome 都好像没看到 Ajax 的缓存一样，又在加载主题 css 时重新请求了一次图片...
 
-无奈，改用 `new Image()` 来预加载。这回 Firefox 好使了，但 Chrome 还是很顽固。想了想，这玩意居然与浏览器有关，是不是因为不同浏览器默认缓存过期时间不一样导致的呢？于是去看了响应头，终于发现原来是 `jekyll serve` 出来的服务器根本就没有设置响应的 `Expires`，然后某些浏览器就默认每次重新加载了……
+无奈，改用 `new Image()` 来预加载。这回 Firefox 好使了，但 Chrome 还是很顽固。想了想，这玩意居然与浏览器有关，是不是因为不同浏览器默认缓存过期时间不一样导致的呢？于是去看了响应头，终于发现原来是测试时 `jekyll serve` 出来的服务器根本没有设置响应的 `Expires`，然后某些浏览器就默认重新加载了...
 
-那刚刚 Ajax 怕不是也是这个原因……
+那刚刚 Ajax 怕不是也是这个原因...
 
 看了一下 github.io 的响应头，有 10min 的 `Expires`，应该部署上去就没问题了。
 
-其实就是个 HTTP Cache 的问题吧，看来理解还不够深刻……
+其实就是个 HTTP Cache 的问题吧，看来理解还不够深刻...
 
-PS：本地测试时模拟延迟可以用 Chrome 或 Firefox DevTool 的节流（throttling）功能。
+PS：Chrome 或 Firefox DevTool 的节流（throttling）功能可以方便的模拟真实网络的限速和延迟，本地测试时非常方便。
+
+### 背景的视差（Parallax）效果
+
+这个效果很早就做出来了，但现在才开始深入了解。
+
+用 js 监听 `scroll` 事件动态更新背景图片的 `background-position`，以前只有 Firefox 可以实现平滑的滚动，而 Chrome 则会在滚动时白屏——这个问题在最近的版本才消失——总之，当时偷懒，把 Chrome 的这个效果给关了。~~所以根本没人发现有这个效果对吧~~
+
+监听 `scroll` 确实不是个好方法。Firefox 的 Console 在该效果启用时会弹出警告，文档里说会与异步平移有冲突：
+
+- [Scroll-linked effects &mdash; Firefox Source Docs documentation](https://firefox-source-docs.mozilla.org/performance/scroll-linked_effects.html)
+
+- [Asynchronous scrolling in Firefox - staktrace.com](https://staktrace.com/spout/entry.php?id=834)
+
+——异步平移冲突的情况我没碰到，但不论是 Firefox 和 Chrome 偶尔都会白屏倒是真的。第二篇文章里提到一种纯 CSS 实现 Parallax 的方法，网上也有人说可以用 CSS 3D。
+
+以后再研究吧...
 
 ## 画廊
 

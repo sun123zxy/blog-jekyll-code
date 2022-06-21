@@ -2,7 +2,7 @@ var mxScrollSpeed = 0.007;
 console.log("background scroller loaded");
 
 var userAgent = navigator.userAgent;
-if (userAgent.indexOf("Firefox") > -1) {
+//if (userAgent.indexOf("Firefox") > -1) {
     $(window).scroll(function(e) {
         var cur = $(this).scrollTop();
         var tot = document.body.scrollHeight;
@@ -15,7 +15,7 @@ if (userAgent.indexOf("Firefox") > -1) {
         $("body").css("background-position","0% "+ pos + "%");
     });
     console.log("background scroller activated");
-}else{
+/*}else{
     console.log("error: background scroller supports Firefox only");
     console.log("background scroller inactivated");
-}
+}*/
