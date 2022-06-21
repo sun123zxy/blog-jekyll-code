@@ -74,12 +74,12 @@ a:hover{
 #leftdown-float-container{
     position: fixed;
     left: 20px;
-    bottom: 10px;
+    bottom: 15px;
     z-index: 233;
 }
 #rightdown-float-container{
     position: fixed;
-    right: 20px;
+    right: 25px;
     bottom: 15px;
     z-index: 233;
 }
@@ -91,9 +91,20 @@ a:hover{
 #rightdown-float-container .round-button-handler {
     flex-direction: row-reverse;
 }
-.music-player-activated{
+.music-player-activated .hover-info{
     align-self: flex-end;
 }
+.music-player-activated .round-button{
+    background-color: var(--background-color-theme);
+    box-shadow: 0 0 30px 10px var(--background-color-theme);
+    animation: music-player-button-activated 10s infinite;
+    animation-timing-function: linear;
+}
+@keyframes music-player-button-activated {
+    from {transform: rotateZ(0deg);}
+    to {transform: rotateZ(360deg);}
+}
+
 .round-button{
     background-color: var(--background-color);
     box-shadow: 0 0 8px var(--strip-color);
