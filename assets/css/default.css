@@ -15,7 +15,7 @@
     --background-postion: 0% 0%;
 
     --highlight-color-comment: #004000;
-    --highlight-color-name: #193b71;
+    --highlight-color-string: var(--text-color-theme-first);
   }
 
 /*
@@ -214,9 +214,8 @@ pre code{
 .hljs-string,
 .hljs-symbol,
 .hljs-template-variable,
-.hljs-variable,
-.hljs-title {
-    color: var(--highlight-color-name); /*customize*/
+.hljs-variable{
+    color: var(--highlight-color-string); /*customize*/
 }
 .hljs-comment,
 .hljs-deletion,
