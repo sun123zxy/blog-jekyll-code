@@ -43,6 +43,21 @@ function CountPreload(count=-1, callBack = null){
         preloadCountCallBack();
     }
 }
+
+giscusLoaded = false;
+function GiscusLoadTheme(themeId){
+    function sendMessage(message) {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+    }
+    sendMessage({
+        setConfig: {
+            theme: themesDat[themeId]["night"]?"dark":"light"
+        }
+    });
+    console.log("Giscus theme updated!");
+}
 function LoadTheme(themeId){
     $("#theme-container").attr("href", "");
     if(themesDat[themeId].night == true){
@@ -63,6 +78,8 @@ function LoadTheme(themeId){
         }
         img.src = src;
     });
+
+    if(giscusLoaded) GiscusLoadTheme(themeId);
 }
 function SwitchTheme(themeId){
     var maskColor = "black";
@@ -104,13 +121,30 @@ function ThemeId(value=-1){
     }
 }
 
-console.log("theme manager activated")
+console.log("theme manager activated");
+
 if(ThemeId() == null || ThemeId() >= themesDat.length){
     console.log("no valid cookie detected, initializing themeId...")
     ThemeId(0);
 }
 LoadTheme(ThemeId());
-console.log("theme deployed")
+console.log("theme deployed");
+
+function handleMessage(event) {
+    if (event.origin !== 'https://giscus.app') return;
+    if (!(typeof event.data === 'object' && event.data.giscus)) return;
+  
+    const giscusData = event.data.giscus;
+    if(!giscusLoaded){
+        giscusLoaded = true;
+        console.log("Giscus loaded, updating its theme...");
+        GiscusLoadTheme(ThemeId());
+        window.removeEventListener('message', handleMessage);
+    }
+}
+window.addEventListener('message', handleMessage);
+console.log("Waiting for Giscus's response...")
+
 $("#theme-switch .round-button").click(function(){
     ThemeId((ThemeId() + 1) % themesDat.length);
     SwitchTheme(ThemeId());

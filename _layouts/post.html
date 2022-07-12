@@ -14,7 +14,7 @@ layout: default
         </p>
     </div>
     <div class="post-content">{{ content }}</div>
-    <div class="post-tail text-vice" style="text-align: right">
+    <div class="post-tags text-vice" style="text-align: right">
         <p>tags: 
             {% for tag in page.tags %}
                 <a href= "/tags#{{ tag }}" >{{ tag }}</a>{% unless forloop.last %}, {% endunless %}
@@ -22,4 +22,21 @@ layout: default
         </p>
         <p>posted on {{ page.post_time }} | last modified on {{ page.last_modified_time }}</p>
     </div>
+    {% if page.open_comments %}
+        <div class="post-comments">
+            <script src="https://giscus.app/client.js"
+                data-repo="sun123zxy/sun123zxy.github.io"
+                data-repo-id="MDEwOlJlcG9zaXRvcnkzMTAwMzQxNDc="
+                data-category="General"
+                data-category-id="DIC_kwDOEnq-484CQKFr"
+                data-mapping="pathname"
+                data-reactions-enabled="1"
+                data-emit-metadata="0"
+                data-input-position="bottom"
+                data-theme="light"
+                data-lang="en"
+                crossorigin="anonymous">
+            </script>
+        </div>
+    {% endif %}
 </div>

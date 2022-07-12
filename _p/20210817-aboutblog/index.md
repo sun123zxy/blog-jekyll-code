@@ -2,7 +2,7 @@
 title: "博客搭建随想"
 abstract: Something about this blog.
 post_time: 2021/08/17
-last_modified_time: 2022/06/21
+last_modified_time: 2022/07/12
 priority: 2
 tags:
   - 站点相关
@@ -27,10 +27,6 @@ tags:
 
 那么，之后就在这边安家了。博客园那边应该还会同步发布，但后续的更新和修改就不能保证了。
 
-静态博客的评论要托管，之前感觉有点麻烦就没搞。后来想用基于 Github Issue 的现成轮子来做，但是不论是 [Gitalk](https://github.com/gitalk/gitalk) 还是 [Gitment](https://github.com/imsun/gitment) 都得把 OAuth 的 Client Secret 写在前端，太不安全了；倒是有个叫 [Utterances](https://github.com/utterance/utterances) 的基于 Github Apps 的小众项目好像还行，研究ing... ~~或者哪天自己写个调 Github API 的 js 算了~~
-
-总之目前的话想评论什么的还是去博客园吧（这博客真的有人看吗）
-
 还有，话说正式启用博客的时间正好是 8 月 17 日，这个时间...
 
 ~~是妖妖梦、风神录正式版发售时间~~
@@ -50,6 +46,7 @@ tags:
 + 支持锚点跳转的目录系统。
 + 数学公式使用 [KaTeX](https://katex.org/) 渲染。
 + 代码高亮使用 [highlight.js](https://highlightjs.org/) 分析代码结构，配合魔改后的样式表实现。
++ 评论系统使用 [Giscus](https://github.com/giscus/giscus)，基于 Github Discussions 的静态博客评论系统。
 
 ### 环境配置
 
@@ -159,6 +156,14 @@ PS：Chrome 或 Firefox DevTool 的节流（throttling）功能可以方便的�
 ——异步平移冲突的情况我没碰到，但不论是 Firefox 和 Chrome 偶尔都会白屏倒是真的。第二篇文章里提到一种纯 CSS 实现 Parallax 的方法，网上也有人说可以用 CSS 3D。
 
 以后再研究吧...
+
+### 评论系统
+
+静态博客的评论要托管，之前感觉有点麻烦就没搞。后来想用基于 Github Issue 的现成轮子来做，但是不论是 [Gitalk](https://github.com/gitalk/gitalk) 还是 [Gitment](https://github.com/imsun/gitment) 都得把 OAuth 的 Client Secret 写在前端，太不安全；后来发现有个叫 [Utterances](https://github.com/utterance/utterances) 的基于 Github Apps 的小众项目好像还行，然后就咕咕咕了半年（
+
+再后来就发现了 [Giscus](https://github.com/giscus/giscus)，同样是基于 Github Apps，但和 Utterances 的不同之处在于其使用 Discussions 而不是 Issues 来存储数据。个人认为 Discussions 的设计更适合拿来做评论，总之就花了一个晚上实装了。
+
+但是适配动态切换的主题成了大麻烦。后来找到 [Issue #336](https://github.com/giscus/giscus/issues/336) 发现可以向 iframe 里 `postMessage` 改变参数。但需要注意的是 `postMessage` 之前需先保证 iframe 加载完毕，试图用`onload` 事件，但测试发现开新界面时还是有概率失败。然后又 Google 了一波发现正确的做法似乎是 iframe 自己发消息表明可以接受 `postMessage`，于是就修好了。
 
 ## 画廊
 
