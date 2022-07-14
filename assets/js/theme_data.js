@@ -7,11 +7,11 @@ var themesDat = [
             "/assets/images/bg/netherStairs.jpg"
         ]
     },{
-        "src": themeSrc + "netherStairs_dusk.css",
-        "info": "netherStairs_dusk, ゆきどけアゼリア, pixiv pid=50046630, modified",
+        "src": themeSrc + "bambooForest.css",
+        "info": "bambooForest, 月下の永遠亭, pixiv pid=26565744, modified",
         "night": true,
         "preloads": [
-            "/assets/images/bg/netherStairs_dusk.jpg"
+            "/assets/images/bg/bambooForest.jpg"
         ]
     },{
         "src": themeSrc + "hakureiShrine.css",
@@ -20,11 +20,11 @@ var themesDat = [
             "/assets/images/bg/hakureiShrine.jpg"
         ]
     },{
-        "src": themeSrc + "bambooForest.css",
-        "info": "bambooForest, 月下の永遠亭, pixiv pid=26565744, modified",
+        "src": themeSrc + "netherStairs_dusk.css",
+        "info": "netherStairs_dusk, ゆきどけアゼリア, pixiv pid=50046630, modified",
         "night": true,
         "preloads": [
-            "/assets/images/bg/bambooForest.jpg"
+            "/assets/images/bg/netherStairs_dusk.jpg"
         ]
     }
 ]

@@ -193,16 +193,18 @@ pre{
     overflow-x: auto;
 }
 /*inline code*/
-code {
+code{
     font-family: "Consolas", sans-serif;
-    border: 2px solid var(--strip-color);
-    border-radius: 10px;
-    padding: 1px 5px 1px 5px;
-}
+    border-radius: 7px;
+    padding: 0px 5px 0px 5px;
+    box-shadow: 0 0px 5px var(--shadow-color);
+    border: 1.5px solid var(--strip-color);
+  }
 /*code in pre*/
 pre code{
     border: unset;
     border-radius: unset;
+    box-shadow: unset;
     padding: unset;
 }
 /*code highlight*/
