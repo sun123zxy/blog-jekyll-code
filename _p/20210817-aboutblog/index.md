@@ -37,7 +37,7 @@ tags:
 
 写写搭建过程中的一些小细节。
 
-[博客源码](https://github.com/sun123zxy/blog-code)
+[博客源码](https://github.com/sun123zxy/blog-jekyll-code)
 
 ### 技术 & 功能
 
