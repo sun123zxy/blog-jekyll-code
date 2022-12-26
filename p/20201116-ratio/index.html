@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>CodeChef-RNDRATIO Mysterious Ratio 题解 - sun123zxy's Blog</title>
+
+        <script src="/assets/thirds/jquery/jquery-3.5.1.min.js"></script>
+
+        <link rel="stylesheet" href="/assets/thirds/katex/katex.min.css">
+        <!-- The loading of KaTeX is deferred to speed up page rendering -->
+        <script defer src="/assets/thirds/katex/katex.min.js"></script>
+        <!-- To automatically render math in text elements, include the auto-render extension -->
+        <script defer src="/assets/thirds/katex/auto-render.min.js" onload="renderMathInElement(document.body)"></script>
+        
+        <script src="/assets/thirds/highlight/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script>
+    </head>
+    <body>
+        <div id="home">
+    <div id="main" class="panel panel-content">
+        <div class="post-body">
+    <div class="post-head">
+        <h1 id="post-title">CodeChef-RNDRATIO Mysterious Ratio 题解</h1>
+        <p class="abstract text-vice">
+            
+                积性函数推式子纪念题。
+            
+        </p>
+    </div>
+    <div class="post-content"><p><a
+href="https://www.codechef.com/problems/RNDRATIO">CodeChef-RNDRATIO
+Mysterious Ratio</a></p>
+<blockquote>
+<p>题意简述：</p>
+<p>对每个 <span class="math inline">\(1 \le i \le n\)</span>
+，随机选择一个数 <span class="math inline">\(A_i\)</span> ，满足 <span
+class="math inline">\(L_i \le A_i \le R_i\)</span> ，求 <span
+class="math inline">\(\mathrm{lcm}_{i=1}^n A_i\)</span> 的期望。</p>
+<p><span class="math inline">\(1 \le n \le 10^5\)</span> ， <span
+class="math inline">\(1 \le L_i \le R_i \le 10^5\)</span> 。</p>
+<p>Example Input:</p>
+<pre><code>2
+1
+1 3
+2
+2 4
+5 5</code></pre>
+<p>Example Output:</p>
+<pre><code>1
+15</code></pre>
+</blockquote>
+<p>好久没做毒瘤式子题，推错好几次...</p>
+<p>不过后面用到的乘法差分还是比较新颖，记录一下吧。</p>
+<p>答案显然是这个式子—— <span class="math display">\[
+\prod_{i=1}^n (R_i-L_i+1)^{-1} \sum_{\begin{aligned}L_i \le &amp;A_i \le
+R_i \\ 1 \le &amp;i \le n\end{aligned}} \frac{\prod_{i=1}^n
+A_i}{\gcd_{i=1}^{n} A_i}
+\]</span> 前面的 <span class="math inline">\(\prod\)</span>
+是常数可以先抛开，后面就暴算吧。（等式右边 <span
+class="math inline">\(\cdots\)</span> 后有少许说明） <span
+class="math display">\[
+\begin{aligned}
+\sum_{L_i \le A_i \le R_i} \frac{\prod A_i}{\gcd A_i}
+&amp;= \sum_{k=1}^{\min R_i} \sum_{L_i \le A_i \le R_i} [\gcd A_i = k]
+\frac{\prod A_i}{k} \\
+&amp;= \sum_k k^{n-1} \sum_{\lceil \frac{L_i}{k} \rceil \le B_i \le
+\lfloor \frac{R_i}{k} \rfloor} [\gcd B_i = 1] \prod B_i \qquad \qquad
+\cdots ( \ k B_i = A_i \ ) \\
+&amp;= \sum_k k^{n-1} \sum_{\lceil \frac{L_i}{k} \rceil \le B_i \le
+\lfloor \frac{R_i}{k} \rfloor} \sum_{d|\gcd B_i} \mu(d) \prod B_i \qquad
+\qquad \cdots ( \ \sum_{d|n} \mu(d) = [n=1] \ ) \\
+&amp;= \sum_k k^{n-1} \sum_{d=1}^{\lfloor \frac{\min R_i}{k} \rfloor}
+\mu(d) d^n \sum_{\lceil \frac{L_i}{kd} \rceil \le C_i \le \lfloor
+\frac{R_i}{kd} \rfloor} \prod C_i \qquad \quad \ \cdots ( \ d C_i = B_i
+, \ \frac{\lfloor \frac{a}{b} \rfloor}{c} = \lfloor \frac{a}{bc} \rfloor
+\ ) \\
+&amp;= \sum_k k^{n-1} \sum_{d} \mu(d) d^n \prod_{i=1}^n \sum_{\lceil
+\frac{L_i}{kd} \rceil \le x \le \lfloor \frac{R_i}{kd} \rfloor} x \\
+&amp;= \sum_k k^{n-1} \sum_{d} \mu(d) d^n \prod_{i=1}^n \left( S(\lfloor
+\frac{R_i}{kd} \rfloor) - S(\lceil \frac{L_i}{kd} \rceil -1) \right)
+\qquad \qquad \qquad \cdots ( \ S(n) = \sum_{x=1}^n x \ ) \\
+&amp;= \sum_{T=1}^{\min R_i} \left( \sum_{d|T} \mu(d)
+(\frac{T}{d})^{n-1} d^n \right) \prod_{i=1}^n \left( S(\lfloor
+\frac{R_i}{T} \rfloor) - S(\lceil \frac{L_i}{T} \rceil -1) \right)
+\qquad \ \cdots ( \ T = kd \ ) \\
+&amp;= \sum_T T^{n-1} \left( \sum_{d|T} \mu(d) d \right) \prod_{i=1}^n
+\left( S(\lfloor \frac{R_i}{T} \rfloor) - S(\lceil \frac{L_i}{T} \rceil
+-1) \right)
+\end{aligned}
+\]</span></p>
+<p>所以最终的式子便是</p>
+<p><span class="math display">\[
+\prod_{i=1}^n (R_i-L_i+1)^{-1} \sum_{T=1}^{\min R_i} T^{n-1} f(T)
+\prod_{i=1}^n \left( S(\lfloor \frac{R_i}{T} \rfloor) - S (\lceil
+\frac{L_i}{T} \rceil -1) \right)
+\]</span> 其中 <span class="math display">\[
+S(n) = \frac{n(n+1)}{2}
+\]</span></p>
+<p><span class="math display">\[
+f(n) = \sum_{d|T} \mu(d) d
+\]</span></p>
+<p>显然 <span class="math inline">\(f(n)\)</span>
+是个积性函数，故可以用线性筛预处理出其前 <span
+class="math inline">\(n\)</span> 项，只需用到如下的性质</p>
+<p><span class="math display">\[
+f(p^c) = \sum_{i=0}^c \mu(p^i) p^i = 1 - p \quad (c \ge 2)
+\]</span></p>
+<p>其实如果所有 <span class="math inline">\(Li,R_i\)</span>
+都相等的话就可以直接上杜教筛 / min25筛之类的黑科技把复杂度优化到 <span
+class="math inline">\(O(n^{1-\omega})\)</span>
+了，但这道题很不套路的不相等，所以我们需要找到方法对所有 <span
+class="math inline">\(T\)</span> 快速计算后面的 <span
+class="math inline">\(\prod\)</span> 。</p>
+<p>正解巧妙的使用了乘法差分。首先 <span class="math inline">\(O(n \sqrt
+n)\)</span> 对所有 <span class="math inline">\(i\)</span>
+都整除分块一次得到区间，然后在 <span class="math inline">\(T\)</span>
+上做乘法差分，每个分块区间乘上贡献 <span class="math inline">\(S(\lfloor
+\frac{R_i}{T} \rfloor) - S (\lceil \frac{L_i}{T} \rceil -1)\)</span>
+。最后计算的时候扫一遍就能拿到每个 <span
+class="math inline">\(T\)</span> 对应的 <span
+class="math inline">\(\prod\)</span> 的值了。</p>
+<p>注意对 <span class="math inline">\(0\)</span> 的特殊处理。</p>
+<p>CodeChef上跑不过，懒得卡常了。</p>
+<pre class="cpp"><code>#include&lt;iostream&gt;
+#include&lt;cstdio&gt;
+#include&lt;cmath&gt;
+#include&lt;cstring&gt;
+#include&lt;ctime&gt;
+#include&lt;cstdlib&gt;
+#include&lt;queue&gt;
+#include&lt;algorithm&gt;
+#include&lt;map&gt;
+#include&lt;set&gt;
+#include&lt;vector&gt;
+using namespace std;
+typedef long long ll;
+typedef double db;
+ll Rd(){
+    ll ans=0;bool fh=0;char c=getchar();
+    while(c&lt;&#39;0&#39;||c&gt;&#39;9&#39;){if(c==&#39;-&#39;) fh=1; c=getchar();}
+    while(c&gt;=&#39;0&#39;&amp;&amp;c&lt;=&#39;9&#39;) ans=ans*10+c-&#39;0&#39;,c=getchar();
+    if(fh) ans=-ans;
+    return ans;
+}
+
+ll CD(ll a,ll b){return (a-1)/b+1;} //CeilDiv
+const ll MOD=998244353,INF=1E18;
+#define _ %MOD
+ll PMod(ll x){
+    if(x&gt;=MOD) return x-MOD;
+    else if(x&lt;0) return x+MOD;
+    else return x;
+}
+ll QPow(ll x,ll up){
+    PMod(x _);ll ans=1;
+    while(up){
+        if(up%2==0) x=x*x _,up/=2;
+        else ans=ans*x _,up--;
+    }
+    return ans;
+}
+ll Inv(ll x){return QPow(x,MOD-2);}
+const ll INV2=Inv(2);
+
+const ll MXN=1E5+5;
+ll P[MXN],pN;
+bool notP[MXN];
+ll f[MXN];//\sum_{d|n} \mu(d) d
+void LinearSieve(ll n){
+    notP[1]=1;for(ll i=2;i&lt;=n;i++) notP[i]=0;
+    pN=0;f[1]=1;
+    for(ll i=2;i&lt;=n;i++){
+        if(!notP[i]){
+            P[++pN]=i;
+            f[i]=PMod(1-i);
+        }
+        for(ll j=1;j&lt;=pN&amp;&amp;i*P[j]&lt;=n;j++){
+            notP[i*P[j]]=1;
+            if(i%P[j]==0){
+                f[i*P[j]]=f[i];
+                break;
+            }
+            f[i*P[j]]=f[i]*f[P[j]]_;
+        }
+    }
+}
+ll S(ll n){return n*(n+1)_*INV2 _;}
+ll N,MI;
+ll L[MXN],R[MXN];
+/*namespace Normal{
+    void Solve(){
+        ll Ans=0;
+        for(ll t=1;t&lt;=MI;t++){
+            ll pdt=1;for(ll i=1;i&lt;=N;i++) pdt=pdt*PMod(S(R[i]/t)-S(CD(L[i],t)-1))_;
+            Ans=(Ans+QPow(t,N-1)*f[t]_*pdt)_;
+        }
+        ll pdt=1;for(ll i=1;i&lt;=N;i++) pdt=pdt*Inv(R[i]-L[i]+1)_;
+        Ans=Ans*pdt _;
+        printf(&quot;%lld\n&quot;,Ans);
+    }
+}*/
+namespace Lunatic{
+    ll diff[MXN],zero[MXN];
+    ll bl[MXN],br[MXN],blN,brN;
+    void PutDiff(){
+        for(ll k=1;k&lt;=MI;k++) diff[k]=1,zero[k]=0;
+        for(ll i=1;i&lt;=N;i++){
+            brN=0;for(ll t=1;t&lt;=R[i];t=R[i]/(R[i]/t)+1) br[++brN]=R[i]/(R[i]/t);
+            br[++brN]=MI;
+            blN=0;for(ll t=MI;t&gt;=1;t=CD(L[i],CD(L[i],t))-1) bl[++blN]=t;
+            for(ll j=blN,k=1,st=1,ed;st&lt;=MI;st=ed+1){
+                if(bl[j]&lt;br[k]||k&gt;brN) ed=bl[j--];
+                else ed=br[k++];
+                ll t=ed;
+                ll val=PMod(S(R[i]/t)-S(CD(L[i],t)-1));
+                if(val){
+                    diff[st]=diff[st]*val _;
+                    diff[ed+1]=diff[ed+1]*Inv(val)_;
+                }else{
+                    zero[st]++;
+                    zero[ed+1]--;
+                }
+            }
+        }
+    }
+    void Solve(){
+        PutDiff();
+        ll Ans=0;
+        ll pdt=1,zn=0;
+        for(ll t=1;t&lt;=MI;t++){
+            zn+=zero[t];pdt=pdt*diff[t]_;
+            if(!zn) Ans=(Ans+QPow(t,N-1)*f[t]_*pdt)_;
+        }
+        pdt=1;for(ll i=1;i&lt;=N;i++) pdt=pdt*Inv(R[i]-L[i]+1)_;
+        Ans=Ans*pdt _;
+        printf(&quot;%lld\n&quot;,Ans);
+    }
+}
+int main(){
+    LinearSieve(MXN-1);
+    ll T=Rd();while(T--){
+        N=Rd();
+        MI=INF;
+        for(ll i=1;i&lt;=N;i++){
+            L[i]=Rd();R[i]=Rd();
+            MI=min(MI,R[i]);
+        }
+        //Normal::Solve();
+        Lunatic::Solve();
+    }
+    return 0;
+}</code></pre>
+</div>
+    <div class="post-tags text-vice" style="text-align: right">
+        <p>tags: 
+            
+                <a href= "/tags#OI" >OI</a>, 
+            
+                <a href= "/tags#数学" >数学</a>, 
+            
+                <a href= "/tags#题解" >题解</a>
+            
+        </p>
+        <p>posted on 2020/11/16 | last modified on 2020/11/16</p>
+    </div>
+    
+        <div class="post-comments">
+            <script src="https://giscus.app/client.js"
+                data-repo="sun123zxy/sun123zxy.github.io"
+                data-repo-id="MDEwOlJlcG9zaXRvcnkzMTAwMzQxNDc="
+                data-category="General"
+                data-category-id="DIC_kwDOEnq-484CQKFr"
+                data-mapping="pathname"
+                data-reactions-enabled="1"
+                data-emit-metadata="0"
+                data-input-position="bottom"
+                data-theme="light"
+                data-lang="en"
+                crossorigin="anonymous">
+            </script>
+        </div>
+    
+</div>
+    </div>
+    <div id="sidebar">
+        
+            <div id="sidebar-profile" class="panel">
+                
+                <div class="panel-content">
+                    <a href="/"><img class="avatar" src="/assets/images/pig.png"></img></a>
+<p class="nickname">sun123zxy</p>
+<div class="nav">
+    <a href="/">Home</a> | 
+    <a href="/p/aboutme">About</a> | 
+    <a href="/tags">Tags</a>
+</div>
+<div class="feed">
+    <img src="/assets/images/feed.png"></img>
+    <a href="/feed.xml">Atom Feed</a>
+</div>
+<p>Next Phantasm...</p>
+                </div>
+            </div>
+        
+            <div id="sidebar-news" class="panel">
+                
+                <h2 class="panel-title">News</h2>
+                
+                <div class="panel-content">
+                    <a href="https://info.flagcounter.com/1Zpv"><img src="https://s05.flagcounter.com/count2/1Zpv/bg_DDDDDD/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_3/labels_0/pageviews_1/flags_0/percent_0/" alt="Flag Counter" border="0"></a>
+
+<p>博客已迁移。访问 <a href="https://blog.sun123zxy.top">blog.sun123zxy.top</a> 获取更多信息。</p>
+                </div>
+            </div>
+        
+            <div id="sidebar-links" class="panel">
+                
+                <h2 class="panel-title">Links</h2>
+                
+                <div class="panel-content">
+                    
+<h3>My Friends</h3>
+<ul>
+    <li><a href="https://www.cnblogs.com/Railgunforever">吸取教训</a></li>
+    <li><a href="https://p9t6g.github.io">p9t6g</a></li>
+    <li><a href="https://tbyangz.github.io">TbYangZ</a></li>
+    <li><a href="https://www.cnblogs.com/ALANALLEN21LOVE28">CJ SYH</a></li>
+</ul>
+
+<h3>Related Sites</h3>
+<ul>
+    <li><a href="http://www.cnblogs.com/sun123zxy">博客园</a></li>
+    <li><a href="http://tools.sun123zxy.top">工具站</a></li>
+</ul>
+                </div>
+            </div>
+        
+            <div id="sidebar-tags" class="panel">
+                
+                <h2 class="panel-title">Tags</h2>
+                
+                <div class="panel-content">
+                    <ul>
+    
+    <li><a href= "/tags#OI" >OI</a></li>
+    
+    <li><a href= "/tags#数学" >数学</a></li>
+    
+    <li><a href= "/tags#高考" >高考</a></li>
+    
+    <li><a href= "/tags#题解" >题解</a></li>
+    
+    <li><a href= "/tags#原创题目" >原创题目</a></li>
+    
+    <li><a href= "/tags#学习笔记" >学习笔记</a></li>
+    
+    <li><a href= "/tags#意识流" >意识流</a></li>
+    
+    <li><a href= "/tags#游记" >游记</a></li>
+    
+    <li><a href= "/tags#Web" >Web</a></li>
+    
+    <li><a href= "/tags#站点相关" >站点相关</a></li>
+    
+    <li><a href= "/tags#Python" >Python</a></li>
+    
+</ul>
+                </div>
+            </div>
+        
+        
+            <div id="contents" class="panel"><h2 class="panel-title">Contents</h2>
+<div class="panel-content"></div>
+<script defer src="/assets/js/contents.js"></script></div>
+        
+    </div>
+    <div class="fclean"></div>
+    <div id="footer" class="text-vice">
+        <p>sun123zxy's Blog | Powered by Jekyll</p>
+    </div>
+</div>
+<div id="leftdown-float-container">
+    <div id="theme-info" class="round-button-handler">
+        <div class="round-button"><img src="/assets/images/info.png"></img></div>
+        <div class="hover-info">Theme Info</div>
+    </div>
+    <div id="theme-switch" class="round-button-handler">
+        <div class="round-button"><img src="/assets/images/switch.png"></img></div>
+        <div class="hover-info">Theme Switch</div>
+    </div>
+</div>
+<div id="rightdown-float-container">
+    <div id="music-player" class="round-button-handler">
+        <div class="round-button"><img src="/assets/images/music.png"></img></div>
+        <div class="hover-info">Music Player</div>
+    </div>
+</div>
+<link rel="stylesheet" href="/assets/css/default.css">
+<link rel="stylesheet" id="night-container">
+<link rel="stylesheet" id="theme-container">
+<div id="mask"></div>
+<script src="/assets/js/theme_data.js"></script>
+<script src="/assets/js/round_button.js"></script>
+<script src="/assets/js/theme_manager.js" defer></script>
+<script src="/assets/js/music_player.js"></script>
+<script src="/assets/js/scroll.js"></script>
+    </body>
+</html>

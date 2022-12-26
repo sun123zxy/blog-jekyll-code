@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>原创OI题目 白银之春 Problem and Solution - sun123zxy's Blog</title>
+
+        <script src="/assets/thirds/jquery/jquery-3.5.1.min.js"></script>
+
+        <link rel="stylesheet" href="/assets/thirds/katex/katex.min.css">
+        <!-- The loading of KaTeX is deferred to speed up page rendering -->
+        <script defer src="/assets/thirds/katex/katex.min.js"></script>
+        <!-- To automatically render math in text elements, include the auto-render extension -->
+        <script defer src="/assets/thirds/katex/auto-render.min.js" onload="renderMathInElement(document.body)"></script>
+        
+        <script src="/assets/thirds/highlight/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script>
+    </head>
+    <body>
+        <div id="home">
+    <div id="main" class="panel panel-content">
+        <div class="post-body">
+    <div class="post-head">
+        <h1 id="post-title">原创OI题目 白银之春 Problem and Solution</h1>
+        <p class="abstract text-vice">
+            
+                No abstract provided here.
+            
+        </p>
+    </div>
+    <div class="post-content"><p>比赛用题面、题解、标程和数据生成器都挂在 <a
+href="https://github.com/sun123zxy/spring">git@github.com:sun123zxy/spring.git</a>
+上。</p>
+<h2 id="problem">Problem</h2>
+<blockquote>
+<p><strong>白银之春 (spring.cpp/.in/.out) (2s,512MB)</strong></p>
+<p><strong>Background</strong></p>
+<p>妖梦正在收集春度！</p>
+<p><strong>Description</strong></p>
+<p>幻想乡由 <span class="math inline">\(n\)</span> 个地点和 <span
+class="math inline">\(m\)</span> 条单向小路组成，第 <span
+class="math inline">\(i\)</span> 个地点蕴含着 <span
+class="math inline">\(s_i\)</span> 的春度。妖梦从位于 <span
+class="math inline">\(1\)</span>
+号节点的白玉楼出发，沿图上路径收集沿路的春度，总春度为收集到的所有春度之和。</p>
+<p>半人半灵的妖梦具有一种名叫“人妖槽”的属性，该属性有两种状态——“人类逢魔”与“妖怪逢魔”，出发时状态为“人类逢魔”。某些小路上可能被放置了“森罗结界”。在经过被放置结界的小路时，妖梦的人妖槽状态将会发生变化——若经过这条小路前人妖槽状态为“人类逢魔”，则经过后将变为“妖怪逢魔”；反之，若经过前状态为“妖怪逢魔”，则经过后将变为“人类逢魔”。当且仅当人妖槽状态为“妖怪逢魔”时，妖梦才可以收集到当前所在地点所蕴含的春度。</p>
+<p>每个点的春度只能被收集一次。妖梦可以在图上任意游走，并可以选择在任意一个地点停止收集。</p>
+<p>妖梦希望收集到的总春度最大，但她并没有学过OI，请你帮忙算出她最多能收集到多少春度。</p>
+<p>因为并非所有人都具有结界内的常识，妖梦也提供了一份题意简述 ：</p>
+<blockquote>
+<p>给定一个带点权普通有向图和一只具有 <span
+class="math inline">\(0/1\)</span> 状态的妖梦，从 <span
+class="math inline">\(1\)</span> 号节点出发，初始状态为 <span
+class="math inline">\(0\)</span> 。边有 <span
+class="math inline">\(0/1\)</span>
+边权，经过边时状态要异或上边权。当前状态为 <span
+class="math inline">\(1\)</span>
+时可取得所在点权，点权只能被取得一次。问在图上随意游走可获得的最大点权和。</p>
+</blockquote>
+<p><strong>Input</strong></p>
+<p>第一行四个整数 <span class="math inline">\(n\)</span> ， <span
+class="math inline">\(m\)</span> ，表示图由 <span
+class="math inline">\(n\)</span> 个点， <span
+class="math inline">\(m\)</span> 条边构成。</p>
+<p>接下来一行有 <span class="math inline">\(n\)</span> 个整数 <span
+class="math inline">\(s_i\)</span> ，表示<span
+class="math inline">\(i\)</span>号节点蕴含 <span
+class="math inline">\(s_i\)</span> 的春度。</p>
+<p>接下来 <span class="math inline">\(m\)</span> 行每行 <span
+class="math inline">\(3\)</span> 个整数 <span
+class="math inline">\(u_i\)</span> ， <span
+class="math inline">\(v_i\)</span> ， <span
+class="math inline">\(w_i\)</span> ，表示有一条从 <span
+class="math inline">\(u_i\)</span> 到 <span
+class="math inline">\(v_i\)</span> 的有向边，若 <span
+class="math inline">\(w_i = 1\)</span>
+，则表示该小路上被放置了森罗结界，若 <span class="math inline">\(w_i =
+0\)</span> ，则表示未被放置。</p>
+<p><strong>Output</strong></p>
+<p>输出一行一个整数，表示妖梦能收集到的最大总春度。</p>
+<p><strong>Sample 1</strong></p>
+<p><strong>Sample 1 Input</strong></p>
+<pre><code>5 6
+99 82 44 35 3
+1 2 1
+2 3 0
+3 4 1
+4 5 0
+2 4 1
+3 5 1</code></pre>
+<p><strong>Sample 1 Output</strong></p>
+<pre><code>126</code></pre>
+<p><strong>Sample 1 Explanation</strong></p>
+<p>路径为 <span class="math inline">\(1\)</span> -&gt; <span
+class="math inline">\(2\)</span> -&gt; <span
+class="math inline">\(3\)</span> ，可获得 <span class="math inline">\(0
+\times 99 + 1 \times 82 + 1 \times 44=126\)</span> 点春度。</p>
+<p><strong>Sample 2</strong></p>
+<p><strong>Sample 2 Input</strong></p>
+<pre><code>9 10
+9 9 8 2 4 4 3 5 3
+1 2 0
+2 3 1
+3 2 0
+3 4 0
+4 5 1
+5 6 0
+6 4 1
+2 5 0
+7 8 1
+9 8 1</code></pre>
+<p><strong>Sample 2 Output</strong></p>
+<pre><code>25</code></pre>
+<p><strong>Sample 2 Explanation</strong></p>
+<p>路径为 <span class="math inline">\(1\)</span> -&gt; <span
+class="math inline">\(2\)</span> -&gt; <span
+class="math inline">\(3\)</span> -&gt; <span
+class="math inline">\(2\)</span> -&gt; <span
+class="math inline">\(5\)</span> -&gt; <span
+class="math inline">\(6\)</span> ，可以获得 <span
+class="math inline">\(0 \times 9 + 0 \times 9 + 1 \times 8 + 1 \times 9
++ 1 \times 4 + 1 \times 4= 25\)</span> 点春度。</p>
+<p><strong>Sample 3</strong></p>
+<p>见 <code>sample</code> 目录下 <code>spring3.in/.ans</code> 。</p>
+<p>该样例是一个无环图。</p>
+<p><strong>Sample 4</strong></p>
+<p>见 <code>sample</code> 目录下 <code>spring4.in/.ans</code> 。</p>
+<p><strong>Constraints</strong></p>
+<p>对于30%的数据，保证图中无环。</p>
+<p>对于另外20%的数据，保证图随机生成。</p>
+<p>对于100%的数据， <span class="math inline">\(2 \le N \le 5 *
+10^5\)</span> ， <span class="math inline">\(1 \le M \le 10^6\)</span>
+， <span class="math inline">\(0 \le s_i \le 10^9\)</span> ， <span
+class="math inline">\(1 \le u_i,v_i \le N\)</span> ， <span
+class="math inline">\(w_i \in \{ 0,1 \}\)</span> 。</p>
+<p><strong>Hints</strong></p>
+<p>由于幻想乡不受常识束缚，不保证不出现重边和自环，不保证图连通。</p>
+<p>输入量较大，请使用较为快速的读入方式。</p>
+<p>保证时限在std用时的2倍左右。std没有卡常，请放心食用。</p>
+<p><strong>Source</strong></p>
+<p>sun123zxy</p>
+</blockquote>
+<h2 id="fun-facts">Fun Facts</h2>
+<ul>
+<li><a
+href="https://thwiki.cc/%E6%A3%AE%E7%BD%97%E7%BB%93%E7%95%8C">森罗结界 -
+东方妖妖梦</a></li>
+<li><a
+href="https://thwiki.cc/%E6%B8%B8%E6%88%8F%E6%94%BB%E7%95%A5/%E4%B8%9C%E6%96%B9%E6%B0%B8%E5%A4%9C%E6%8A%84/%E7%B3%BB%E7%BB%9F#%E5%9F%BA%E6%9C%AC%E4%BA%8B%E9%A1%B9">人妖槽
+- 东方永夜抄</a></li>
+<li>题目名neta的是妖妖梦一面的卷首语。</li>
+</ul>
+<h2 id="solution">Solution</h2>
+<h3 id="无环图">无环图</h3>
+<p>DAG上dp就好了。设状态 <span class="math inline">\(f[u][0/1]\)</span>
+为到达点 <span class="math inline">\(u\)</span> 时状态为 <span
+class="math inline">\(0/1\)</span> 可收集到的最大春度，若 <span
+class="math inline">\(f[u][t]\)</span> 可达，有 <span
+class="math display">\[
+f[u][t] = t \times \mathrm{val}[u] + \max_{(v,w) \in \mathrm{pre}_u}
+f[v][t \otimes w]
+\]</span> 其中 <span class="math inline">\(\mathrm{val}[u]\)</span> 是点
+<span class="math inline">\(u\)</span> 的权值， <span
+class="math inline">\((v,w) \in \mathrm{pre}_u\)</span> 表示 <span
+class="math inline">\(u\)</span> 在DAG上的前驱边， <span
+class="math inline">\(\otimes\)</span> 代表异或。</p>
+<p>答案即 <span class="math inline">\(\max_{u \in G}
+\max(f[u][0],f[u][1])\)</span> 。</p>
+<h3 id="普通图">普通图</h3>
+<p>普通图有环，环上的状态转移方程相互依赖，无法dp。</p>
+<p>根据部分分的提示，考虑缩点。</p>
+<p>不妨先看所有强连通分量都只是简单环的情况。</p>
+<h4 id="环套dag">环套DAG</h4>
+<p>为了方便描述，我们定义如下两种描述：</p>
+<ul>
+<li>奇环：环上所有边权异或和为 <span class="math inline">\(1\)</span>
+的环。</li>
+<li>偶环：环上所有边权异或和为 <span class="math inline">\(0\)</span>
+的环。</li>
+</ul>
+<p>容易发现奇环上可以通过绕一圈的方式回到原点，使状态发生改变。也就是说，不论从进出位置和初始状态如何，一个奇环总可以输出任意的
+<span class="math inline">\(0\)</span> 或 <span
+class="math inline">\(1\)</span>
+。而如果在奇环上绕两圈，就可以取得环上所有点的春度。所以直接缩点处理即可。</p>
+<p>那么偶环如何处理呢？</p>
+<p>首先，若进入偶环的的位置（入点）确定，无论怎样在偶环上绕圈，到达环上某点（出点）时的状态总是唯一确定的。</p>
+<p>进一步的，偶环上的点可根据到达该点时的状态被分为两组。组与组之间在环上交错排列，所有边权为
+<span class="math inline">\(1\)</span>
+的边都是都是一个间隔。若入点和出点在同一组内，则状态不会发生变化；反之则状态改变。这启发我们将偶环缩成两个点来处理，每一个点代表一个组。</p>
+<p>考虑春度的获取。如果进入时状态为 <span
+class="math inline">\(0\)</span>
+，那么和入点在同一组内的点上的春度都无法取得（因为经过该点时状态始终为
+<span class="math inline">\(0\)</span>
+），而在不同组的点上的春度能够取得（因为经过该点时状态始终为 <span
+class="math inline">\(1\)</span> ）；反之，若进入时状态为 <span
+class="math inline">\(1\)</span>
+，那么和入点在同一组的点上的春度可以取得，在不同组的不能取得。</p>
+<p>缩点后做一些讨论就可以了。</p>
+<h4 id="强连通分量">强连通分量</h4>
+<p>在环上我们已经发现——奇环可以特殊处理，而偶环内的点可以被分成两组。强连通分量是否有与其相似的性质呢？</p>
+<h5 id="奇强连通分量">奇强连通分量</h5>
+<p>强连通分量无非是许多个环叠起来的连通块。如果一个强连通分量包含一个或多个奇环（称之为“奇强连通分量”），那么该强连通分量同样有奇环的性质——每个点都可以通过在奇环上绕圈获得
+<span class="math inline">\(0/1\)</span>
+两种状态，块上所有点的春度都能取得。</p>
+<p>实测发现随机图中出现偶强连通分量的概率极小，因此只处理奇强连通分量的算法可以通过随机图数据。</p>
+<h5 id="偶强连通分量">偶强连通分量</h5>
+<p>剩下的问题已经很明确了——处理所含环全都是偶环的强连通分量（称之为“偶强连通分量”）。</p>
+<p>可以发现这一结论：无论如何在偶强连通分量中游走，只要入点和进入时的状态确定，那么每个点的状态就唯一确定。于是偶强连通分量中的点也可以被分成两组，好比环套DAG中的偶环。</p>
+<p>易用反证法证明该性质：在一偶强连通分量中，假设点 <span
+class="math inline">\(u\)</span> 到点 <span
+class="math inline">\(v\)</span> 同时存在偶路径 <span
+class="math inline">\(P\)</span> 和奇路径 <span
+class="math inline">\(Q\)</span> 。那么奇路径 <span
+class="math inline">\(Q\)</span> 必然与某条从 <span
+class="math inline">\(v\)</span> 到 <span
+class="math inline">\(u\)</span> 的奇路径 <span
+class="math inline">\(R\)</span>
+共同组成了一个偶环（偶强连通分量中只有偶环且各点强连通）。则偶路径 <span
+class="math inline">\(P\)</span> 和奇路径 <span
+class="math inline">\(R\)</span> 构成奇环，与假设矛盾，故性质成立。</p>
+<p>春度的获取也与偶环相同。</p>
+<p>判断一个强连通分量是奇是偶，只需二分图染色，取环上任意一个点作为起点DFS，如果能以不同的状态到达某点，那该分量就是奇的，反之则是偶的。正确性比较显然，证明在此略去。</p>
+<h3 id="实现">实现</h3>
+<p>实现细节较多，建议缩点后重新建图。</p>
+<p>可以用4个节点分别代理两个分组各自的入边和出边，算出到达该组状态为
+<span class="math inline">\(0/1\)</span>
+时连通块内两个组的点权对答案的贡献。为了方便，实现时可以以边数x2的代价把节点数压缩到2个。</p>
+<h2 id="code">Code</h2>
+<pre class="cpp"><code>/*
+白银之春 (spring) std
+by sun123zxy
+
+PS: If you got a runtime error, &quot;-Wl,--stack=123456789&quot;
+*/
+#include&lt;iostream&gt;
+#include&lt;cstdio&gt;
+#include&lt;cmath&gt;
+using namespace std;
+typedef long long ll;
+ll Rd(){
+    ll ans=0;bool fh=0;char c=getchar();
+    while(c&lt;&#39;0&#39;||c&gt;&#39;9&#39;){if(c==&#39;-&#39;) fh=1; c=getchar();}
+    while(c&gt;=&#39;0&#39;&amp;&amp;c&lt;=&#39;9&#39;) ans=ans*10+c-&#39;0&#39;,c=getchar();
+    if(fh) ans=-ans;
+    return ans;
+}
+
+const ll INF=1E18;
+
+const ll PTN=1E6+5,EDN=2E6+5;
+ll N;
+struct Edge{ll u,v;bool w;ll nxt;};
+struct Graph{
+    Edge edge[EDN];
+    ll graM,last[PTN];
+    void GraphInit(){graM=0;for(ll i=0;i&lt;PTN;i++) last[i]=0;}
+    void AddBscEdge(ll u,ll v,bool w){
+        edge[++graM]=(Edge){u,v,w,last[u]};
+        last[u]=graM;
+    }
+    void AddUnEdge(ll u,ll v,bool w){
+        AddBscEdge(v,u,w); 
+    }
+    ll ptW[PTN][2]; //value Youmu can get when reaching the vertex with state 0/1
+}G1,G2;
+ll Id(ll cId,bool col){
+    return 2*cId-col;
+}
+
+ll bel[PTN],cN,rps[PTN]; //belong, number of components, representative vertax of the component
+ll dfn[PTN],low[PTN],dN;
+ll stk[PTN],tp;bool isI[PTN];
+void Tarjan(ll u){
+    dfn[u]=low[u]=++dN;
+    stk[++tp]=u;isI[u]=1;
+    for(ll i=G1.last[u];i!=0;i=G1.edge[i].nxt){
+        ll v=G1.edge[i].v;
+        if(isI[v]){
+            low[u]=min(low[u],dfn[v]);
+        }else if(!dfn[v]){
+            Tarjan(v);
+            low[u]=min(low[u],low[v]);
+        }
+    }
+    if(dfn[u]==low[u]){
+        rps[++cN]=u;ll t;
+        do{
+            t=stk[tp--];
+            isI[t]=0;bel[t]=cN;
+        }while(t!=u);
+    }
+}
+bool cTyp[PTN]; //component type (0: even; 1: odd)
+ll col[PTN];
+void ColDFS(ll u,bool color,ll curC){
+    col[u]=color;
+    G2.ptW[Id(curC,color)][1]+=G1.ptW[u][1]; //calculate values for each group (even component)
+    for(ll i=G1.last[u];i!=0;i=G1.edge[i].nxt){
+        ll v=G1.edge[i].v;bool w=G1.edge[i].w;
+        if(bel[v]!=curC) continue;
+        if(col[v]==-1) ColDFS(v,color^w,curC);
+        else if((color^w)!=col[v]) cTyp[curC]=1; //odd component
+    }
+}
+void BuildG2(){
+    for(ll i=1;i&lt;=G1.graM;i++){
+        ll u=G1.edge[i].u,v=G1.edge[i].v;bool w=G1.edge[i].w;
+        ll cU=bel[u],cV=bel[v];
+        if(!cU||!cV) continue; //edges Youmu can never reach
+        if(cU==cV) continue;   //edges inside the component
+        ll myV=Id(cV,col[v]*(cTyp[cV]^1));
+        if(cTyp[cU]==1){
+            G2.AddUnEdge(Id(cU,0),myV,w);
+            G2.AddUnEdge(Id(cU,0),myV,w^1);
+        }else{
+            G2.AddUnEdge(Id(cU,col[u]),myV,w);     //from this group
+            G2.AddUnEdge(Id(cU,col[u]^1),myV,w^1); //from the other group
+        }
+    }
+}
+ll f[PTN][2];
+ll F(ll u,bool typ){
+    if(f[u][typ]!=-1) return f[u][typ];
+    f[u][typ]=-INF; 
+    for(ll i=G2.last[u];i!=0;i=G2.edge[i].nxt){
+        ll v=G2.edge[i].v;bool w=G2.edge[i].w;
+        f[u][typ]=max(f[u][typ],G2.ptW[u][typ]+F(v,typ^w));
+    }
+    return f[u][typ];
+}
+ll ST=1;
+void Solve(){
+    cN=0;dN=0;tp=0;for(ll i=1;i&lt;=N;i++) dfn[i]=low[i]=0,bel[i]=0,isI[i]=0;
+    Tarjan(ST); //Only need to get components Youmu can reach
+    G2.GraphInit();
+    for(ll i=1;i&lt;=N;i++) col[i]=-1;
+    for(ll i=1;i&lt;=cN;i++) cTyp[i]=0,ColDFS(rps[i],0,i);
+    for(ll i=1;i&lt;=cN;i++){
+        if(cTyp[i]==1){ //odd component
+            G2.ptW[Id(i,0)][0]=G2.ptW[Id(i,0)][1]+=G2.ptW[Id(i,1)][1]; //an odd component enjoys all the values
+            G2.ptW[Id(i,1)][0]=G2.ptW[Id(i,1)][1]=0; //abandon Id(i,1)
+        }else{ //even component
+            G2.ptW[Id(i,0)][0]=G2.ptW[Id(i,1)][1];
+            G2.ptW[Id(i,1)][0]=G2.ptW[Id(i,0)][1];
+        }
+    }
+    BuildG2();
+    
+    for(ll i=1;i&lt;=2*N;i++) f[i][0]=f[i][1]=-1;
+    ll myST=Id(bel[ST],col[ST]*(cTyp[bel[ST]]^1));
+    f[myST][0]=G2.ptW[myST][0];
+    ll ans=-INF;
+    for(ll i=1;i&lt;=2*N;i++)
+        ans=max(ans,max(F(i,0),F(i,1)));
+    printf(&quot;%lld&quot;,ans);
+}
+int main(){
+    freopen(&quot;spring.in&quot;,&quot;r&quot;,stdin);
+    freopen(&quot;spring_std.out&quot;,&quot;w&quot;,stdout);
+    G1.GraphInit();
+    N=Rd();ll m=Rd();
+    for(ll u=1;u&lt;=N;u++) G1.ptW[u][1]=Rd();
+    while(m--){
+        ll u=Rd(),v=Rd();bool w=Rd();
+        G1.AddBscEdge(u,v,w); 
+    }
+    Solve();
+    return 0;
+}</code></pre>
+<h2 id="omake">Omake</h2>
+<p>第一次出题，有纰漏请多多包涵。</p>
+<p>快要交题时才发现一年前写的std出锅了，匆匆忙忙的重写了一个，不知道有没有新造出什么bug。数据也造得比较匆忙，如果爆炸了请随便辱骂出题人或者<a
+href="https://www.cnblogs.com/sun123zxy/p/14019963.html">去他博客上</a>告诉他（</p>
+<p>可以说这道题把二分图拓展到了强连通有向图上，不知道有没有什么更有趣的性质可以发掘。</p>
+<p>后来做到几道性质相似的题目，这里列出来供参考：
+<del>垃圾撞题出题人</del></p>
+<ul>
+<li><a href="https://codeforces.com/contest/1444/problem/C">CF1444C -
+Codeforces Round #680 - Team-Building</a> (<a
+href="https://codeforces.com/blog/entry/84248">official
+solution</a>)</li>
+<li><a href="https://loj.ac/problem/508">LOJ508 - LibreOJ NOI Round #1 -
+失控的未来交通工具</a> (<a href="https://loj.ac/article/87">official
+solution</a>)</li>
+</ul>
+<p>思考背景怎样与题目契合也是个挺有趣的过程。</p>
+<p>感谢听我乱扯idea的 TbYangZ 和 Waper ，以及尝试叉掉std的两位勇士 p9t6g
+和 changruinian2020 。 <del>虽然都失败了</del></p>
+<p>就这些吧。</p>
+<p style="text-align: right">
+——sun123zxy
+</p>
+<p style="text-align: right">
+Oct. 2019 初稿完成
+</p>
+<p style="text-align: right">
+Nov. 2020 最后更新
+</p>
+<p><strong>Next Phantasm...</strong></p>
+</div>
+    <div class="post-tags text-vice" style="text-align: right">
+        <p>tags: 
+            
+                <a href= "/tags#OI" >OI</a>, 
+            
+                <a href= "/tags#原创题目" >原创题目</a>, 
+            
+                <a href= "/tags#题解" >题解</a>
+            
+        </p>
+        <p>posted on 2020/12/06 | last modified on 2020/12/06</p>
+    </div>
+    
+        <div class="post-comments">
+            <script src="https://giscus.app/client.js"
+                data-repo="sun123zxy/sun123zxy.github.io"
+                data-repo-id="MDEwOlJlcG9zaXRvcnkzMTAwMzQxNDc="
+                data-category="General"
+                data-category-id="DIC_kwDOEnq-484CQKFr"
+                data-mapping="pathname"
+                data-reactions-enabled="1"
+                data-emit-metadata="0"
+                data-input-position="bottom"
+                data-theme="light"
+                data-lang="en"
+                crossorigin="anonymous">
+            </script>
+        </div>
+    
+</div>
+    </div>
+    <div id="sidebar">
+        
+            <div id="sidebar-profile" class="panel">
+                
+                <div class="panel-content">
+                    <a href="/"><img class="avatar" src="/assets/images/pig.png"></img></a>
+<p class="nickname">sun123zxy</p>
+<div class="nav">
+    <a href="/">Home</a> | 
+    <a href="/p/aboutme">About</a> | 
+    <a href="/tags">Tags</a>
+</div>
+<div class="feed">
+    <img src="/assets/images/feed.png"></img>
+    <a href="/feed.xml">Atom Feed</a>
+</div>
+<p>Next Phantasm...</p>
+                </div>
+            </div>
+        
+            <div id="sidebar-news" class="panel">
+                
+                <h2 class="panel-title">News</h2>
+                
+                <div class="panel-content">
+                    <a href="https://info.flagcounter.com/1Zpv"><img src="https://s05.flagcounter.com/count2/1Zpv/bg_DDDDDD/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_3/labels_0/pageviews_1/flags_0/percent_0/" alt="Flag Counter" border="0"></a>
+
+<p>博客已迁移。访问 <a href="https://blog.sun123zxy.top">blog.sun123zxy.top</a> 获取更多信息。</p>
+                </div>
+            </div>
+        
+            <div id="sidebar-links" class="panel">
+                
+                <h2 class="panel-title">Links</h2>
+                
+                <div class="panel-content">
+                    
+<h3>My Friends</h3>
+<ul>
+    <li><a href="https://www.cnblogs.com/Railgunforever">吸取教训</a></li>
+    <li><a href="https://p9t6g.github.io">p9t6g</a></li>
+    <li><a href="https://tbyangz.github.io">TbYangZ</a></li>
+    <li><a href="https://www.cnblogs.com/ALANALLEN21LOVE28">CJ SYH</a></li>
+</ul>
+
+<h3>Related Sites</h3>
+<ul>
+    <li><a href="http://www.cnblogs.com/sun123zxy">博客园</a></li>
+    <li><a href="http://tools.sun123zxy.top">工具站</a></li>
+</ul>
+                </div>
+            </div>
+        
+            <div id="sidebar-tags" class="panel">
+                
+                <h2 class="panel-title">Tags</h2>
+                
+                <div class="panel-content">
+                    <ul>
+    
+    <li><a href= "/tags#OI" >OI</a></li>
+    
+    <li><a href= "/tags#数学" >数学</a></li>
+    
+    <li><a href= "/tags#高考" >高考</a></li>
+    
+    <li><a href= "/tags#题解" >题解</a></li>
+    
+    <li><a href= "/tags#原创题目" >原创题目</a></li>
+    
+    <li><a href= "/tags#学习笔记" >学习笔记</a></li>
+    
+    <li><a href= "/tags#意识流" >意识流</a></li>
+    
+    <li><a href= "/tags#游记" >游记</a></li>
+    
+    <li><a href= "/tags#Web" >Web</a></li>
+    
+    <li><a href= "/tags#站点相关" >站点相关</a></li>
+    
+    <li><a href= "/tags#Python" >Python</a></li>
+    
+</ul>
+                </div>
+            </div>
+        
+        
+            <div id="contents" class="panel"><h2 class="panel-title">Contents</h2>
+<div class="panel-content"></div>
+<script defer src="/assets/js/contents.js"></script></div>
+        
+    </div>
+    <div class="fclean"></div>
+    <div id="footer" class="text-vice">
+        <p>sun123zxy's Blog | Powered by Jekyll</p>
+    </div>
+</div>
+<div id="leftdown-float-container">
+    <div id="theme-info" class="round-button-handler">
+        <div class="round-button"><img src="/assets/images/info.png"></img></div>
+        <div class="hover-info">Theme Info</div>
+    </div>
+    <div id="theme-switch" class="round-button-handler">
+        <div class="round-button"><img src="/assets/images/switch.png"></img></div>
+        <div class="hover-info">Theme Switch</div>
+    </div>
+</div>
+<div id="rightdown-float-container">
+    <div id="music-player" class="round-button-handler">
+        <div class="round-button"><img src="/assets/images/music.png"></img></div>
+        <div class="hover-info">Music Player</div>
+    </div>
+</div>
+<link rel="stylesheet" href="/assets/css/default.css">
+<link rel="stylesheet" id="night-container">
+<link rel="stylesheet" id="theme-container">
+<div id="mask"></div>
+<script src="/assets/js/theme_data.js"></script>
+<script src="/assets/js/round_button.js"></script>
+<script src="/assets/js/theme_manager.js" defer></script>
+<script src="/assets/js/music_player.js"></script>
+<script src="/assets/js/scroll.js"></script>
+    </body>
+</html>

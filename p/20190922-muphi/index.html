@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>由 [SDOI2012]Longge的问题 探讨欧拉函数和莫比乌斯函数的一些性质和关联 - sun123zxy's Blog</title>
+
+        <script src="/assets/thirds/jquery/jquery-3.5.1.min.js"></script>
+
+        <link rel="stylesheet" href="/assets/thirds/katex/katex.min.css">
+        <!-- The loading of KaTeX is deferred to speed up page rendering -->
+        <script defer src="/assets/thirds/katex/katex.min.js"></script>
+        <!-- To automatically render math in text elements, include the auto-render extension -->
+        <script defer src="/assets/thirds/katex/auto-render.min.js" onload="renderMathInElement(document.body)"></script>
+        
+        <script src="/assets/thirds/highlight/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script>
+    </head>
+    <body>
+        <div id="home">
+    <div id="main" class="panel panel-content">
+        <div class="post-body">
+    <div class="post-head">
+        <h1 id="post-title">由 [SDOI2012]Longge的问题 探讨欧拉函数和莫比乌斯函数的一些性质和关联</h1>
+        <p class="abstract text-vice">
+            
+                No abstract provided here.
+            
+        </p>
+    </div>
+    <div class="post-content"><h2 id="本题题解">本题题解</h2>
+<p>题目传送门：<a
+href="https://www.luogu.org/problem/P2303">https://www.luogu.org/problem/P2303</a></p>
+<blockquote>
+<p>给定一个整数<span class="math inline">\(n\)</span>，求</p>
+<p><span class="math display">\[
+\sum_{i=1}^n \gcd(n,i)
+\]</span></p>
+</blockquote>
+<p>蒟蒻随便yy了一下搞出来个<span
+class="math inline">\(O(\sqrt{n})\)</span>的算法
+<del>这题数据怎么这么水</del></p>
+<p>首先看到gcd我们就下意识的对它反演一波对吧</p>
+<h3 id="第一步">第一步</h3>
+<p><span class="math display">\[
+\sum_{i=1}^n \gcd(n,i) = \sum_{d|n} \varphi(d) \frac{n}{d}
+\]</span></p>
+<p>这里提供两种化法，得到的结果都是这个。</p>
+<h4 id="法一">法一</h4>
+<p>根据欧拉函数和式</p>
+<p><span class="math display">\[
+n = \sum_{d|n} \varphi(d)
+\]</span></p>
+<p>暴力推导即可</p>
+<p><span class="math display">\[
+\begin{aligned}
+\sum_{i=1}^n \gcd(n,i) &amp;= \sum_{i=1}^n \sum_{d|\gcd(n,i)} \varphi(d)
+\\
+&amp;= \sum_{d|n} \sum_{i=1}^{\frac n d} \varphi(d) \\
+&amp;= \sum_{d|n} \varphi(d) \frac n d
+\end{aligned}
+\]</span></p>
+<h4 id="法二">法二</h4>
+<p>根据欧拉函数的定义式</p>
+<p><span class="math display">\[
+\varphi(n) = \sum_{i=1}^n [\gcd(n,i) = 1]
+\]</span></p>
+<p>PS：<span class="math inline">\(\varphi(n)\)</span>表示<span
+class="math inline">\(1\)</span>~<span
+class="math inline">\(n-1\)</span>内与<span
+class="math inline">\(n\)</span>互质的数，将和式上界提升到<span
+class="math inline">\(n\)</span>不但不会影响正确性（<span
+class="math inline">\(\gcd(n,n) = n \neq 1\)</span>），而且让<span
+class="math inline">\(\varphi(1)\)</span>不用特判。</p>
+<p>易得</p>
+<p><span class="math display">\[
+\begin{aligned}
+\sum_{i=1}^n \gcd(n,i) &amp;= \sum_{d|n} d \sum_{i=1}^n [\gcd(n,i) = d]
+\\
+&amp;= \sum_{d|n} d \sum_{i=1}^{\frac n d} [\gcd(\frac n d,i) = 1] \\
+&amp;= \sum_{d|n} d \varphi(\frac n d) \\
+&amp;= \sum_{d|n} \varphi(d) \frac n d \\
+\end{aligned}
+\]</span></p>
+<p>这一步还是比较简单的。<del>稍有基础的同学大概都会吧</del></p>
+<h3 id="第二步">第二步</h3>
+<p>令</p>
+<p><span class="math display">\[
+g(n) = \sum_{i=1}^n \gcd(n,i) = \sum_{d|n} \varphi(d) \frac{n}{d}
+\]</span></p>
+<p>我们希望求<span class="math inline">\(g\)</span>的在<span
+class="math inline">\(n\)</span>的函数值。容易发现右式是狄利克雷卷积<span
+class="math inline">\(\varphi * Id\)</span>，也就是说<span
+class="math inline">\(g\)</span>也是积性函数。所以考虑质因数分解<span
+class="math inline">\(n\)</span>，最后用积性累乘出来</p>
+<p>即</p>
+<p><span class="math display">\[
+g(n) = g({p_1}^{c_1}) g({p_2}^{c_2}) ... g({p_n}^{c_n})
+\]</span></p>
+<p>则只需求<span
+class="math inline">\(g(p^c)\)</span>（这里省略下标）</p>
+<p><span class="math inline">\(p^c\)</span>的因数分别为<span
+class="math inline">\(1\)</span>，<span
+class="math inline">\(p\)</span>，<span
+class="math inline">\(p^2\)</span>，...，<span
+class="math inline">\(p^c\)</span></p>
+<p>所以有</p>
+<p><span class="math display">\[
+\begin{aligned}
+g(p^c) &amp;= \sum_{i=0}^{c} \varphi(p^i) \frac{p^c}{p^i} \\
+&amp;= \sum_{i=0}^{c} \varphi(p^i) p^{c-i}
+\end{aligned}
+\]</span></p>
+<h4 id="求varphipc">求<span
+class="math inline">\(\varphi(p^c)\)</span></h4>
+<p>考虑先弄出上式中<span
+class="math inline">\(\varphi(p^i)\)</span>的封闭形式，再带回原式看看</p>
+<p>根据欧拉函数通式</p>
+<p><span class="math display">\[
+\varphi(n) = n \prod_{i=1}^k (1 - \frac 1 {p_i})
+\]</span></p>
+<p>（这个<span class="math inline">\(\pi\)</span>指的是分解质因数）</p>
+<p>易得</p>
+<p><span class="math display">\[
+\begin{aligned}
+\varphi(p^c) &amp;= p^c (1 - \frac 1 p) \\
+&amp;= p^c - p^{c-1}
+\end{aligned}
+\]</span></p>
+<p>注意这个式子需要在<span
+class="math inline">\(c=0\)</span>时特判，因为<span
+class="math inline">\(\varphi(1) = 1\)</span>（<span
+class="math inline">\(1\)</span>可以视作分解不出任何质因数）</p>
+<h4 id="求gpc">求<span class="math inline">\(g(p^c)\)</span></h4>
+<p>得到了<span
+class="math inline">\(\varphi(p^c)\)</span>，带回之前未推完的<span
+class="math inline">\(g(p^c)\)</span>的式子，得</p>
+<p><span class="math display">\[
+\begin{aligned}
+g(p^c) &amp;= \sum_{i=0}^{c} \varphi(p^i) p^{c-i} \\
+&amp;= p^c + \sum_{i=1}^{c} (p^i - p^{i-1}) p^{c-i} \\
+&amp;= p^c + \sum_{i=1}^{c} (p^c - p^{c-1}) \\
+&amp;= p^c + c (p^c - p^{c-1}) \\
+&amp;= (c+1)p^c - c \ p^{c-1}
+\end{aligned}
+\]</span></p>
+<p>（中途对<span
+class="math inline">\(i=0\)</span>进行了特殊讨论）（该式同样不适用于<span
+class="math inline">\(c=0\)</span>的情况）</p>
+<p>然后积性合并起来就完了</p>
+<p>冷静分析一波时间复杂度。质因数分解消耗<span
+class="math inline">\(O(\sqrt n)\)</span>的时间复杂度，分解出不超过<span
+class="math inline">\(O(log_2 n)\)</span>个<span
+class="math inline">\(p^c\)</span>，每个<span
+class="math inline">\(g(p^c)\)</span>的计算是<span
+class="math inline">\(O(1)\)</span>的。所以总时间复杂度为<span
+class="math inline">\(O(\sqrt n)\)</span></p>
+<h3 id="代码">代码</h3>
+<p>非常简单的代码</p>
+<pre class="cpp"><code>#include&lt;iostream&gt;
+#include&lt;cstdio&gt;
+#include&lt;cmath&gt;
+#include&lt;cstring&gt;
+#include&lt;ctime&gt;
+#include&lt;cstdlib&gt;
+#include&lt;algorithm&gt;
+using namespace std;
+typedef long long ll;
+
+ll p[1005],c[1005],g[1005];ll kN;
+void Div(ll n){
+    kN=0;
+    for(ll i=2;i*i&lt;=n;i++){
+        if(n%i==0){
+            kN++;p[kN]=i;
+            g[kN]=1;
+            ll e=0;while(n%i==0) e++,n/=i,g[kN]*=i;
+            c[kN]=e;
+        }
+    }
+    if(n!=1) kN++,p[kN]=n,c[kN]=1,g[kN]=n;
+}
+ll N;
+int main(){
+    cin&gt;&gt;N;
+    Div(N);
+    ll pdt=1;
+    for(int i=1;i&lt;=kN;i++) pdt=pdt*((c[i]+1)*g[i]-c[i]*g[i]/p[i]);
+    cout&lt;&lt;pdt;
+    return 0;
+}</code></pre>
+<p><del>这式子长得跟<a
+href="https://www.luogu.org/blog/PinkRabbit/solution-p2303">小粉兔菊苣的题解</a>很像？</del></p>
+<h2 id="更多思考">更多思考</h2>
+<p><del>坐车时无聊在草稿纸上瞎搞出来的</del></p>
+<h3 id="拓展到莫比乌斯函数">拓展到莫比乌斯函数</h3>
+<p>第一步化完后，我们得到这样一个函数</p>
+<p><span class="math display">\[
+g(n) = \sum_{d|n} \varphi(d) \frac{n}{d}
+\]</span></p>
+<p>然后我们用质因数分解弄出了一个求它单点函数值的方法</p>
+<p>可不可以把它拓展到莫比乌斯函数上呢？</p>
+<p><span class="math display">\[
+g(n) = \sum_{d|n} \mu(d) \frac{n}{d}
+\]</span></p>
+<p>直接仿照上面化<span
+class="math inline">\(\varphi\)</span>的方法来</p>
+<p>根据莫比乌斯函数定义，易得</p>
+<p><span class="math display">\[
+\mu(p^c) = -[c=1]
+\]</span></p>
+<p>同样需要特判<span class="math inline">\(c=0\)</span>的情况</p>
+<p>带回得</p>
+<p><span class="math display">\[
+\begin{aligned}
+g(p^c) &amp;= \sum_{i=0}^{c} \mu(p^i) p^{c-i} \\
+&amp;= p^c + \sum_{i=1}^{c} -[i=1] p^{c-i} \\
+&amp;= p^c - p^{c-1}
+\end{aligned}
+\]</span></p>
+<p>（该式同样不适用于<span
+class="math inline">\(c=0\)</span>的情况）</p>
+<p>挺简洁的对吧（</p>
+<h3 id="小小的总结">小小的总结</h3>
+<p>总结一下，首先我们发现要求的<span class="math inline">\(g(n) =
+\sum_{d|n} f(d)
+\frac{n}{d}\)</span>是积性函数，所以考虑分解质因数，简化枚举因数的过程为<span
+class="math inline">\(g(p^c) = \sum_{i=0}^{c} f(p^i)
+p^{c-i}\)</span>。我们分别根据<span
+class="math inline">\(\varphi\)</span>和<span
+class="math inline">\(\mu\)</span>的特殊性质，化出了它们在<span
+class="math inline">\(p^c\)</span>的函数值，然后代回化简得出<span
+class="math inline">\(g(p^c)\)</span>的封闭形式，最后用积性合并起来，就得到了<span
+class="math inline">\(g(n)\)</span></p>
+<p>仔细思考一下<span class="math inline">\(\varphi\)</span>和<span
+class="math inline">\(\mu\)</span>的特殊性质。</p>
+<p><span class="math inline">\(\varphi(p^i) = p^i -
+p^{i-1}\)</span>，而带回后与<span
+class="math inline">\(p^{c-i}\)</span>刚好抵消掉了枚举的变量<span
+class="math inline">\(i\)</span>，从而得出封闭形式。也就是说，<span
+class="math inline">\(\varphi\)</span>可以这么化是因为待求函数<span
+class="math inline">\(g\)</span>比较特殊，它卷了个<span
+class="math inline">\(Id\)</span>，<span class="math inline">\(\frac n
+d\)</span>发挥了抵消作用。</p>
+<p><span class="math inline">\(\mu(p^c) = [c=1]\)</span>，只有在<span
+class="math inline">\(c=0\)</span>或<span
+class="math inline">\(c=1\)</span>时函数非<span
+class="math inline">\(0\)</span>，而这也就把和式简化为仅将<span
+class="math inline">\(i=0\)</span>和<span
+class="math inline">\(i=1\)</span>两项相加。可见<span
+class="math inline">\(\mu\)</span>并没有用到<span
+class="math inline">\(\frac n
+d\)</span>的特殊性质，对于狄利克雷卷积是通用的，常用于分解质因数后的处理。比如这道题：<a
+href="https://www.luogu.org/problem/P4464">洛谷P4464
+[国家集训队]JZPKIL</a></p>
+<h3
+id="莫比乌斯函数与欧拉函数的相互关系">莫比乌斯函数与欧拉函数的相互关系</h3>
+<p>第一步我们在做什么？</p>
+<p><span class="math display">\[
+\sum_{i=1}^n \gcd(n,i) = \sum_{d|n} \varphi(d) \frac{n}{d}
+\]</span></p>
+<p>那我同样考虑把它变到莫比乌斯函数上。</p>
+<p>思考化该式时用到过的欧拉函数和式，联系到莫比乌斯函数的和式</p>
+<p><span class="math display">\[
+[n=1] = \sum_{d|n} \mu(d)
+\]</span></p>
+<p>猜想</p>
+<p><span class="math display">\[
+\sum_{i=1}^n [\gcd(n,i)=1] = \sum_{d|n} \mu(d) \frac{n}{d}
+\]</span></p>
+<p>证明很容易。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\sum_{i=1}^n [\gcd(n,i)=1] &amp;= \sum_{i=1}^n \sum_{d|\gcd(n,i)} \mu(d)
+\\
+&amp;= \sum_{d|n} \mu(d) \frac n d \\
+\end{aligned}
+\]</span></p>
+<p>然后你仔细看看左式，这不就是欧拉函数的定义式吗</p>
+<p>于是我们找到了一个极其简洁地描述了<span
+class="math inline">\(\mu\)</span>和<span
+class="math inline">\(\varphi\)</span>关联的公式</p>
+<p><span class="math display">\[
+\varphi(n) = \sum_{d|n} \mu(d) \frac{n}{d}
+\]</span></p>
+<p>将本式简单变形就得到了一个更常见的表现形式</p>
+<p><span class="math display">\[
+\frac {\varphi(n)} n  = \sum_{d|n} \frac{\mu(d)}{d}
+\]</span></p>
+<p>额，不过这式子好像也没啥用，<del>至少我没见过要用这个的题</del></p>
+<h3 id="upd-20191104-用狄利克雷卷积证明">upd 2019/11/04
+用狄利克雷卷积证明</h3>
+<p>突然发现上式可以用狄利克雷卷积非常容易的证明</p>
+<p><span class="math display">\[
+\begin{aligned}
+Id &amp;= \varphi * I \\
+Id * \mu &amp;= \varphi * I * \mu \\
+&amp;= \varphi * \varepsilon \\
+&amp;= \varphi
+\end{aligned}
+\]</span></p>
+</div>
+    <div class="post-tags text-vice" style="text-align: right">
+        <p>tags: 
+            
+                <a href= "/tags#OI" >OI</a>, 
+            
+                <a href= "/tags#数学" >数学</a>, 
+            
+                <a href= "/tags#学习笔记" >学习笔记</a>, 
+            
+                <a href= "/tags#题解" >题解</a>
+            
+        </p>
+        <p>posted on 2019/09/22 | last modified on 2019/11/04</p>
+    </div>
+    
+        <div class="post-comments">
+            <script src="https://giscus.app/client.js"
+                data-repo="sun123zxy/sun123zxy.github.io"
+                data-repo-id="MDEwOlJlcG9zaXRvcnkzMTAwMzQxNDc="
+                data-category="General"
+                data-category-id="DIC_kwDOEnq-484CQKFr"
+                data-mapping="pathname"
+                data-reactions-enabled="1"
+                data-emit-metadata="0"
+                data-input-position="bottom"
+                data-theme="light"
+                data-lang="en"
+                crossorigin="anonymous">
+            </script>
+        </div>
+    
+</div>
+    </div>
+    <div id="sidebar">
+        
+            <div id="sidebar-profile" class="panel">
+                
+                <div class="panel-content">
+                    <a href="/"><img class="avatar" src="/assets/images/pig.png"></img></a>
+<p class="nickname">sun123zxy</p>
+<div class="nav">
+    <a href="/">Home</a> | 
+    <a href="/p/aboutme">About</a> | 
+    <a href="/tags">Tags</a>
+</div>
+<div class="feed">
+    <img src="/assets/images/feed.png"></img>
+    <a href="/feed.xml">Atom Feed</a>
+</div>
+<p>Next Phantasm...</p>
+                </div>
+            </div>
+        
+            <div id="sidebar-news" class="panel">
+                
+                <h2 class="panel-title">News</h2>
+                
+                <div class="panel-content">
+                    <a href="https://info.flagcounter.com/1Zpv"><img src="https://s05.flagcounter.com/count2/1Zpv/bg_DDDDDD/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_3/labels_0/pageviews_1/flags_0/percent_0/" alt="Flag Counter" border="0"></a>
+
+<p>博客已迁移。访问 <a href="https://blog.sun123zxy.top">blog.sun123zxy.top</a> 获取更多信息。</p>
+                </div>
+            </div>
+        
+            <div id="sidebar-links" class="panel">
+                
+                <h2 class="panel-title">Links</h2>
+                
+                <div class="panel-content">
+                    
+<h3>My Friends</h3>
+<ul>
+    <li><a href="https://www.cnblogs.com/Railgunforever">吸取教训</a></li>
+    <li><a href="https://p9t6g.github.io">p9t6g</a></li>
+    <li><a href="https://tbyangz.github.io">TbYangZ</a></li>
+    <li><a href="https://www.cnblogs.com/ALANALLEN21LOVE28">CJ SYH</a></li>
+</ul>
+
+<h3>Related Sites</h3>
+<ul>
+    <li><a href="http://www.cnblogs.com/sun123zxy">博客园</a></li>
+    <li><a href="http://tools.sun123zxy.top">工具站</a></li>
+</ul>
+                </div>
+            </div>
+        
+            <div id="sidebar-tags" class="panel">
+                
+                <h2 class="panel-title">Tags</h2>
+                
+                <div class="panel-content">
+                    <ul>
+    
+    <li><a href= "/tags#OI" >OI</a></li>
+    
+    <li><a href= "/tags#数学" >数学</a></li>
+    
+    <li><a href= "/tags#高考" >高考</a></li>
+    
+    <li><a href= "/tags#题解" >题解</a></li>
+    
+    <li><a href= "/tags#原创题目" >原创题目</a></li>
+    
+    <li><a href= "/tags#学习笔记" >学习笔记</a></li>
+    
+    <li><a href= "/tags#意识流" >意识流</a></li>
+    
+    <li><a href= "/tags#游记" >游记</a></li>
+    
+    <li><a href= "/tags#Web" >Web</a></li>
+    
+    <li><a href= "/tags#站点相关" >站点相关</a></li>
+    
+    <li><a href= "/tags#Python" >Python</a></li>
+    
+</ul>
+                </div>
+            </div>
+        
+        
+            <div id="contents" class="panel"><h2 class="panel-title">Contents</h2>
+<div class="panel-content"></div>
+<script defer src="/assets/js/contents.js"></script></div>
+        
+    </div>
+    <div class="fclean"></div>
+    <div id="footer" class="text-vice">
+        <p>sun123zxy's Blog | Powered by Jekyll</p>
+    </div>
+</div>
+<div id="leftdown-float-container">
+    <div id="theme-info" class="round-button-handler">
+        <div class="round-button"><img src="/assets/images/info.png"></img></div>
+        <div class="hover-info">Theme Info</div>
+    </div>
+    <div id="theme-switch" class="round-button-handler">
+        <div class="round-button"><img src="/assets/images/switch.png"></img></div>
+        <div class="hover-info">Theme Switch</div>
+    </div>
+</div>
+<div id="rightdown-float-container">
+    <div id="music-player" class="round-button-handler">
+        <div class="round-button"><img src="/assets/images/music.png"></img></div>
+        <div class="hover-info">Music Player</div>
+    </div>
+</div>
+<link rel="stylesheet" href="/assets/css/default.css">
+<link rel="stylesheet" id="night-container">
+<link rel="stylesheet" id="theme-container">
+<div id="mask"></div>
+<script src="/assets/js/theme_data.js"></script>
+<script src="/assets/js/round_button.js"></script>
+<script src="/assets/js/theme_manager.js" defer></script>
+<script src="/assets/js/music_player.js"></script>
+<script src="/assets/js/scroll.js"></script>
+    </body>
+</html>

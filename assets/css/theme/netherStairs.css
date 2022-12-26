@@ -1,0 +1,9 @@
+:root {
+    --text-color-theme-first: #1d5268;
+    --text-color-theme-second: #061e28;
+    
+    --strip-color: #375a6c;
+    --background-color-theme: #0d3346ba;
+
+    --background-image: url(/assets/images/bg/netherStairs.jpg);
+}

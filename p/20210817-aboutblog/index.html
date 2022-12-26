@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>博客搭建随想 - sun123zxy's Blog</title>
+
+        <script src="/assets/thirds/jquery/jquery-3.5.1.min.js"></script>
+
+        <link rel="stylesheet" href="/assets/thirds/katex/katex.min.css">
+        <!-- The loading of KaTeX is deferred to speed up page rendering -->
+        <script defer src="/assets/thirds/katex/katex.min.js"></script>
+        <!-- To automatically render math in text elements, include the auto-render extension -->
+        <script defer src="/assets/thirds/katex/auto-render.min.js" onload="renderMathInElement(document.body)"></script>
+        
+        <script src="/assets/thirds/highlight/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script>
+    </head>
+    <body>
+        <div id="home">
+    <div id="main" class="panel panel-content">
+        <div class="post-body">
+    <div class="post-head">
+        <h1 id="post-title">博客搭建随想</h1>
+        <p class="abstract text-vice">
+            
+                Something about this blog.
+            
+        </p>
+    </div>
+    <div class="post-content"><h2 id="杂谈">杂谈</h2>
+<p>很早就在考虑自建博客的事情了。</p>
+<p>大概是 18 年吧，根据 OIer
+传统，打算开个博客存点模板和学习笔记。博客园广告少，dalao 多，还能自定义
+css/js 美化博客，<del>比隔壁 CSDN
+不知道高到哪里去了</del>，虽然不是很懂前端，但一看就来劲了，开始折腾。于是一个暑假
+OI 没啥进步，倒是写了一车 css/js
+修改自带皮肤，整出来一套多主题切换系统。之后又经过了数次大改重构，适配了
+markdown 编辑器，功能日趋完善。</p>
+<p>然而改版越来越多，代码越来越乱，寄人篱下也总有这样那样的不方便之处。想来想去，改别人的东西总是有极限的，与其无数次推倒重构，还不如自己去搭个新的。</p>
+<p>这么想着又咕了几个月（笑）</p>
+<p>直到 20 年晚些时候才开始认真思考这个问题。一开始也是打算在 Hexo 或
+Jekyll 上直接套个主题改改就好，毕竟是相当省事。只是某天在机房摸鱼学了波
+Jekyll
+后，突然一想——折腾博客也两三年了，懂的前端也不少了，又打算自己搭博客，要不干脆从零手撸个出来？</p>
+<p>于是又摸了大半年，差不多可以用了。</p>
+<p>以前用 markdown
+写的文章都搬过来了，其他的回头再说吧。<del>好像也没啥保留价值</del></p>
+<p>那么，之后就在这边安家了。博客园那边应该还会同步发布，但后续的更新和修改就不能保证了。</p>
+<p>还有，话说正式启用博客的时间正好是 8 月 17 日，这个时间...</p>
+<p><del>是妖妖梦、风神录正式版发售时间</del></p>
+<p><del>给国家省点子弹吧（</del></p>
+<h2 id="搭建随想">搭建随想</h2>
+<p>写写搭建过程中的一些小细节。</p>
+<p><a
+href="https://github.com/sun123zxy/blog-jekyll-code">博客源码</a></p>
+<h3 id="技术-功能">技术 &amp; 功能</h3>
+<ul>
+<li>基于 <a href="https://jekyllrb.com/">Jekyll</a> 和 <a
+href="https://github.com/mfenner/jekyll-pandoc">jekyll-pandoc</a>
+插件，配合自制小工具 <a
+href="https://github.com/sun123zxy/InlineMathSpaceKiller">InlineMathSpaceKiller</a>
+的静态 markdown 博客。</li>
+<li>全站 js 和主题切换动画效果使用 <a
+href="https://jquery.com/">JQuery</a>。</li>
+<li>支持锚点跳转的目录系统。</li>
+<li>数学公式使用 <a href="https://katex.org/">KaTeX</a> 渲染。</li>
+<li>代码高亮使用 <a href="https://highlightjs.org/">highlight.js</a>
+分析代码结构，配合魔改后的样式表实现。</li>
+<li>评论系统使用 <a
+href="https://github.com/giscus/giscus">Giscus</a>，基于 Github
+Discussions 的静态博客评论系统。</li>
+</ul>
+<h3 id="环境配置">环境配置</h3>
+<p>看仓库的 <code>README.md</code> 吧，Jekyll
+的官方文档也可以（其实是我有点忘了 :p）</p>
+<h3
+id="数学公式jekyll-pandoc-和-inlinemathspacekiller">数学公式、jekyll-pandoc
+和 InlineMathSpaceKiller</h3>
+<p><del>用插件干啥啊好好用原生 Jekyll Github
+自动帮你编译它不香吗</del></p>
+<p><del>本地我用 Typora 编写 markdown</del>（最近 Typora
+转付费了，现在用
+MarkText），希望能在上传过程中尽可能少地改动源文件，这包括内嵌的 <span
+class="math inline">\(\LaTeX\)</span> 数学公式。但 Jekyll 自带的
+markdown 解析器老是不好使，比如公式里的 <code>|</code>
+被解析成表格了之类各种怪七怪八的问题...</p>
+<p>于是想到了文档转换界的瑞士军刀——</p>
+<blockquote>
+<p>If you need to convert files from one markup format into another,
+pandoc is your swiss-army knife.</p>
+</blockquote>
+<p>Google 了一圈找到了 <a
+href="https://github.com/mfenner/jekyll-pandoc">jekyll-pandoc</a>，可以改用
+<a href="https://www.pandoc.org/">Pandoc</a> 的文档解析来渲染
+Markdown。</p>
+<h4 id="jekyll-pandoc-的具体参数配置">jekyll-pandoc 的具体参数配置</h4>
+<p>安装流程照着 README
+里给的方法走就好了。这里主要谈一谈参数的配置。</p>
+<p>jekyll-pandoc 文档里对 <code>_config.yml</code>
+里面的参数设置给出了一个例子（已经过时了）——</p>
+<blockquote>
+<p>Additional pandoc options can be provided in the Jekyll
+<code>_config.yml</code>:</p>
+<pre class="yaml"><code>pandoc:
+ extensions:
+   - normalize
+   - smart
+   - mathjax
+   - csl: _styles/apa.csl
+   - bibliography: bibliography/references.bib</code></pre>
+</blockquote>
+<p>这些参数等价于 Pandoc
+的命令行参数，即上述代码等价于文件渲染时执行</p>
+<pre class="bash"><code>pandoc target.md -o target.html --normalize --smart --mathjax --csl=_styles/apa.csl --bibliography=bibliography/references.bib</code></pre>
+<p>所以根据需求照着配就可以了。目前我用的配置是</p>
+<pre class="yaml"><code>plugins:
+   - jekyll-pandoc
+markdown: Pandoc
+pandoc:
+  extensions:
+    - mathjax
+    - no-highlight
+    - from: markdown-smart # disable smart quotes</code></pre>
+<ul>
+<li><p>开启 <code>--mathjax</code> 可以自动把 <code>$</code> 和
+<code>$$</code> 换成 <code>\(</code>、<code>\)</code> 和
+<code>\[</code>、<code>\]</code>，可以直接被 KaTeX 提供的
+<code>auto-render.min.js</code> 识别。</p></li>
+<li><p><code>--no-highlight</code> 打算用 highlight.js
+来做高亮，所以这里就不需要了。</p></li>
+<li><p>Pandoc 在转换 Markdown 时默认开启智能标点功能（参见 <a
+href="https://pandoc.org/MANUAL.html#typography">Pandoc 文档 -
+Extensions - Typography</a>），会把 <code>""</code>、<code>''</code>
+自动替换成 <code>“”</code>、<code>‘’</code>，所以用 <code>-smart</code>
+关闭这个插件。</p></li>
+</ul>
+<h4 id="spacekiller">SpaceKiller</h4>
+<p>还有一个小问题——Typora （MarkText 好像有这个问题）允许存在形如
+<code>$ \gcd(a,b) $</code> 这样 <code>$</code>
+旁边紧跟着空格的行内公式，但 Pandoc 解析不了。后来翻到这个 <a
+href="https://github.com/jgm/pandoc/issues/5672">issue</a>，官方似乎不打算修复这个问题，就写了个预处理工具删空格，新文章上传前
+<code>spacekiller</code> 一下就可以了。</p>
+<h3 id="文章存储结构">文章存储结构</h3>
+<p>没有使用 Jekyll 自带的 posts。</p>
+<p>我不喜欢这种图文分离的组织格式。文本和图片本来就同属一篇文章，强行把图片拆开放到
+<code>/assets/images/.../</code>
+里面既不合逻辑，又丧失了可移植性，匪夷所思。</p>
+<p>最后使用了打开 output 选项的 collection
+来实现，每篇文章都有一个独立的文件夹，包含 <code>index.md</code>
+（文本）和所需图片、文件等所有内容。<code>index.md</code>
+里面直接使用相对引用插入图片，和无博客状态下写作体验完全一致。</p>
+<h3 id="页面设计">页面设计</h3>
+<p>白模写好后就开肝 css，一开始完全参考之前魔改的博客园 iMetro
+主题整出来个高仿，后来有了一些更好的想法，比如把侧边栏做成 panel
+样式之类的，就成现在这个样子了。</p>
+<h3 id="图片预加载与缓存">图片预加载与缓存</h3>
+<p>国内访问 github.io
+很不稳定，背景图片加载特别慢，这几天在想怎么优化这个问题。</p>
+<p>最终的方案是在切换主题时等背景图片加载完毕后再向页面引入主题 css
+文件。这样在图片加载过程中，页面显示的 css
+尚处于无主题的默认状态，避免了背景白屏的现象出现。</p>
+<p>于是去学了波预加载技术，最开始用 Ajax 来做，结果写完发现 Firefox 和
+Chrome 都好像没看到 Ajax 的缓存一样，又在加载主题 css
+时重新请求了一次图片...</p>
+<p>无奈，改用 <code>new Image()</code> 来预加载。这回 Firefox 好使了，但
+Chrome
+还是很顽固。想了想，这玩意居然与浏览器有关，是不是因为不同浏览器默认缓存过期时间不一样导致的呢？于是去看了响应头，终于发现原来是测试时
+<code>jekyll serve</code> 出来的服务器根本没有设置响应的
+<code>Expires</code>，然后某些浏览器就默认重新加载了...</p>
+<p>那刚刚 Ajax 怕不是也是这个原因...</p>
+<p>看了一下 github.io 的响应头，有 10min 的
+<code>Expires</code>，应该部署上去就没问题了。</p>
+<p>其实就是个 HTTP Cache 的问题吧，看来理解还不够深刻...</p>
+<p>PS：Chrome 或 Firefox DevTool
+的节流（throttling）功能可以方便的模拟真实网络的限速和延迟，本地测试时非常方便。</p>
+<h3 id="背景的视差parallax效果">背景的视差（Parallax）效果</h3>
+<p>这个效果很早就做出来了，但现在才开始深入了解。</p>
+<p>用 js 监听 <code>scroll</code> 事件动态更新背景图片的
+<code>background-position</code>，以前只有 Firefox
+可以实现平滑的滚动，而 Chrome
+则会在滚动时白屏——这个问题在最近的版本才消失——总之，当时偷懒，把 Chrome
+的这个效果给关了。<del>所以根本没人发现有这个效果对吧</del></p>
+<p>监听 <code>scroll</code> 确实不是个好方法。Firefox 的 Console
+在该效果启用时会弹出警告，文档里说会与异步平移有冲突：</p>
+<ul>
+<li><p><a
+href="https://firefox-source-docs.mozilla.org/performance/scroll-linked_effects.html">Scroll-linked
+effects — Firefox Source Docs documentation</a></p></li>
+<li><p><a
+href="https://staktrace.com/spout/entry.php?id=834">Asynchronous
+scrolling in Firefox - staktrace.com</a></p></li>
+</ul>
+<p>——异步平移冲突的情况我没碰到，但不论是 Firefox 和 Chrome
+偶尔都会白屏倒是真的。第二篇文章里提到一种纯 CSS 实现 Parallax
+的方法，网上也有人说可以用 CSS 3D。</p>
+<p>以后再研究吧...</p>
+<h3 id="评论系统">评论系统</h3>
+<p>静态博客的评论要托管，之前感觉有点麻烦就没搞。后来想用基于 Github
+Issue 的现成轮子来做，但是不论是 <a
+href="https://github.com/gitalk/gitalk">Gitalk</a> 还是 <a
+href="https://github.com/imsun/gitment">Gitment</a> 都得把 OAuth 的
+Client Secret 写在前端，太不安全；后来发现有个叫 <a
+href="https://github.com/utterance/utterances">Utterances</a> 的基于
+Github Apps 的小众项目好像还行，然后就咕咕咕了半年（</p>
+<p>再后来就发现了 <a
+href="https://github.com/giscus/giscus">Giscus</a>，同样是基于 Github
+Apps，但和 Utterances 的不同之处在于其使用 Discussions 而不是 Issues
+来存储数据。个人认为 Discussions
+的设计更适合拿来做评论，总之就花了一个晚上实装了。</p>
+<p>但是适配动态切换的主题成了大麻烦。后来找到 <a
+href="https://github.com/giscus/giscus/issues/336">Issue #336</a>
+发现可以向 iframe 里 <code>postMessage</code> 改变参数。但需要注意的是
+<code>postMessage</code> 之前需先保证 iframe
+加载完毕，试图用<code>onload</code>
+事件，但测试发现开新界面时还是有概率失败。然后又 Google
+了一波发现正确的做法似乎是 iframe 自己发消息表明可以接受
+<code>postMessage</code>，于是就修好了。</p>
+<h2 id="画廊">画廊</h2>
+<p>（最早的版本没截图找不到了）</p>
+<figure>
+<img src="cnblogs-19.jpg"
+alt="博客园 - 第二次重构 - 基于 iMetro 皮肤的 mc01 和 youmu 主题 (2019)" />
+<figcaption aria-hidden="true">博客园 - 第二次重构 - 基于 iMetro 皮肤的
+mc01 和 youmu 主题 (2019)</figcaption>
+</figure>
+<figure>
+<img src="cnblogs-20.jpg"
+alt="博客园 - 第三次重构，本次重构后支持多皮肤 - 基于 simplememory 皮肤的 yay 主题和基于 iMetro 皮肤的 mc02 主题 (2020)" />
+<figcaption aria-hidden="true">博客园 - 第三次重构，本次重构后支持多皮肤
+- 基于 simplememory 皮肤的 yay 主题和基于 iMetro 皮肤的 mc02 主题
+(2020)</figcaption>
+</figure>
+<figure>
+<img src="github-pre.jpg" alt="白模阶段 (2020.12)" />
+<figcaption aria-hidden="true">白模阶段 (2020.12)</figcaption>
+</figure>
+<figure>
+<img src="github-imitate.jpg" alt="我高仿我自己.jpg (2021.02)" />
+<figcaption aria-hidden="true">我高仿我自己.jpg (2021.02)</figcaption>
+</figure>
+<figure>
+<img src="github-cur.jpg"
+alt="现在的样子 (2021.08, shooted in 2021.12)" />
+<figcaption aria-hidden="true">现在的样子 (2021.08, shooted in
+2021.12)</figcaption>
+</figure>
+</div>
+    <div class="post-tags text-vice" style="text-align: right">
+        <p>tags: 
+            
+                <a href= "/tags#站点相关" >站点相关</a>, 
+            
+                <a href= "/tags#Web" >Web</a>
+            
+        </p>
+        <p>posted on 2021/08/17 | last modified on 2022/07/12</p>
+    </div>
+    
+        <div class="post-comments">
+            <script src="https://giscus.app/client.js"
+                data-repo="sun123zxy/sun123zxy.github.io"
+                data-repo-id="MDEwOlJlcG9zaXRvcnkzMTAwMzQxNDc="
+                data-category="General"
+                data-category-id="DIC_kwDOEnq-484CQKFr"
+                data-mapping="pathname"
+                data-reactions-enabled="1"
+                data-emit-metadata="0"
+                data-input-position="bottom"
+                data-theme="light"
+                data-lang="en"
+                crossorigin="anonymous">
+            </script>
+        </div>
+    
+</div>
+    </div>
+    <div id="sidebar">
+        
+            <div id="sidebar-profile" class="panel">
+                
+                <div class="panel-content">
+                    <a href="/"><img class="avatar" src="/assets/images/pig.png"></img></a>
+<p class="nickname">sun123zxy</p>
+<div class="nav">
+    <a href="/">Home</a> | 
+    <a href="/p/aboutme">About</a> | 
+    <a href="/tags">Tags</a>
+</div>
+<div class="feed">
+    <img src="/assets/images/feed.png"></img>
+    <a href="/feed.xml">Atom Feed</a>
+</div>
+<p>Next Phantasm...</p>
+                </div>
+            </div>
+        
+            <div id="sidebar-news" class="panel">
+                
+                <h2 class="panel-title">News</h2>
+                
+                <div class="panel-content">
+                    <a href="https://info.flagcounter.com/1Zpv"><img src="https://s05.flagcounter.com/count2/1Zpv/bg_DDDDDD/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_3/labels_0/pageviews_1/flags_0/percent_0/" alt="Flag Counter" border="0"></a>
+
+<p>博客已迁移。访问 <a href="https://blog.sun123zxy.top">blog.sun123zxy.top</a> 获取更多信息。</p>
+                </div>
+            </div>
+        
+            <div id="sidebar-links" class="panel">
+                
+                <h2 class="panel-title">Links</h2>
+                
+                <div class="panel-content">
+                    
+<h3>My Friends</h3>
+<ul>
+    <li><a href="https://www.cnblogs.com/Railgunforever">吸取教训</a></li>
+    <li><a href="https://p9t6g.github.io">p9t6g</a></li>
+    <li><a href="https://tbyangz.github.io">TbYangZ</a></li>
+    <li><a href="https://www.cnblogs.com/ALANALLEN21LOVE28">CJ SYH</a></li>
+</ul>
+
+<h3>Related Sites</h3>
+<ul>
+    <li><a href="http://www.cnblogs.com/sun123zxy">博客园</a></li>
+    <li><a href="http://tools.sun123zxy.top">工具站</a></li>
+</ul>
+                </div>
+            </div>
+        
+            <div id="sidebar-tags" class="panel">
+                
+                <h2 class="panel-title">Tags</h2>
+                
+                <div class="panel-content">
+                    <ul>
+    
+    <li><a href= "/tags#OI" >OI</a></li>
+    
+    <li><a href= "/tags#数学" >数学</a></li>
+    
+    <li><a href= "/tags#高考" >高考</a></li>
+    
+    <li><a href= "/tags#题解" >题解</a></li>
+    
+    <li><a href= "/tags#原创题目" >原创题目</a></li>
+    
+    <li><a href= "/tags#学习笔记" >学习笔记</a></li>
+    
+    <li><a href= "/tags#意识流" >意识流</a></li>
+    
+    <li><a href= "/tags#游记" >游记</a></li>
+    
+    <li><a href= "/tags#Web" >Web</a></li>
+    
+    <li><a href= "/tags#站点相关" >站点相关</a></li>
+    
+    <li><a href= "/tags#Python" >Python</a></li>
+    
+</ul>
+                </div>
+            </div>
+        
+        
+            <div id="contents" class="panel"><h2 class="panel-title">Contents</h2>
+<div class="panel-content"></div>
+<script defer src="/assets/js/contents.js"></script></div>
+        
+    </div>
+    <div class="fclean"></div>
+    <div id="footer" class="text-vice">
+        <p>sun123zxy's Blog | Powered by Jekyll</p>
+    </div>
+</div>
+<div id="leftdown-float-container">
+    <div id="theme-info" class="round-button-handler">
+        <div class="round-button"><img src="/assets/images/info.png"></img></div>
+        <div class="hover-info">Theme Info</div>
+    </div>
+    <div id="theme-switch" class="round-button-handler">
+        <div class="round-button"><img src="/assets/images/switch.png"></img></div>
+        <div class="hover-info">Theme Switch</div>
+    </div>
+</div>
+<div id="rightdown-float-container">
+    <div id="music-player" class="round-button-handler">
+        <div class="round-button"><img src="/assets/images/music.png"></img></div>
+        <div class="hover-info">Music Player</div>
+    </div>
+</div>
+<link rel="stylesheet" href="/assets/css/default.css">
+<link rel="stylesheet" id="night-container">
+<link rel="stylesheet" id="theme-container">
+<div id="mask"></div>
+<script src="/assets/js/theme_data.js"></script>
+<script src="/assets/js/round_button.js"></script>
+<script src="/assets/js/theme_manager.js" defer></script>
+<script src="/assets/js/music_player.js"></script>
+<script src="/assets/js/scroll.js"></script>
+    </body>
+</html>

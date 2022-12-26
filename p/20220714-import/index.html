@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>关于 Python 的 import - sun123zxy's Blog</title>
+
+        <script src="/assets/thirds/jquery/jquery-3.5.1.min.js"></script>
+
+        <link rel="stylesheet" href="/assets/thirds/katex/katex.min.css">
+        <!-- The loading of KaTeX is deferred to speed up page rendering -->
+        <script defer src="/assets/thirds/katex/katex.min.js"></script>
+        <!-- To automatically render math in text elements, include the auto-render extension -->
+        <script defer src="/assets/thirds/katex/auto-render.min.js" onload="renderMathInElement(document.body)"></script>
+        
+        <script src="/assets/thirds/highlight/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script>
+    </head>
+    <body>
+        <div id="home">
+    <div id="main" class="panel panel-content">
+        <div class="post-body">
+    <div class="post-head">
+        <h1 id="post-title">关于 Python 的 import</h1>
+        <p class="abstract text-vice">
+            
+                __init__.py, sys.path, python -m and more...
+            
+        </p>
+    </div>
+    <div class="post-content"><p>好久以前就被 Python
+的相对与绝对导入所困扰。去年粗浅探究后自以为完全理解，近来又因
+<code>sys.path[0]</code> 和 <code>os.getcwd()</code>
+的不一致而刷新了认知...</p>
+<p>Python 官方文档 <a
+href="https://docs.python.org/3/reference/import.html">5. The import
+system — Python 3.10.5 documentation</a>
+当然是最好的学习指南，但全部看完对我来说还是有点难度。这里只选择一些要点讨论。</p>
+<h2 id="from-import">from import</h2>
+<p><code>import A</code>、<code>import A as B</code>、<code>from A import B</code>
+结构中，<code>A</code> 最小只能到 module。因此，只有使用
+<code>from import</code> 结构才可以单独获取 module
+里的属性。另外，相对引用必须使用 <code>from import</code> 结构。</p>
+<p><code>from module import *</code> 将导入 <code>module</code>
+中的所有成员（有单双下划线前导的成员除外）。对于 package 可在
+<code>__init__.py</code> 中定义
+<code>__all__ = ["module", "module", ...]</code>
+来手动控制的实际导入内容。</p>
+<h2 id="package-与-__init__.py">Package 与 __init__.py</h2>
+<p>Python 3.3 以后的 package 不再硬性需要
+<code>__init__.py</code>，普通文件夹等同于 <code>__init__.py</code>
+留空的 namespace package。（关于 regular package 和 namespace package
+的区别，参见 <a
+href="https://docs.python.org/3/reference/import.html#regular-packages">5.
+The import system — Python 3.10.5 documentation</a>）</p>
+<p><code>__init__.py</code> 的作用在于当我们直接导入一个 package
+的时候，实际上是执行了 <code>__init__.py</code>。换句话说，直接导入一个
+package 就是把它看做一个逻辑写在 <code>__init__.py</code> 里的
+module。</p>
+<p>需要注意的是，对于形如 <code>A.B.C</code>
+的导入，<code>A</code>、<code>A.B</code>、<code>A.B.C</code> 对应的
+<code>__init__.py</code> 都会被执行。也就是说，只要导入路径经过该
+package，该 package 的 <code>__init__.py</code> 就会被执行。</p>
+<h2 id="submodules">Submodules</h2>
+<blockquote>
+<p>When a submodule is loaded using any mechanism (e.g.
+<code>importlib</code> APIs, the <code>import</code> or
+<code>import-from</code> statements, or built-in
+<code>__import__()</code>) a binding is placed in the parent module’s
+namespace to the submodule object. For example, if package
+<code>spam</code> has a submodule <code>foo</code>, after importing
+<code>spam.foo</code>, <code>spam</code> will have an attribute
+<code>foo</code> which is bound to the submodule.</p>
+<p>...</p>
+<p>Given Python’s familiar name binding rules this might seem
+surprising, but it’s actually a fundamental feature of the import
+system. The invariant holding is that if you have
+<code>sys.modules['spam']</code> and
+<code>sys.modules['spam.foo']</code> (as you would after the above
+import), the latter must appear as the <code>foo</code> attribute of the
+former.</p>
+<p>— <a
+href="https://docs.python.org/3/reference/import.html#submodules">5. The
+import system — Python 3.10.5 documentation</a></p>
+</blockquote>
+<p>这是说，import 进来的 module 会被挂载到本 module 上作为其属性。</p>
+<p>这个性质可以弄出来很多看上去很奇怪的玩意儿，比如说自己导入自己后可以
+<code>me.me.me.me...</code> 无限嵌套之类的...</p>
+<hr />
+<p>另外，对于形如 <code>import A.B.C</code>
+的导入，<code>A</code>、<code>A.B</code>、<code>A.B.C</code>
+都会被挂载到本 module 上。然而，<code>from A.B import C</code>
+却只会挂载 <code>C</code>，而 <code>import A.B.C as D</code> 也只会挂载
+<code>D</code> ，即使 <code>A</code>、<code>A.B</code> 都被执行且都在
+<code>sys.modules</code> 里。</p>
+<h2 id="sys.path">sys.path</h2>
+<blockquote>
+<p>A list of strings that specifies the search path for modules.
+Initialized from the environment variable <a
+href="https://docs.python.org/3/using/cmdline.html#envvar-PYTHONPATH"><code>PYTHONPATH</code></a>,
+plus an installation-dependent default.</p>
+<p>As initialized upon program startup, the first item of this list,
+<code>path[0]</code>, is the directory containing the script that was
+used to invoke the Python interpreter. If the script directory is not
+available (e.g. if the interpreter is invoked interactively or if the
+script is read from standard input), <code>path[0]</code> is the empty
+string, which directs Python to search modules in the current directory
+first. Notice that the script directory is inserted <em>before</em> the
+entries inserted as a result of <a
+href="https://docs.python.org/3/using/cmdline.html#envvar-PYTHONPATH"><code>PYTHONPATH</code></a>.</p>
+<p>A program is free to modify this list for its own purposes. Only
+strings and bytes should be added to <a
+href="https://docs.python.org/3/library/sys.html#sys.path"
+title="sys.path"><code>sys.path</code></a>; all other data types are
+ignored during import.</p>
+<p>— <a href="https://docs.python.org/3/library/sys.html#sys.path">sys —
+System-specific parameters and functions — Python 3.10.5
+documentation</a></p>
+</blockquote>
+<p><code>sys.path</code> 是 Python 搜索 module
+的基准目录（即绝对导入）。其由环境变量 <code>PYTHONPATH</code>
+和一些默认路径（和安装环境有关，参见 <a
+href="https://docs.python.org/3/using/cmdline.html#envvar-PYTHONHOME">PYTHONHOME</a>）组成，而在运行
+script 时，<strong>script 的所在目录会被临时加入
+<code>sys.path[0]</code> 中</strong>。如果运行的并不是
+script（例如是交互式运行或从 stdin
+中读取脚本代码），<strong><code>sys.path[0]</code>
+则被设置为空字符串，代表当前工作目录</strong>。</p>
+<p><code>sys.path</code> 有优先级，排在前面的优先级高。</p>
+<hr />
+<p>需要特别注意的是，<strong>script
+的所在目录不是当前工作目录</strong>。例如，在 <code>D:\test</code>
+下执行</p>
+<pre class="bash"><code>python path/to/file.py</code></pre>
+<p>时，<code>sys.path[0]</code> 为
+<code>D:\test\path\to\file.py</code>，而当前工作目录则是
+<code>D:\test</code>（也即 <code>os.getcwd()</code>）。</p>
+<p>当前工作目录是 Python
+寻找其他文件时的基准路径，而所有绝对导入操作都只与 <code>sys.path</code>
+有关，两者是完全不同的。</p>
+<p><code>python -m</code> 的情况稍有不同，参见后文。</p>
+<h2 id="python--m">python -m</h2>
+<blockquote>
+<p>Search <a href="https://docs.python.org/3/library/sys.html#sys.path"
+title="sys.path"><code>sys.path</code></a> for the named module and
+execute its contents as the <a
+href="https://docs.python.org/3/library/__main__.html#module-__main__"
+title="__main__: The environment where top-level code is run. Covers command-line interfaces, import-time behavior, and ``__name__ == &#39;__main__&#39;``."><code>__main__</code></a>
+module.</p>
+<p>Since the argument is a <em>module</em> name, you must not give a
+file extension (<code>.py</code>). The module name should be a valid
+absolute Python module name, but the implementation may not always
+enforce this (e.g. it may allow you to use a name that includes a
+hyphen).</p>
+<p>Package names (including namespace packages) are also permitted. When
+a package name is supplied instead of a normal module, the interpreter
+will execute <code>&lt;pkg&gt;.__main__</code> as the main module. This
+behaviour is deliberately similar to the handling of directories and
+zipfiles that are passed to the interpreter as the script argument.</p>
+<blockquote>
+<p>Note</p>
+<p>This option cannot be used with built-in modules and extension
+modules written in C, since they do not have Python module files.
+However, it can still be used for precompiled modules, even if the
+original source file is not available.</p>
+</blockquote>
+<p>If this option is given, the first element of <a
+href="https://docs.python.org/3/library/sys.html#sys.argv"
+title="sys.argv"><code>sys.argv</code></a> will be the full path to the
+module file (while the module file is being located, the first element
+will be set to <code>"-m"</code>). As with the <a
+href="https://docs.python.org/3/using/cmdline.html#cmdoption-c"><code>-c</code></a>
+option, the current directory will be added to the start of <a
+href="https://docs.python.org/3/library/sys.html#sys.path"
+title="sys.path"><code>sys.path</code></a>.</p>
+<p><a
+href="https://docs.python.org/3/using/cmdline.html#cmdoption-I"><code>-I</code></a>
+option can be used to run the script in isolated mode where <a
+href="https://docs.python.org/3/library/sys.html#sys.path"
+title="sys.path"><code>sys.path</code></a> contains neither the current
+directory nor the user’s site-packages directory. All
+<code>PYTHON*</code> environment variables are ignored, too.</p>
+<p>Many standard library modules contain code that is invoked on their
+execution as a script. An example is the <a
+href="https://docs.python.org/3/library/timeit.html#module-timeit"
+title="timeit: Measure the execution time of small code snippets."><code>timeit</code></a>
+module:</p>
+<pre><code>python -m timeit -s &#39;setup here&#39; &#39;benchmarked code here&#39;
+python -m timeit -h # for details</code></pre>
+<p>Raises an <a
+href="https://docs.python.org/3/library/sys.html#auditing">auditing
+event</a> <code>cpython.run_module</code> with argument
+<code>module-name</code>.</p>
+<blockquote>
+<p>See also</p>
+<p><a
+href="https://docs.python.org/3/library/runpy.html#runpy.run_module"
+title="runpy.run_module"><code>runpy.run_module()</code></a></p>
+<p>Equivalent functionality directly available to Python code</p>
+</blockquote>
+<p><a href="https://www.python.org/dev/peps/pep-0338"><strong>PEP
+338</strong></a> – Executing modules as scripts</p>
+<p>Changed in version 3.1: Supply the package name to run a
+<code>__main__</code> submodule.</p>
+<p>Changed in version 3.4: namespace packages are also supported</p>
+<p>— <a
+href="https://docs.python.org/3/using/cmdline.html#cmdoption-m">1.
+Command line and environment — Python 3.10.5 documentation</a></p>
+</blockquote>
+<p>在 <code>sys.path</code> 指定的目录中寻找 module 并以
+<code>__main__</code> module 的身份执行指定 module。</p>
+<p>注意不要在名字后面加 <code>.py</code>，因为我们已经把执行的文件当作
+module 来看待。</p>
+<p>如果指定的是一个 Package name（即目录名），将会执行
+<code>&lt;pkg&gt;.__main__</code>（即
+<code>&lt;pkg&gt;/__main__.py</code>）。</p>
+<p>另外，如果使用
+<code>python -m a.b.module</code>，<code>sys.argv</code>
+的首位将被设置为被执行 module
+文件的<strong>完整路径</strong>（与之相对，<code>python a/b/module.py</code>
+中 <code>sys.argv[0]</code>
+将会是<strong>相对当前工作目录的路径</strong>，即
+<code>a/b/module.py</code>）；同时，<strong>当前工作目录</strong>会被加入
+<code>sys.path</code> 的首位。</p>
+<hr />
+<p><code>python -m A.B.module</code> 将顺次执行
+<code>A</code>、<code>A.B</code> 的 <code>__init__.py</code>，即使该
+module 没有任何导入行为。</p>
+<p><code>python -m</code> 对于直接执行 package
+内部的代码是必要的。若直接以 script 方式运行，一旦涉及到任何高于该
+script 所在目录（含该目录）的相对导入，Python 就会抛出如下错误：</p>
+<pre><code>ImportError: attempted relative import with no known parent package</code></pre>
+<p>而一个 module 也不能导入超过 <code>python -m</code>
+参数指定的最顶层结构的 module，否则会抛出错误：</p>
+<pre><code>ImportError: attempted relative import beyond top-level package</code></pre>
+<h2 id="sys.modules">sys.modules</h2>
+<blockquote>
+<p>The first place checked during import search is <a
+href="https://docs.python.org/3/library/sys.html#sys.modules"
+title="sys.modules"><code>sys.modules</code></a>. This mapping serves as
+a cache of all modules that have been previously imported, including the
+intermediate paths. So if <code>foo.bar.baz</code> was previously
+imported, <a
+href="https://docs.python.org/3/library/sys.html#sys.modules"
+title="sys.modules"><code>sys.modules</code></a> will contain entries
+for <code>foo</code>, <code>foo.bar</code>, and
+<code>foo.bar.baz</code>. Each key will have as its value the
+corresponding module object.</p>
+<p>During import, the module name is looked up in <a
+href="https://docs.python.org/3/library/sys.html#sys.modules"
+title="sys.modules"><code>sys.modules</code></a> and if present, the
+associated value is the module satisfying the import, and the process
+completes. However, if the value is <code>None</code>, then a <a
+href="https://docs.python.org/3/library/exceptions.html#ModuleNotFoundError"
+title="ModuleNotFoundError"><code>ModuleNotFoundError</code></a> is
+raised. If the module name is missing, Python will continue searching
+for the module.</p>
+<p><a href="https://docs.python.org/3/library/sys.html#sys.modules"
+title="sys.modules"><code>sys.modules</code></a> is writable. Deleting a
+key may not destroy the associated module (as other modules may hold
+references to it), but it will invalidate the cache entry for the named
+module, causing Python to search anew for the named module upon its next
+import. The key can also be assigned to <code>None</code>, forcing the
+next import of the module to result in a <a
+href="https://docs.python.org/3/library/exceptions.html#ModuleNotFoundError"
+title="ModuleNotFoundError"><code>ModuleNotFoundError</code></a>.</p>
+<p>Beware though, as if you keep a reference to the module object,
+invalidate its cache entry in <a
+href="https://docs.python.org/3/library/sys.html#sys.modules"
+title="sys.modules"><code>sys.modules</code></a>, and then re-import the
+named module, the two module objects will <em>not</em> be the same. By
+contrast, <a
+href="https://docs.python.org/3/library/importlib.html#importlib.reload"
+title="importlib.reload"><code>importlib.reload()</code></a> will reuse
+the <em>same</em> module object, and simply reinitialise the module
+contents by rerunning the module’s code.</p>
+<p>— <a
+href="https://docs.python.org/3/reference/import.html#the-module-cache">5.
+The import system — Python 3.10.5 documentation</a></p>
+</blockquote>
+<p><code>sys.modules</code> 是一个 <code>dict</code>，Python
+在导入之前会去检查 <code>sys.module</code> 里是否已经存有需要的 module
+的 module object。如果有，就直接用这个；如果值为
+<code>None</code>（意思是以前找过但没找到），就直接报错；如果该键值对不存在，就继续搜索过程。总之，<code>sys.modules</code>
+扮演了一个类似 cache 的角色。</p>
+<p>对于形如 <code>A.B.C</code> 的导入，Python 会顺次导入
+<code>A</code>、<code>A.B</code> 和 <code>A.B.C</code> 并把他们加入
+<code>sys.modules</code>。</p>
+<h2 id="参考">参考</h2>
+<ul>
+<li><p><a href="https://docs.python.org/3/reference/import.html">5. The
+import system — Python 3.10.5 documentation</a></p></li>
+<li><p><a href="https://docs.python.org/3/tutorial/modules.html">6.
+Modules — Python 3.10.5 documentation</a></p></li>
+<li><p><a
+href="https://www.pythonforthelab.com/blog/complete-guide-to-imports-in-python-absolute-relative-and-more/">Python
+for the Lab | Complete Guide to Imports in Python: Absolute, Relative,
+and More</a></p></li>
+<li><p><a
+href="https://www.cnblogs.com/gaowengang/p/8543840.html">Python
+包内的导入问题（绝对导入和相对导入） - Anonymous596 -
+博客园</a></p></li>
+</ul>
+</div>
+    <div class="post-tags text-vice" style="text-align: right">
+        <p>tags: 
+            
+                <a href= "/tags#Python" >Python</a>, 
+            
+                <a href= "/tags#学习笔记" >学习笔记</a>
+            
+        </p>
+        <p>posted on 2022/07/14 | last modified on 2022/07/14</p>
+    </div>
+    
+        <div class="post-comments">
+            <script src="https://giscus.app/client.js"
+                data-repo="sun123zxy/sun123zxy.github.io"
+                data-repo-id="MDEwOlJlcG9zaXRvcnkzMTAwMzQxNDc="
+                data-category="General"
+                data-category-id="DIC_kwDOEnq-484CQKFr"
+                data-mapping="pathname"
+                data-reactions-enabled="1"
+                data-emit-metadata="0"
+                data-input-position="bottom"
+                data-theme="light"
+                data-lang="en"
+                crossorigin="anonymous">
+            </script>
+        </div>
+    
+</div>
+    </div>
+    <div id="sidebar">
+        
+            <div id="sidebar-profile" class="panel">
+                
+                <div class="panel-content">
+                    <a href="/"><img class="avatar" src="/assets/images/pig.png"></img></a>
+<p class="nickname">sun123zxy</p>
+<div class="nav">
+    <a href="/">Home</a> | 
+    <a href="/p/aboutme">About</a> | 
+    <a href="/tags">Tags</a>
+</div>
+<div class="feed">
+    <img src="/assets/images/feed.png"></img>
+    <a href="/feed.xml">Atom Feed</a>
+</div>
+<p>Next Phantasm...</p>
+                </div>
+            </div>
+        
+            <div id="sidebar-news" class="panel">
+                
+                <h2 class="panel-title">News</h2>
+                
+                <div class="panel-content">
+                    <a href="https://info.flagcounter.com/1Zpv"><img src="https://s05.flagcounter.com/count2/1Zpv/bg_DDDDDD/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_3/labels_0/pageviews_1/flags_0/percent_0/" alt="Flag Counter" border="0"></a>
+
+<p>博客已迁移。访问 <a href="https://blog.sun123zxy.top">blog.sun123zxy.top</a> 获取更多信息。</p>
+                </div>
+            </div>
+        
+            <div id="sidebar-links" class="panel">
+                
+                <h2 class="panel-title">Links</h2>
+                
+                <div class="panel-content">
+                    
+<h3>My Friends</h3>
+<ul>
+    <li><a href="https://www.cnblogs.com/Railgunforever">吸取教训</a></li>
+    <li><a href="https://p9t6g.github.io">p9t6g</a></li>
+    <li><a href="https://tbyangz.github.io">TbYangZ</a></li>
+    <li><a href="https://www.cnblogs.com/ALANALLEN21LOVE28">CJ SYH</a></li>
+</ul>
+
+<h3>Related Sites</h3>
+<ul>
+    <li><a href="http://www.cnblogs.com/sun123zxy">博客园</a></li>
+    <li><a href="http://tools.sun123zxy.top">工具站</a></li>
+</ul>
+                </div>
+            </div>
+        
+            <div id="sidebar-tags" class="panel">
+                
+                <h2 class="panel-title">Tags</h2>
+                
+                <div class="panel-content">
+                    <ul>
+    
+    <li><a href= "/tags#OI" >OI</a></li>
+    
+    <li><a href= "/tags#数学" >数学</a></li>
+    
+    <li><a href= "/tags#高考" >高考</a></li>
+    
+    <li><a href= "/tags#题解" >题解</a></li>
+    
+    <li><a href= "/tags#原创题目" >原创题目</a></li>
+    
+    <li><a href= "/tags#学习笔记" >学习笔记</a></li>
+    
+    <li><a href= "/tags#意识流" >意识流</a></li>
+    
+    <li><a href= "/tags#游记" >游记</a></li>
+    
+    <li><a href= "/tags#Web" >Web</a></li>
+    
+    <li><a href= "/tags#站点相关" >站点相关</a></li>
+    
+    <li><a href= "/tags#Python" >Python</a></li>
+    
+</ul>
+                </div>
+            </div>
+        
+        
+            <div id="contents" class="panel"><h2 class="panel-title">Contents</h2>
+<div class="panel-content"></div>
+<script defer src="/assets/js/contents.js"></script></div>
+        
+    </div>
+    <div class="fclean"></div>
+    <div id="footer" class="text-vice">
+        <p>sun123zxy's Blog | Powered by Jekyll</p>
+    </div>
+</div>
+<div id="leftdown-float-container">
+    <div id="theme-info" class="round-button-handler">
+        <div class="round-button"><img src="/assets/images/info.png"></img></div>
+        <div class="hover-info">Theme Info</div>
+    </div>
+    <div id="theme-switch" class="round-button-handler">
+        <div class="round-button"><img src="/assets/images/switch.png"></img></div>
+        <div class="hover-info">Theme Switch</div>
+    </div>
+</div>
+<div id="rightdown-float-container">
+    <div id="music-player" class="round-button-handler">
+        <div class="round-button"><img src="/assets/images/music.png"></img></div>
+        <div class="hover-info">Music Player</div>
+    </div>
+</div>
+<link rel="stylesheet" href="/assets/css/default.css">
+<link rel="stylesheet" id="night-container">
+<link rel="stylesheet" id="theme-container">
+<div id="mask"></div>
+<script src="/assets/js/theme_data.js"></script>
+<script src="/assets/js/round_button.js"></script>
+<script src="/assets/js/theme_manager.js" defer></script>
+<script src="/assets/js/music_player.js"></script>
+<script src="/assets/js/scroll.js"></script>
+    </body>
+</html>

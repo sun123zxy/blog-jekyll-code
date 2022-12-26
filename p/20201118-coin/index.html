@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>CodeChef-LECOINS Little Elephant and Colored Coins 题解 - sun123zxy's Blog</title>
+
+        <script src="/assets/thirds/jquery/jquery-3.5.1.min.js"></script>
+
+        <link rel="stylesheet" href="/assets/thirds/katex/katex.min.css">
+        <!-- The loading of KaTeX is deferred to speed up page rendering -->
+        <script defer src="/assets/thirds/katex/katex.min.js"></script>
+        <!-- To automatically render math in text elements, include the auto-render extension -->
+        <script defer src="/assets/thirds/katex/auto-render.min.js" onload="renderMathInElement(document.body)"></script>
+        
+        <script src="/assets/thirds/highlight/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script>
+    </head>
+    <body>
+        <div id="home">
+    <div id="main" class="panel panel-content">
+        <div class="post-body">
+    <div class="post-head">
+        <h1 id="post-title">CodeChef-LECOINS Little Elephant and Colored Coins 题解</h1>
+        <p class="abstract text-vice">
+            
+                No abstract provided here.
+            
+        </p>
+    </div>
+    <div class="post-content"><p><a href="https://www.codechef.com/problems/LECOINS">CodeChef-LECOINS
+Little Elephant and Colored Coins</a></p>
+<blockquote>
+<p><strong>Little Elephant and Colored Coins</strong></p>
+<p>The Little Elephant from the Zoo of Lviv very likes coins. But most
+of all he likes colored coins.</p>
+<p>He has <strong>N</strong> types of coins, numbered from
+<strong>1</strong> to <strong>N</strong>, inclusive. The coin of the
+<strong>i</strong>-th type has the value <strong>Vi</strong> dollars and
+the color <strong>Ci</strong>. Note that he has infinite supply of each
+type of coins.</p>
+<p>The Little Elephant wants to make exactly <strong>S</strong> dollars
+using the coins. What is the maximal number of different colors he can
+use to make exactly <strong>S</strong> dollars using some of the coins
+he has? If it's impossible, output <strong>-1</strong>. Also note that
+the Little Elephant wants to know this for many values of
+<strong>S</strong>.</p>
+<p><strong>Input</strong></p>
+<p>The first line of the input contains a single integer
+<strong>N</strong>, denoting the number of types of coins. Each of the
+following <strong>N</strong> lines contains two space-separated integers
+<strong>Vi</strong> and <strong>Ci</strong>, denoting the value and the
+color of the coin of the <strong>i</strong>-th type. The next line
+contains a single integer <strong>Q</strong>, denoting the number of
+values of <strong>S</strong> to process. Each of the following
+<strong>Q</strong> lines contains a single integer <strong>S</strong>,
+denoting the coinage you should represent via given coins using maximum
+number of colors.</p>
+<p><strong>Output</strong></p>
+<p>For each value of <strong>S</strong> in the input, output the maximum
+number of different colors in the representation of <strong>S</strong>
+or <strong>-1</strong> if it is impossible to represent
+<strong>S</strong> via given coins.</p>
+<p><strong>Constraints</strong></p>
+<ul>
+<li><strong>1</strong> ≤ <strong>N</strong> ≤ <strong>30</strong></li>
+<li><strong>1</strong> ≤ <strong>Vi</strong> ≤ <strong>200000</strong>
+(<strong>2 * 10^5</strong>)</li>
+<li><strong>1</strong> ≤ <strong>Ci</strong> ≤
+<strong>10^9</strong></li>
+<li><strong>1</strong> ≤ <strong>Q</strong> ≤ <strong>200000</strong>
+(<strong>2 * 10^5</strong>)</li>
+<li><strong>1</strong> ≤ <strong>S</strong> ≤
+<strong>10^18</strong></li>
+</ul>
+<p><strong>Example</strong></p>
+<pre><code>Input:
+3
+2 1
+3 4
+4 4
+4
+1
+3
+5
+7
+Output:
+-1
+1
+2
+2</code></pre>
+<p><strong>Explanation</strong></p>
+<ul>
+<li>It is not possible to represent <strong>S = 1</strong> since every
+coin has value more than 1.</li>
+<li><strong>S = 3</strong> can only be represented using one coin of the
+second type, hence only one color is used in the representation.</li>
+<li><strong>S = 5</strong> can only be represented as <strong>2 +
+3</strong>, which leads to two colors used.</li>
+<li>For <strong>S = 7</strong> we have two representations as <strong>2
++ 2 + 3</strong> (with two colors used) and <strong>3 + 4</strong> (with
+one color used). Hence, the answer is 2.</li>
+</ul>
+</blockquote>
+<p>妙题啊。</p>
+<h2 id="可达性">可达性</h2>
+<p>如果有个 <span class="math inline">\(C_i \le 1\)</span>
+的SubTask的话会更容易想到正解。</p>
+<p>我们先不考虑颜色，只考虑是否能找到一种方案把硬币总面值凑成 <span
+class="math inline">\(S\)</span> 。</p>
+<p>有一种非常朴素的想法是从 <span class="math inline">\(0\)</span> 到
+<span class="math inline">\(S\)</span> 做可达性dp： <span
+class="math inline">\(f_{x+V_i} = f_{x+V_i} | f_x\)</span> ，不过因为
+<span class="math inline">\(S \le 10^{18}\)</span>
+，显然这是天方夜谭。</p>
+<p>可达性dp只有 <span class="math inline">\(0/1\)</span>
+两种状态，非常浪费；发现 <span class="math inline">\(V_i\)</span>
+的值域很小，这启示我们将 <span class="math inline">\(V_i\)</span>
+作为状态减少有效状态数。但究竟如何设置呢？</p>
+<p>这里是最巧妙的地方。不失一般性，设 <span class="math inline">\(V_1 =
+\min V_i\)</span> 。我们尝试把 <span class="math inline">\(V_1\)</span>
+孤立出来考虑。 <strong>假设</strong>保证过程中最终选择的总面额永远不会比
+<span class="math inline">\(S\)</span>
+大（换句话说，允许选择负数个硬币），那么只需知道硬币集合 <span
+class="math inline">\(V - \{ V_1 \}\)</span>
+中是否存在一种方案其总面值模 <span class="math inline">\(V_i\)</span> 与
+<span class="math inline">\(S\)</span> 同余即可。这样就只需对去掉 <span
+class="math inline">\(V_1\)</span> 的硬币集合做 <span
+class="math inline">\(1\)</span> 到 <span class="math inline">\(V_1-
+1\)</span> 的可达性dp就好了。</p>
+<p>考虑把前面那个假设干掉。之前提到 <span
+class="math inline">\(f\)</span> 只有 <span
+class="math inline">\(0/1\)</span>
+两种状态，明显可以再塞点东西进去。于是令 <span
+class="math inline">\(f_x\)</span> 为硬币集合 <span
+class="math inline">\(V - \{ V_1 \}\)</span> 中所有总面值模 <span
+class="math inline">\(V_1\)</span> 等于 <span
+class="math inline">\(x\)</span>
+的选择方案中最小的总面值。容易写出状态转移</p>
+<p><span class="math display">\[
+\mathrm{relax} \ f_{(x+V_i)\% V_1} \ \mathrm{by} \ f_x + V_i
+\]</span></p>
+<p>（ <span class="math inline">\(\%\)</span> 代表取模， <span
+class="math inline">\(\mathrm{relax} \ A \ \mathrm{by} \ B\)</span> 即
+<span class="math inline">\(A = \min(A,B)\)</span> ）</p>
+<p>这样一来，若 <span class="math inline">\(f_{S \% V_1} \le S\)</span>
+，那么 <span class="math inline">\(S\)</span> 就是可以被组成的。</p>
+<p>发现这个dp就是个最短路，形成了一个 <span class="math inline">\(|V| =
+V_1, |E| = (n-1) V_1\)</span> 的图。于是 Dijkstra
+一下就可以了。不过这个图还有更好的性质。</p>
+<p>首先，路径中边的顺序可以任意调换而不影响可达性和最短路，所以我们可以分开考虑每一种边的松弛。而一分开看就非常明朗了，根据数论常识，所有
+<span class="math inline">\(x\)</span> 到 <span class="math inline">\((x
++ V_i) \% m\)</span> 的边会在图上形成 <span
+class="math inline">\(\gcd(V_i, m)\)</span> 个大小为 <span
+class="math inline">\(\frac{V_1}{\gcd({V_i, m})}\)</span>
+的环，于是现在我们又可以分别考虑每一个环。只需从环上当前距离值最小的点绕环一圈就可以做到松弛了。于是现在预处理的时间复杂度是
+<span class="math inline">\(O(|E|) = O(nV_1)\)</span> ，比直接 Dijkstra
+少了个 <span class="math inline">\(\log\)</span> 。询问当然是 <span
+class="math inline">\(O(1)\)</span> 的。</p>
+<h2 id="考虑颜色">考虑颜色</h2>
+<p>把颜色放到dp状态里面去就好了。设 <span class="math inline">\(f_{x,
+c}\)</span> ，<span class="math inline">\(c\)</span>
+记录了选取的颜色种类数，其余与前述相同。</p>
+<p>比较懒，不写代码了。实在需要可以看官方题解。</p>
+<h2 id="参考">参考</h2>
+<p><a
+href="https://discuss.codechef.com/t/lecoins-editorial/1723">官方题解</a></p>
+<p><del>这篇题解基本上是官方题解的简化翻译版本</del></p>
+</div>
+    <div class="post-tags text-vice" style="text-align: right">
+        <p>tags: 
+            
+                <a href= "/tags#OI" >OI</a>, 
+            
+                <a href= "/tags#题解" >题解</a>
+            
+        </p>
+        <p>posted on 2020/11/18 | last modified on 2020/11/18</p>
+    </div>
+    
+        <div class="post-comments">
+            <script src="https://giscus.app/client.js"
+                data-repo="sun123zxy/sun123zxy.github.io"
+                data-repo-id="MDEwOlJlcG9zaXRvcnkzMTAwMzQxNDc="
+                data-category="General"
+                data-category-id="DIC_kwDOEnq-484CQKFr"
+                data-mapping="pathname"
+                data-reactions-enabled="1"
+                data-emit-metadata="0"
+                data-input-position="bottom"
+                data-theme="light"
+                data-lang="en"
+                crossorigin="anonymous">
+            </script>
+        </div>
+    
+</div>
+    </div>
+    <div id="sidebar">
+        
+            <div id="sidebar-profile" class="panel">
+                
+                <div class="panel-content">
+                    <a href="/"><img class="avatar" src="/assets/images/pig.png"></img></a>
+<p class="nickname">sun123zxy</p>
+<div class="nav">
+    <a href="/">Home</a> | 
+    <a href="/p/aboutme">About</a> | 
+    <a href="/tags">Tags</a>
+</div>
+<div class="feed">
+    <img src="/assets/images/feed.png"></img>
+    <a href="/feed.xml">Atom Feed</a>
+</div>
+<p>Next Phantasm...</p>
+                </div>
+            </div>
+        
+            <div id="sidebar-news" class="panel">
+                
+                <h2 class="panel-title">News</h2>
+                
+                <div class="panel-content">
+                    <a href="https://info.flagcounter.com/1Zpv"><img src="https://s05.flagcounter.com/count2/1Zpv/bg_DDDDDD/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_3/labels_0/pageviews_1/flags_0/percent_0/" alt="Flag Counter" border="0"></a>
+
+<p>博客已迁移。访问 <a href="https://blog.sun123zxy.top">blog.sun123zxy.top</a> 获取更多信息。</p>
+                </div>
+            </div>
+        
+            <div id="sidebar-links" class="panel">
+                
+                <h2 class="panel-title">Links</h2>
+                
+                <div class="panel-content">
+                    
+<h3>My Friends</h3>
+<ul>
+    <li><a href="https://www.cnblogs.com/Railgunforever">吸取教训</a></li>
+    <li><a href="https://p9t6g.github.io">p9t6g</a></li>
+    <li><a href="https://tbyangz.github.io">TbYangZ</a></li>
+    <li><a href="https://www.cnblogs.com/ALANALLEN21LOVE28">CJ SYH</a></li>
+</ul>
+
+<h3>Related Sites</h3>
+<ul>
+    <li><a href="http://www.cnblogs.com/sun123zxy">博客园</a></li>
+    <li><a href="http://tools.sun123zxy.top">工具站</a></li>
+</ul>
+                </div>
+            </div>
+        
+            <div id="sidebar-tags" class="panel">
+                
+                <h2 class="panel-title">Tags</h2>
+                
+                <div class="panel-content">
+                    <ul>
+    
+    <li><a href= "/tags#OI" >OI</a></li>
+    
+    <li><a href= "/tags#数学" >数学</a></li>
+    
+    <li><a href= "/tags#高考" >高考</a></li>
+    
+    <li><a href= "/tags#题解" >题解</a></li>
+    
+    <li><a href= "/tags#原创题目" >原创题目</a></li>
+    
+    <li><a href= "/tags#学习笔记" >学习笔记</a></li>
+    
+    <li><a href= "/tags#意识流" >意识流</a></li>
+    
+    <li><a href= "/tags#游记" >游记</a></li>
+    
+    <li><a href= "/tags#Web" >Web</a></li>
+    
+    <li><a href= "/tags#站点相关" >站点相关</a></li>
+    
+    <li><a href= "/tags#Python" >Python</a></li>
+    
+</ul>
+                </div>
+            </div>
+        
+        
+            <div id="contents" class="panel"><h2 class="panel-title">Contents</h2>
+<div class="panel-content"></div>
+<script defer src="/assets/js/contents.js"></script></div>
+        
+    </div>
+    <div class="fclean"></div>
+    <div id="footer" class="text-vice">
+        <p>sun123zxy's Blog | Powered by Jekyll</p>
+    </div>
+</div>
+<div id="leftdown-float-container">
+    <div id="theme-info" class="round-button-handler">
+        <div class="round-button"><img src="/assets/images/info.png"></img></div>
+        <div class="hover-info">Theme Info</div>
+    </div>
+    <div id="theme-switch" class="round-button-handler">
+        <div class="round-button"><img src="/assets/images/switch.png"></img></div>
+        <div class="hover-info">Theme Switch</div>
+    </div>
+</div>
+<div id="rightdown-float-container">
+    <div id="music-player" class="round-button-handler">
+        <div class="round-button"><img src="/assets/images/music.png"></img></div>
+        <div class="hover-info">Music Player</div>
+    </div>
+</div>
+<link rel="stylesheet" href="/assets/css/default.css">
+<link rel="stylesheet" id="night-container">
+<link rel="stylesheet" id="theme-container">
+<div id="mask"></div>
+<script src="/assets/js/theme_data.js"></script>
+<script src="/assets/js/round_button.js"></script>
+<script src="/assets/js/theme_manager.js" defer></script>
+<script src="/assets/js/music_player.js"></script>
+<script src="/assets/js/scroll.js"></script>
+    </body>
+</html>

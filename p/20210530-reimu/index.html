@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>原创生物遗传大题 - 红白紫薇 - sun123zxy's Blog</title>
+
+        <script src="/assets/thirds/jquery/jquery-3.5.1.min.js"></script>
+
+        <link rel="stylesheet" href="/assets/thirds/katex/katex.min.css">
+        <!-- The loading of KaTeX is deferred to speed up page rendering -->
+        <script defer src="/assets/thirds/katex/katex.min.js"></script>
+        <!-- To automatically render math in text elements, include the auto-render extension -->
+        <script defer src="/assets/thirds/katex/auto-render.min.js" onload="renderMathInElement(document.body)"></script>
+        
+        <script src="/assets/thirds/highlight/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script>
+    </head>
+    <body>
+        <div id="home">
+    <div id="main" class="panel panel-content">
+        <div class="post-body">
+    <div class="post-head">
+        <h1 id="post-title">原创生物遗传大题 - 红白紫薇</h1>
+        <p class="abstract text-vice">
+            
+                文化课整活计划第一弹（
+            
+        </p>
+    </div>
+    <div class="post-content"><h2 id="problem">Problem</h2>
+<p>近日，由国家花卉工程技术研究中心与北京林业大学紫薇课题组培育的紫薇新品种“灵梦”通过现场审定。“灵梦”由
+Dallas Red 与 Velma's Royal Delight
+两个紫薇品种的杂交后代选育得到，为直立株型，开复色花，红色为底、白色镶边。
+现某研究小组对“紫薇”【注】的花色遗传展开研究。</p>
+<p><img src="reimu01.jpg" alt="reimu01" /><img src="reimu02.jpg"
+alt="reimu02" /></p>
+<p>研究小组选取红色纯合“紫薇”与白色纯合“紫薇”作为亲本杂交，<span
+class="math inline">\(F_1\)</span> 全为粉红色“紫薇”。令 <span
+class="math inline">\(F_1\)</span> 自交，<span
+class="math inline">\(F_2\)</span> 各表现型比例如表所示。</p>
+<table>
+<thead>
+<tr class="header">
+<th>红色</th>
+<th>粉红色</th>
+<th>红底白边</th>
+<th>粉红底白边</th>
+<th>白色</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>3</td>
+<td>6</td>
+<td>1</td>
+<td>2</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+<p>已知“紫薇”的花色由两对独立遗传的等位基因（<span
+class="math inline">\(\mathrm{A}\)</span> 与 <span
+class="math inline">\(\mathrm{a}\)</span>、<span
+class="math inline">\(\mathrm{B}\)</span> 与 <span
+class="math inline">\(\mathrm{b}\)</span>）控制，其中 <span
+class="math inline">\(\mathrm{A}\)</span> 与 <span
+class="math inline">\(\mathrm{a}\)</span> 控制“紫薇”的底色。</p>
+<ol type="1">
+<li>“紫薇”花色遗传满足 <code>________</code> 定律，
+<code>______________</code>
+（填细胞周期阶段）体现了这一定律（不考虑交叉互换）。</li>
+<li>已知一种白色“紫薇”基因型为 <span
+class="math inline">\(\mathrm{aabb}\)</span>，现将该“紫薇”与 <span
+class="math inline">\(F_2\)</span>​ 粉红底白边“紫薇”杂交，子代表现型有
+<code>____</code> 种。</li>
+<li>实验中亲本基因型分别为 <code>______________</code> ；<span
+class="math inline">\(F_2\)</span> 所有表现型中性状可以稳定遗传的有
+<code>______________</code> ；<span class="math inline">\(F_2\)</span>
+白色“紫薇”中纯合子与杂合子的比例为 <code>______</code> 。</li>
+<li>研究小组尝试让 <span class="math inline">\(F_2\)</span>
+所有粉红色“紫薇”自由交配，得到类似“灵梦”的红底白边“紫薇”。推测红底白边“紫薇”在子代中的占比为
+<code>____</code> 。</li>
+</ol>
+<p>【注】紫薇的遗传多样性非常丰富，题目中“紫薇”的花色遗传方式纯属虚构，还请周知。</p>
+<h2 id="answer">Answer</h2>
+<pre><code>(1) 自由组合 第一次减数分裂后期
+(2) 2
+(3) AABB和aabb 红底白边“紫薇”和白色“紫薇” 1:1
+(4) 1/36</code></pre>
+<h2 id="solution">Solution</h2>
+<ol type="1">
+<li><p>问送分。</p>
+<p>由
+<code>红色纯合“紫薇”与白色纯合“紫薇”作为亲本杂交， F_1 全为粉红色“紫薇”</code>，又由
+<code>A 与 a 控制“紫薇”的底色</code>，可以判断 <span
+class="math inline">\(\mathrm{Aa}\)</span> 表现为粉红色，而 <span
+class="math inline">\(\mathrm{AA}\)</span> 或 <span
+class="math inline">\(\mathrm{aa}\)</span> 表现为红色或白色。</p>
+<p>观察 <span class="math inline">\(F_2\)</span>​
+表现型比例，初步发现其具有典型 <span
+class="math inline">\(\mathrm{AaBb}\)</span>
+性状分离的特征，于是可以断定 <span class="math inline">\(F_1\)</span>​
+粉红色“紫薇”的基因型为 <span
+class="math inline">\(\mathrm{AaBb}\)</span>。</p>
+<p>现尝试解释比例。因为 <span class="math inline">\(\mathrm{A}\)</span>​​​
+与 <span class="math inline">\(\mathrm{a}\)</span>​​​
+控制的花色性状与是否杂合有关，故容易想到按“<span
+class="math inline">\(\mathrm{A}\)</span>​​​ 与 <span
+class="math inline">\(\mathrm{a}\)</span>​​ 是否杂合”的标准拆分 <span
+class="math inline">\(9:3:3:1\)</span>​，得到 <span
+class="math inline">\((3+6):(1+2):3:1\)</span>​，几乎拿到 <span
+class="math inline">\(F_2\)</span>​ 的性状比。推测 <span
+class="math inline">\(F_2\)</span>​​​​​​ 白色“紫薇”比例 <span
+class="math inline">\(4 = 3+1 = \mathrm{aaB?} +
+\mathrm{aabb}\)</span>，而根据 2 问题干
+<code>已知一种白色“紫薇”基因型为 aabb</code>
+也确认了该推测。进一步对照表格即可得到题眼：</p>
+<ul>
+<li><span class="math inline">\(\mathrm{AA}\)</span> 表现为红色，<span
+class="math inline">\(\mathrm{Aa}\)</span> 表现为粉红色，<span
+class="math inline">\(\mathrm{aa}\)</span> 表现为白色；</li>
+<li><span class="math inline">\(\mathrm{B?}\)</span> 表现为纯色，<span
+class="math inline">\(\mathrm{bb}\)</span> 表现为有白边；</li>
+<li>无法区分白色和“白底白边”。</li>
+</ul></li>
+<li><p>问，粉红底白边“紫薇”的基因型为 <span
+class="math inline">\(\mathrm{Aabb}\)</span>，与 <span
+class="math inline">\(\mathrm{aabb}\)</span> 测交得到粉红底白边 <span
+class="math inline">\((\mathrm{Aabb})\)</span>、白色 <span
+class="math inline">\((\mathrm{aabb})\)</span> 两种后代。</p></li>
+<li><p>问，亲本基因型分别为 <span
+class="math inline">\(\mathrm{AABB}\)</span>​ 和 <span
+class="math inline">\(\mathrm{aabb}\)</span>​； <span
+class="math inline">\(F_2\)</span>​ 红色 <span
+class="math inline">\((\mathrm{AABB}\)</span>​, <span
+class="math inline">\(\mathrm{AABb})\)</span>​、粉红色 <span
+class="math inline">\((\mathrm{AaBB},
+\mathrm{AaBb})\)</span>​、粉红底白边 <span
+class="math inline">\(\mathrm{(Aabb)}\)</span>​
+均可能发生性状分离，而红底白边 <span
+class="math inline">\(\mathrm{(AAbb)}\)</span>​ 和白色 <span
+class="math inline">\(\mathrm{(aaBB, aaBb, aabb)}\)</span>​
+可以稳定遗传；根据性状分离比，<span class="math inline">\(F_2\)</span>​
+白色“紫薇”的基因型构成为 <span
+class="math inline">\(\mathrm{aaBB}:\mathrm{aaBb}:\mathrm{aabb}=1:2:1\)</span>​，易得纯杂比为
+<span class="math inline">\(1:1\)</span>​。</p></li>
+<li><p>问，<span class="math inline">\(F_2\)</span>​​​ 粉红色“紫薇” <span
+class="math inline">\(( \frac{1}{3} \mathrm{AaBB}, \frac{2}{3}
+\mathrm{AaBb})\)</span>​​ 自由交配，要求得到红底白边“紫薇” <span
+class="math inline">\((\mathrm{AAbb})\)</span>​​。单独考虑每对基因。对
+<span class="math inline">\(\mathrm{A}\)</span>​​ 与 <span
+class="math inline">\(\mathrm{a}\)</span>​​，根据性状分离比，红底概率为
+<span class="math inline">\(\frac{1}{4}\)</span>​​ 。对 <span
+class="math inline">\(\mathrm{B}\)</span>​​ 与 <span
+class="math inline">\(\mathrm{b}\)</span>​​，使用配子法，得 <span
+class="math inline">\(( \frac{2}{3} \mathrm{B}, \frac{1}{3}
+\mathrm{b})\)</span>，于是白边概率为 <span
+class="math inline">\(\frac{1}{3} \times \frac{1}{3} =
+\frac{1}{9}\)</span> ，综上得到红底白边“紫薇”的概率为 <span
+class="math inline">\(\frac{1}{4} \times \frac{1}{9} =
+\frac{1}{36}\)</span>​ 。</p></li>
+</ol>
+</div>
+    <div class="post-tags text-vice" style="text-align: right">
+        <p>tags: 
+            
+                <a href= "/tags#高考" >高考</a>, 
+            
+                <a href= "/tags#原创题目" >原创题目</a>
+            
+        </p>
+        <p>posted on 2021/05/30 | last modified on 2021/05/30</p>
+    </div>
+    
+        <div class="post-comments">
+            <script src="https://giscus.app/client.js"
+                data-repo="sun123zxy/sun123zxy.github.io"
+                data-repo-id="MDEwOlJlcG9zaXRvcnkzMTAwMzQxNDc="
+                data-category="General"
+                data-category-id="DIC_kwDOEnq-484CQKFr"
+                data-mapping="pathname"
+                data-reactions-enabled="1"
+                data-emit-metadata="0"
+                data-input-position="bottom"
+                data-theme="light"
+                data-lang="en"
+                crossorigin="anonymous">
+            </script>
+        </div>
+    
+</div>
+    </div>
+    <div id="sidebar">
+        
+            <div id="sidebar-profile" class="panel">
+                
+                <div class="panel-content">
+                    <a href="/"><img class="avatar" src="/assets/images/pig.png"></img></a>
+<p class="nickname">sun123zxy</p>
+<div class="nav">
+    <a href="/">Home</a> | 
+    <a href="/p/aboutme">About</a> | 
+    <a href="/tags">Tags</a>
+</div>
+<div class="feed">
+    <img src="/assets/images/feed.png"></img>
+    <a href="/feed.xml">Atom Feed</a>
+</div>
+<p>Next Phantasm...</p>
+                </div>
+            </div>
+        
+            <div id="sidebar-news" class="panel">
+                
+                <h2 class="panel-title">News</h2>
+                
+                <div class="panel-content">
+                    <a href="https://info.flagcounter.com/1Zpv"><img src="https://s05.flagcounter.com/count2/1Zpv/bg_DDDDDD/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_3/labels_0/pageviews_1/flags_0/percent_0/" alt="Flag Counter" border="0"></a>
+
+<p>博客已迁移。访问 <a href="https://blog.sun123zxy.top">blog.sun123zxy.top</a> 获取更多信息。</p>
+                </div>
+            </div>
+        
+            <div id="sidebar-links" class="panel">
+                
+                <h2 class="panel-title">Links</h2>
+                
+                <div class="panel-content">
+                    
+<h3>My Friends</h3>
+<ul>
+    <li><a href="https://www.cnblogs.com/Railgunforever">吸取教训</a></li>
+    <li><a href="https://p9t6g.github.io">p9t6g</a></li>
+    <li><a href="https://tbyangz.github.io">TbYangZ</a></li>
+    <li><a href="https://www.cnblogs.com/ALANALLEN21LOVE28">CJ SYH</a></li>
+</ul>
+
+<h3>Related Sites</h3>
+<ul>
+    <li><a href="http://www.cnblogs.com/sun123zxy">博客园</a></li>
+    <li><a href="http://tools.sun123zxy.top">工具站</a></li>
+</ul>
+                </div>
+            </div>
+        
+            <div id="sidebar-tags" class="panel">
+                
+                <h2 class="panel-title">Tags</h2>
+                
+                <div class="panel-content">
+                    <ul>
+    
+    <li><a href= "/tags#OI" >OI</a></li>
+    
+    <li><a href= "/tags#数学" >数学</a></li>
+    
+    <li><a href= "/tags#高考" >高考</a></li>
+    
+    <li><a href= "/tags#题解" >题解</a></li>
+    
+    <li><a href= "/tags#原创题目" >原创题目</a></li>
+    
+    <li><a href= "/tags#学习笔记" >学习笔记</a></li>
+    
+    <li><a href= "/tags#意识流" >意识流</a></li>
+    
+    <li><a href= "/tags#游记" >游记</a></li>
+    
+    <li><a href= "/tags#Web" >Web</a></li>
+    
+    <li><a href= "/tags#站点相关" >站点相关</a></li>
+    
+    <li><a href= "/tags#Python" >Python</a></li>
+    
+</ul>
+                </div>
+            </div>
+        
+        
+            <div id="contents" class="panel"><h2 class="panel-title">Contents</h2>
+<div class="panel-content"></div>
+<script defer src="/assets/js/contents.js"></script></div>
+        
+    </div>
+    <div class="fclean"></div>
+    <div id="footer" class="text-vice">
+        <p>sun123zxy's Blog | Powered by Jekyll</p>
+    </div>
+</div>
+<div id="leftdown-float-container">
+    <div id="theme-info" class="round-button-handler">
+        <div class="round-button"><img src="/assets/images/info.png"></img></div>
+        <div class="hover-info">Theme Info</div>
+    </div>
+    <div id="theme-switch" class="round-button-handler">
+        <div class="round-button"><img src="/assets/images/switch.png"></img></div>
+        <div class="hover-info">Theme Switch</div>
+    </div>
+</div>
+<div id="rightdown-float-container">
+    <div id="music-player" class="round-button-handler">
+        <div class="round-button"><img src="/assets/images/music.png"></img></div>
+        <div class="hover-info">Music Player</div>
+    </div>
+</div>
+<link rel="stylesheet" href="/assets/css/default.css">
+<link rel="stylesheet" id="night-container">
+<link rel="stylesheet" id="theme-container">
+<div id="mask"></div>
+<script src="/assets/js/theme_data.js"></script>
+<script src="/assets/js/round_button.js"></script>
+<script src="/assets/js/theme_manager.js" defer></script>
+<script src="/assets/js/music_player.js"></script>
+<script src="/assets/js/scroll.js"></script>
+    </body>
+</html>

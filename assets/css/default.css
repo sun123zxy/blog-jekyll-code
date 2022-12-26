@@ -1,0 +1,289 @@
+:root {
+    --text-color: #222;
+    --text-color-vice: #666;
+    --text-color-title: #eee;
+
+    --text-color-theme-first: #000;
+    --text-color-theme-second: #444;
+
+    --strip-color: #0d0d0d;
+    --shadow-color: #aeaeae;
+    --background-color-theme: #222222ad;
+    --background-color: #ffffffc9;
+
+    --background-image: radial-gradient(#444,#000);
+    --background-postion: 0% 0%;
+
+    --highlight-color-comment: #004000;
+    --highlight-color-string: var(--text-color-theme-first);
+  }
+
+/*
+.horizontal-list{
+    padding: 0;
+    margin: 0;
+}
+.horizontal-list a{
+    text-decoration: none;
+}
+.horizontal-list li{
+    list-style: none;
+    float: left;
+}*/
+
+/*Universal*/
+.fclean{
+    clear: both; /*清除浮动*/
+}
+img{
+    max-width: 100%; /*防止图片溢出*/
+}
+a{
+    color: var(--text-color-theme-first);
+}
+a:hover{
+    color: var(--text-color-theme-second);
+}
+.text-vice{
+    color: var(--text-color-vice);
+    font-size: 90%;
+    line-height: 90%;
+}
+.post-body figcaption{
+    color: var(--text-color-vice);
+    font-size: 95%;
+}
+
+.panel{
+    box-shadow: 0 0 25px black;
+}
+.panel-title{
+    background-color: var(--background-color-theme);
+    margin: 0;
+    padding: 10px 0px 10px 0px;
+    text-align: center;
+    color: var(--text-color-title);
+}
+.panel-content{
+    background-color: var(--background-color);
+    padding: 10px 20px 20px 20px;
+    overflow-x: auto;
+}
+
+/*round buttons, using flex(?)*/
+#leftdown-float-container{
+    position: fixed;
+    left: 20px;
+    bottom: 15px;
+    z-index: 233;
+}
+#rightdown-float-container{
+    position: fixed;
+    right: 25px;
+    bottom: 15px;
+    z-index: 233;
+}
+.round-button-handler {
+    display: flex;
+    align-items: center;
+    height: 65px;
+}
+#rightdown-float-container .round-button-handler {
+    flex-direction: row-reverse;
+}
+.music-player-activated .hover-info{
+    align-self: flex-end;
+}
+.music-player-activated .round-button{
+    background-color: var(--background-color-theme);
+    box-shadow: 0 0 30px 10px var(--background-color-theme);
+    animation: music-player-button-activated 10s infinite;
+    animation-timing-function: linear;
+}
+@keyframes music-player-button-activated {
+    from {transform: rotateZ(0deg);}
+    to {transform: rotateZ(360deg);}
+}
+
+.round-button{
+    background-color: var(--background-color);
+    box-shadow: 0 0 8px var(--strip-color);
+    border-radius: 50%;
+    padding: 10px;
+}
+.round-button img{
+    display: block; /*ignore indent*/
+    width: 35px;
+    height: 35px;
+}
+.round-button:hover{
+    background-color: var(--background-color-theme);
+}
+.hover-info{
+    float: left;
+    background-color: var(--background-color);
+    box-shadow: 0 0 5px var(--text-color-theme-second);
+    border-radius: 5px;
+    padding: 8px 15px 8px 15px;
+    margin: 0 15px 0 15px; 
+}
+
+body{
+    background-image: var(--background-image);
+    background-position: var(--background-postion);
+    background-size: cover;
+    background-attachment: fixed; /*固定背景*/
+    color: var(--text-color);
+}
+#home{
+    margin: 15px auto;
+    width: 80%;
+    min-width: 900px;
+}
+#sidebar{
+    float: left;
+    width: 280px;
+}
+#sidebar .panel{
+    margin-bottom: 20px;
+}
+#main{
+    float: right;
+    width: calc(100% - 410px);
+    padding: 20px 60px 20px 40px;
+}
+#footer{
+    border-top: 2px solid var(--strip-color);
+    margin-top: 50px;
+    text-align: center;
+    color: #bbb;
+}
+
+/*post-body*/
+.post-content{
+    line-height: 23px;
+}
+.post-head{
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+.post-tags{
+    margin-top: 25px;
+}
+.post-body h2 {
+    background-image: linear-gradient(to right,var(--strip-color),#0000);
+    padding: 10px 0px 13px 20px;
+    border-radius: 10px;
+    color: var(--text-color-title);
+    margin: 0px 0px -2px -10px;
+}
+.post-body blockquote {
+    border-left: 6px solid var(--strip-color);
+    padding: 5px 35px 10px 35px;
+    margin: 20px 0 20px 10px;
+    border-radius: 5px;
+    box-shadow: 0 1px 10px var(--shadow-color);
+}
+/*code shell*/
+pre{
+    border: 5px solid var(--strip-color);
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 0 5px var(--shadow-color);
+    overflow-x: auto;
+}
+/*inline code*/
+code{
+    font-family: "Consolas", sans-serif;
+    border-radius: 7px;
+    padding: 0px 5px 0px 5px;
+    box-shadow: 0 0px 5px var(--shadow-color);
+    border: 1.5px solid var(--strip-color);
+  }
+/*code in pre*/
+pre code{
+    border: unset;
+    border-radius: unset;
+    box-shadow: unset;
+    padding: unset;
+}
+/*code highlight*/
+.hljs-addition,
+.hljs-attribute,
+.hljs-bullet,
+.hljs-link,
+.hljs-section,
+.hljs-string,
+.hljs-symbol,
+.hljs-template-variable,
+.hljs-variable{
+    color: var(--highlight-color-string); /*customize*/
+}
+.hljs-comment,
+.hljs-deletion,
+.hljs-meta,
+.hljs-quote {
+    color:var(--highlight-color-comment); /*customize*/
+}
+.hljs-keyword,
+.hljs-name,
+.hljs-section,
+.hljs-selector-tag,
+.hljs-strong,
+.hljs-type{
+    color: var(--text-color-theme-first);
+    font-weight: bold;
+}
+.hljs-emphasis {
+    font-style:italic;
+} 
+
+/*---modules---*/
+#sidebar-profile .panel-content{
+    text-align: center;
+    padding-top: 20px;
+}
+#sidebar-profile .avatar {
+    width: 61%;
+    border: 3px solid var(--strip-color);
+    border-radius: 50%;
+    padding: 10px;
+    background-image: radial-gradient(var(--background-color) 60%, var(--strip-color) 100%);
+}
+#sidebar-profile .nickname {
+    font-size: 110%;
+    font-weight: bold;
+    margin-top: 6px;
+    margin-bottom: 10px;
+}
+#sidebar-profile .nav{
+    color: var(--text-color-vice);
+}
+#sidebar-profile .feed{
+    margin-top: 10px;
+}
+#sidebar-profile .feed img{
+    vertical-align: middle;
+    width: 25px;
+}
+#contents{
+    position: relative;
+    top: 0px;
+}
+#contents .panel-content{
+    min-height: 250px;
+    overflow-y: auto;
+    padding-left: 12px;
+    padding-right: 25px;
+}
+.contents-link a{
+    text-decoration: none;
+}
+.contents-link a:hover{
+    text-decoration: underline;
+}
+.contents-link-highlight a{
+    text-decoration: underline;
+    font-weight: bold;
+    color: var(--text-color-theme-second);
+}

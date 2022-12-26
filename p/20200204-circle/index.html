@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>浅析一类要求相邻不同的环上染色问题 - sun123zxy's Blog</title>
+
+        <script src="/assets/thirds/jquery/jquery-3.5.1.min.js"></script>
+
+        <link rel="stylesheet" href="/assets/thirds/katex/katex.min.css">
+        <!-- The loading of KaTeX is deferred to speed up page rendering -->
+        <script defer src="/assets/thirds/katex/katex.min.js"></script>
+        <!-- To automatically render math in text elements, include the auto-render extension -->
+        <script defer src="/assets/thirds/katex/auto-render.min.js" onload="renderMathInElement(document.body)"></script>
+        
+        <script src="/assets/thirds/highlight/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script>
+    </head>
+    <body>
+        <div id="home">
+    <div id="main" class="panel panel-content">
+        <div class="post-body">
+    <div class="post-head">
+        <h1 id="post-title">浅析一类要求相邻不同的环上染色问题</h1>
+        <p class="abstract text-vice">
+            
+                一类神烦的dp边界题。
+            
+        </p>
+    </div>
+    <div class="post-content"><h2 id="经典">经典</h2>
+<p>我们先来解决最经典的圆环染色问题。</p>
+<blockquote>
+<p>一个环上有<span class="math inline">\(n\)</span>个点，每个点染为<span
+class="math inline">\(m\)</span>种颜色之一，要求相邻两点颜色不同。求可行的方案数。</p>
+</blockquote>
+<p>这里有一道题的部分分是这个问题：<a
+href="http://uoj.ac/problem/241">uoj#241. 【UR #16】破坏发射台</a></p>
+<figure>
+<img src="circle_excerpt.png"
+alt="《彩色圆环(circle)》命题报告,吴佳俊" />
+<figcaption
+aria-hidden="true">《彩色圆环(circle)》命题报告,吴佳俊</figcaption>
+</figure>
+<p>那么，设<span
+class="math inline">\(f[i][0/1]\)</span>表示当前正在决定第<span
+class="math inline">\(i\)</span>位的颜色，且要求该颜色是否（<span
+class="math inline">\(0/1\)</span>）与第<span
+class="math inline">\(1\)</span>位颜色相同。</p>
+<p>对于<span class="math inline">\(f[i][1]\)</span>没啥好决定的，第<span
+class="math inline">\(i\)</span>位必须与第<span
+class="math inline">\(1\)</span>位相同，所以系数是<span
+class="math inline">\(1\)</span>。</p>
+<p>对于<span
+class="math inline">\(f[i][0]\)</span>分两种情况，一种前接<span
+class="math inline">\(f[i-1][1]\)</span>，这时第<span
+class="math inline">\(i-1\)</span>位颜色与第<span
+class="math inline">\(1\)</span>位颜色相同，有<span
+class="math inline">\((m-1)\)</span>种颜色供第<span
+class="math inline">\(i\)</span>位选择。一种是前接<span
+class="math inline">\(f[i-1][0]\)</span>，第<span
+class="math inline">\(i-1\)</span>位与第<span
+class="math inline">\(i\)</span>位不同了，第<span
+class="math inline">\(i\)</span>位不能与其中任一相同，只有<span
+class="math inline">\((m-2)\)</span>种可以选。 <span
+class="math display">\[
+\begin{aligned}
+f[i][0] &amp;= (m-2) f[i-1][0] + (m-1) f[i-1][1] \\
+f[i][1] &amp;= f[i-1][0]
+\end{aligned}
+\]</span></p>
+<p>初始状态很重要，保险的定义应该从<span
+class="math inline">\(2\)</span>开始，但是根据意义从<span
+class="math inline">\(1\)</span>开始也无妨。</p>
+<pre class="cpp"><code>#include&lt;iostream&gt;
+#include&lt;cstdio&gt;
+#include&lt;cmath&gt;
+using namespace std;
+typedef long long ll;
+const ll MOD=998244353;
+
+const ll MXN=1E7+5;
+ll f[MXN][2];
+int main(){
+    ll N,M;scanf(&quot;%lld%lld&quot;,&amp;N,&amp;M);
+    f[1][0]=0,f[1][1]=M;
+    for(ll i=2;i&lt;=N;i++){
+        f[i][0]=((M-1)*f[i-1][1]+(M-2)*f[i-1][0])%MOD;
+        f[i][1]=f[i-1][0]%MOD;
+    }
+    cout&lt;&lt;f[N][0];
+    return 0;
+}</code></pre>
+<p>上面这个dp其实还可以更优，用矩阵快速幂可以优化，也可以用特征根等方式推出通项公式<span
+class="math inline">\((m-1)^n+(m-1)(-1)^n\)</span>。</p>
+<p>下面介绍几种变种，本质其实是一样的，可以根据题目灵活选择。</p>
+<p>可以考虑钦定第<span
+class="math inline">\(1\)</span>位的颜色，把枚举第<span
+class="math inline">\(1\)</span>位颜色放在求答案部分。</p>
+<p>可以考虑假设出一个第<span
+class="math inline">\(0\)</span>位的颜色，这样环的要求变为第<span
+class="math inline">\(0\)</span>为与末位相同，即答案变为<span
+class="math inline">\(f[n][1]\)</span>。好处在于可以将初始状态提前到第<span
+class="math inline">\(0\)</span>位设置。</p>
+<p>还有另一种dp的方式是钦定当前位的颜色，考虑前一位可以选那些颜色。状态转移方程是：
+<span class="math display">\[
+\begin{aligned}
+f[i][0] &amp;= f[i-1][1] + (m-2) * f[i-1][0] \\
+f[i][1] &amp;= (m-1) * f[i-1][0]
+\end{aligned}
+\]</span></p>
+<p>既然是钦定，答案就需要另外乘<span
+class="math inline">\(M\)</span>来枚举颜色。</p>
+<p>总之，都是拆环为链，压缩无用状态，用一个<span
+class="math inline">\(0/1\)</span>位保留环的限制。</p>
+<p>我们从中获取了一种处理这类环上dp的思路，即<strong>增设0/1位来维护首尾信息</strong></p>
+<p>利用该模型，可以解决许多变种问题。</p>
+<h2 id="破坏发射台">破坏发射台</h2>
+<p><a href="http://uoj.ac/problem/241">uoj#241. 【UR
+#16】破坏发射台</a></p>
+<blockquote>
+<p>一句话题意：长度为 <span class="math inline">\(n\)</span>
+的环，每个点染色，有 <span class="math inline">\(m\)</span>
+种颜色，要求相邻相对不能同色，求方案数对 <span
+class="math inline">\(998244353\)</span>
+取模的结果。（定义两个点相对为去掉这两个点后环能被分成相同大小的两段）</p>
+<p><span class="math inline">\(n,m \le 10^9\)</span></p>
+</blockquote>
+<p><a href="http://c-sunshine.blog.uoj.ac/blog/2026">官方题解 UOJ Round
+#16</a></p>
+<p>对于长度为奇数的环，就是经典问题，矩阵快速幂或者直接通项公式即可。</p>
+<p>对于长度为偶数的环，就有点复杂了。因为要考虑相对点之间的相互影响，不妨将它们捆在一块，装在一个状态里考虑。然后，我们需要处理环的上半部分和下半部分的相互接触问题，类比处理经典问题的思路，</p>
+<blockquote>
+<p>我们设第一格的颜色为 <span class="math inline">\(A\)</span>，设第
+<span class="math inline">\(n/2+1\)</span> 格的颜色为
+B，然后设个二元三进制状态表示第 i 格和第 <span
+class="math inline">\(n/2+i\)</span> 格的颜色是否为颜色 A 或颜色
+B（<span class="math inline">\(1≤i≤n/2\)</span>）。</p>
+<p>设 <span class="math inline">\(F[i][0..8]\)</span> 表示推到第 <span
+class="math inline">\(i\)</span>
+格的所有二元三进制状态的合法方案数，然后递推一波即可。</p>
+<p style="text-align: right">
+——UOJ Round #16 题解
+</p>
+</blockquote>
+<p>这个讨论有点变态，，，代码就咕了（</p>
+<h2 id="彩色圆环">彩色圆环</h2>
+<p><a href="http://www.tsinsen.com/A1202">清橙A1202</a> <a
+href="https://www.lydsy.com/JudgeOnline/problem.php?id=2201">bzoj2201</a>
+<a
+href="https://oj.bashu.com.cn/code/problempage.php?problem_id=4074">bsoj4074</a></p>
+<blockquote>
+<h3 id="试题来源">试题来源</h3>
+<p>2010中国国家集训队命题答辩</p>
+<h3 id="问题描述">问题描述</h3>
+<p>小A喜欢收集宝物。一天他得到了一个圆环，圆环上有N颗彩色宝石，闪闪发光。小A很爱惜这个圆环，天天把它带在身边。</p>
+<p>一天，小A突然发现圆环上宝石的颜色是会变化的。他十分惊讶，仔细观察这个圆环后发现，圆环上宝石的颜色每天变化一次，而且每颗宝石的颜色都等概率地为特定的M种颜色之一。小A发现了这个秘密后，对圆环更是爱不释手，时时刻刻都在研究。</p>
+<p>又经过了一段时间，小A发现因为圆环上宝石的颜色不断变化，圆环有时会显得比其他时候更美丽。为了方便比较，小A这样定义圆环的“美观程度”：</p>
+<p>设圆环上相同颜色的宝石构成的连续段长度分别为a1, a2, ..., an；</p>
+<p>定义圆环的“美观程度” <span class="math inline">\(R = \prod_{i=1}^{n}
+a_i\)</span>​ 。以图一给出的圆环为例，有a1 = 3, a2 = 2, a3 = 1，故R =
+6。</p>
+<p>现在小A想知道，在上述前提下，圆环的“美观程度”的期望值E(R)是多少。因为如果知道了E(R)，他就可以判断每天变化出的新圆环是否比一般情况更美丽。</p>
+<p>说明：“美观程度”的期望值即为对每种可能的圆环状态的“美观程度”与其出现概率的乘积进行求和所得的值。</p>
+<h3 id="输入格式">输入格式</h3>
+<p>输入仅有一行，该行给出依次两个正整数N,
+M，分别表示宝石的个数和宝石在变化时可能变成的颜色种类数。</p>
+<h3 id="输出格式">输出格式</h3>
+<p>输出应仅有一行，该行给出一个实数E(R)，表示圆环的“美观程度”的期望值。</p>
+<h3 id="样例输入">样例输入</h3>
+<p>3 2</p>
+<h3 id="样例输出">样例输出</h3>
+<p>2.25</p>
+<h3 id="样例输入-1">样例输入</h3>
+<p>200 1</p>
+<h3 id="样例输出-1">样例输出</h3>
+<p>200</p>
+<h3 id="数据规模和约定">数据规模和约定</h3>
+<p>20%的数据满足1 ≤ N, M ≤ 8；</p>
+<p>50%的数据满足1 ≤ N, M ≤ 25；</p>
+<p>100%的数据满足1 ≤ N ≤ 200, 1 ≤ M ≤10^9。</p>
+</blockquote>
+<p>先来看链的情况</p>
+<p>设<span class="math inline">\(f[i]\)</span>表示考虑到第<span
+class="math inline">\(i\)</span>位时的期望美观度，按划分颜色块的思路dp，显然有
+<span class="math display">\[
+f[i]=\sum_{0 \le j &lt; i} f[j]*(i-j)*P[i-j]*(M-1)
+\]</span></p>
+<p>其中<span class="math inline">\(P[i]\)</span>表示连续选<span
+class="math inline">\(i\)</span>个相同一种颜色的概率 <span
+class="math display">\[
+P[i] = M^{-i}\\
+\]</span></p>
+<p><span
+class="math inline">\((M-1)\)</span>代表当前颜色块的颜色要与前块不同</p>
+<p>那么现在用圆环染色的思路来试着写环的dp式</p>
+<p>正如解决原始版本的方式，我们拆环为链，并假设已经钦定了第<span
+class="math inline">\(0\)</span>位的颜色。我们设<span
+class="math inline">\(f[i][0/1]\)</span>表示考虑前<span
+class="math inline">\(i\)</span>位，且要求第<span
+class="math inline">\(i\)</span>位（所属块）颜色是否（<span
+class="math inline">\(0/1\)</span>）与第<span
+class="math inline">\(0\)</span>位颜色相同，这时的期望美观度。可得转移方程：
+<span class="math display">\[
+f[i][0] = \sum_{0 \le j &lt; i} f[j][0]*(i-j)*P[i-j]*(m-2) +
+f[j][1]*(i-j)*P[i-j]*(m-1)\\
+f[i][1] = \sum_{0 \le j &lt; i} f[j][0]*(i-j)*P[i-j]
+\]</span></p>
+<p>考虑如何求答案。由于无法直接获取首尾相接颜色块长度，考虑将它单独拎出来计算。枚举首尾相接颜色块两端加起来的总长度<span
+class="math inline">\(x\)</span>，则总共有<span
+class="math inline">\(x\)</span>种分割首尾的方案，每种方案有<span
+class="math inline">\(M\)</span>个颜色可以选择（因为钦定），每个方案贡献为<span
+class="math inline">\(x\)</span>，剩下的部分就可以用<span
+class="math inline">\(f\)</span>来表示了。（想想钦定第<span
+class="math inline">\(0\)</span>位而不是第<span
+class="math inline">\(1\)</span>位的目的）</p>
+<p><span class="math inline">\(x=N\)</span>时要特判，于是答案如下 <span
+class="math display">\[
+Ans = P[N]*N*M + \sum_{1 \le x &lt; N} x*x*P[x]*M*f[n-x][0]
+\]</span></p>
+<p><span class="math inline">\(O(n^2)\)</span>的代码</p>
+<pre class="cpp"><code>#include&lt;iostream&gt;
+#include&lt;cstdio&gt;
+#include&lt;cmath&gt;
+#include&lt;cstring&gt;
+#include&lt;ctime&gt;
+#include&lt;cstdlib&gt;
+#include&lt;queue&gt;
+#include&lt;vector&gt;
+using namespace std;
+typedef long double ldb;
+typedef long long ll;
+
+const ll MXN=1005;
+ll N,M;
+ldb f[MXN][2];
+ldb P[MXN];
+int main(){
+    cin&gt;&gt;N&gt;&gt;M;
+    P[0]=1;for(ll i=1;i&lt;=N;i++) P[i]=P[i-1]/M;
+    f[0][0]=0;f[0][1]=1;//f[0]时只有第0位，一定相同，故f[0][0]不合法置0，f[0][1]置单位元
+    for(ll i=1;i&lt;=N;i++){
+        f[i][0]=f[i][1]=0;
+        for(ll j=0;j&lt;i;j++){//可以从0转移，给了只有一个块转移的机会
+            f[i][0]+=f[j][0]*(i-j)*P[i-j]*(M-2)
+                    +f[j][1]*(i-j)*P[i-j]*(M-1);
+            f[i][1]+=f[j][0]*(i-j)*P[i-j];
+        }
+    }
+    ldb ans=N*P[N]*M;
+    for(ll x=1;x&lt;N;x++)
+        ans+=x*x*P[x]*M*f[N-x][0];//一个x是贡献，一个x是分割开头和结尾的方式数，f[N-x][0]则充当了中间部分 
+    printf(&quot;%.5Lf&quot;,ans);
+    return 0;
+}</code></pre>
+<p>我们发现推出的dp方程有一部分是与<span
+class="math inline">\(j\)</span>无关的。将它们提出来，维护剩下的只与<span
+class="math inline">\(j\)</span>有关的前缀和，复杂度即可降至<span
+class="math inline">\(O(N)\)</span></p>
+<p>前缀和优化后<span class="math inline">\(O(n)\)</span></p>
+<pre class="cpp"><code>#include&lt;iostream&gt;
+#include&lt;cstdio&gt;
+#include&lt;cmath&gt;
+#include&lt;cstring&gt;
+#include&lt;ctime&gt;
+#include&lt;cstdlib&gt;
+#include&lt;queue&gt;
+#include&lt;vector&gt;
+using namespace std;
+typedef long double ldb;
+typedef long long ll;
+
+const ll MXN=1000005;
+ll N,M;
+ldb f[MXN][2];
+ldb powM[MXN];//M^i
+int main(){
+    cin&gt;&gt;N&gt;&gt;M;
+    powM[0]=1;for(ll i=1;i&lt;=N;i++) powM[i]=powM[i-1]*M;
+    
+    f[0][0]=0;f[0][1]=1;
+    ldb s_01=0,s_0j=0;
+    ldb s_11=1,s_1j=0;
+    for(ll i=1;i&lt;=N;i++){
+        f[i][0] = s_01*(M-2)*i/powM[i] + s_0j*(M-2)/powM[i]
+                + s_11*(M-1)*i/powM[i] + s_1j*(M-1)/powM[i];
+        f[i][1] = s_01      *i/powM[i] + s_0j      /powM[i];
+        
+        s_01 += f[i][0]*powM[i];
+        s_0j += f[i][0]*powM[i]*i;
+        s_11 += f[i][1]*powM[i];
+        s_1j += f[i][1]*powM[i]*i;
+    }
+    ldb ans=N/powM[N]*M;
+    for(ll x=1;x&lt;N;x++)
+        ans+=x*x/powM[x]*M*f[N-x][0];
+    printf(&quot;%.5Lf&quot;,ans);
+    return 0;
+}</code></pre>
+<p>实际上是会炸精度的，懒得管了:p</p>
+</div>
+    <div class="post-tags text-vice" style="text-align: right">
+        <p>tags: 
+            
+                <a href= "/tags#OI" >OI</a>, 
+            
+                <a href= "/tags#学习笔记" >学习笔记</a>, 
+            
+                <a href= "/tags#题解" >题解</a>
+            
+        </p>
+        <p>posted on 2020/02/04 | last modified on 2020/02/04</p>
+    </div>
+    
+        <div class="post-comments">
+            <script src="https://giscus.app/client.js"
+                data-repo="sun123zxy/sun123zxy.github.io"
+                data-repo-id="MDEwOlJlcG9zaXRvcnkzMTAwMzQxNDc="
+                data-category="General"
+                data-category-id="DIC_kwDOEnq-484CQKFr"
+                data-mapping="pathname"
+                data-reactions-enabled="1"
+                data-emit-metadata="0"
+                data-input-position="bottom"
+                data-theme="light"
+                data-lang="en"
+                crossorigin="anonymous">
+            </script>
+        </div>
+    
+</div>
+    </div>
+    <div id="sidebar">
+        
+            <div id="sidebar-profile" class="panel">
+                
+                <div class="panel-content">
+                    <a href="/"><img class="avatar" src="/assets/images/pig.png"></img></a>
+<p class="nickname">sun123zxy</p>
+<div class="nav">
+    <a href="/">Home</a> | 
+    <a href="/p/aboutme">About</a> | 
+    <a href="/tags">Tags</a>
+</div>
+<div class="feed">
+    <img src="/assets/images/feed.png"></img>
+    <a href="/feed.xml">Atom Feed</a>
+</div>
+<p>Next Phantasm...</p>
+                </div>
+            </div>
+        
+            <div id="sidebar-news" class="panel">
+                
+                <h2 class="panel-title">News</h2>
+                
+                <div class="panel-content">
+                    <a href="https://info.flagcounter.com/1Zpv"><img src="https://s05.flagcounter.com/count2/1Zpv/bg_DDDDDD/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_3/labels_0/pageviews_1/flags_0/percent_0/" alt="Flag Counter" border="0"></a>
+
+<p>博客已迁移。访问 <a href="https://blog.sun123zxy.top">blog.sun123zxy.top</a> 获取更多信息。</p>
+                </div>
+            </div>
+        
+            <div id="sidebar-links" class="panel">
+                
+                <h2 class="panel-title">Links</h2>
+                
+                <div class="panel-content">
+                    
+<h3>My Friends</h3>
+<ul>
+    <li><a href="https://www.cnblogs.com/Railgunforever">吸取教训</a></li>
+    <li><a href="https://p9t6g.github.io">p9t6g</a></li>
+    <li><a href="https://tbyangz.github.io">TbYangZ</a></li>
+    <li><a href="https://www.cnblogs.com/ALANALLEN21LOVE28">CJ SYH</a></li>
+</ul>
+
+<h3>Related Sites</h3>
+<ul>
+    <li><a href="http://www.cnblogs.com/sun123zxy">博客园</a></li>
+    <li><a href="http://tools.sun123zxy.top">工具站</a></li>
+</ul>
+                </div>
+            </div>
+        
+            <div id="sidebar-tags" class="panel">
+                
+                <h2 class="panel-title">Tags</h2>
+                
+                <div class="panel-content">
+                    <ul>
+    
+    <li><a href= "/tags#OI" >OI</a></li>
+    
+    <li><a href= "/tags#数学" >数学</a></li>
+    
+    <li><a href= "/tags#高考" >高考</a></li>
+    
+    <li><a href= "/tags#题解" >题解</a></li>
+    
+    <li><a href= "/tags#原创题目" >原创题目</a></li>
+    
+    <li><a href= "/tags#学习笔记" >学习笔记</a></li>
+    
+    <li><a href= "/tags#意识流" >意识流</a></li>
+    
+    <li><a href= "/tags#游记" >游记</a></li>
+    
+    <li><a href= "/tags#Web" >Web</a></li>
+    
+    <li><a href= "/tags#站点相关" >站点相关</a></li>
+    
+    <li><a href= "/tags#Python" >Python</a></li>
+    
+</ul>
+                </div>
+            </div>
+        
+        
+            <div id="contents" class="panel"><h2 class="panel-title">Contents</h2>
+<div class="panel-content"></div>
+<script defer src="/assets/js/contents.js"></script></div>
+        
+    </div>
+    <div class="fclean"></div>
+    <div id="footer" class="text-vice">
+        <p>sun123zxy's Blog | Powered by Jekyll</p>
+    </div>
+</div>
+<div id="leftdown-float-container">
+    <div id="theme-info" class="round-button-handler">
+        <div class="round-button"><img src="/assets/images/info.png"></img></div>
+        <div class="hover-info">Theme Info</div>
+    </div>
+    <div id="theme-switch" class="round-button-handler">
+        <div class="round-button"><img src="/assets/images/switch.png"></img></div>
+        <div class="hover-info">Theme Switch</div>
+    </div>
+</div>
+<div id="rightdown-float-container">
+    <div id="music-player" class="round-button-handler">
+        <div class="round-button"><img src="/assets/images/music.png"></img></div>
+        <div class="hover-info">Music Player</div>
+    </div>
+</div>
+<link rel="stylesheet" href="/assets/css/default.css">
+<link rel="stylesheet" id="night-container">
+<link rel="stylesheet" id="theme-container">
+<div id="mask"></div>
+<script src="/assets/js/theme_data.js"></script>
+<script src="/assets/js/round_button.js"></script>
+<script src="/assets/js/theme_manager.js" defer></script>
+<script src="/assets/js/music_player.js"></script>
+<script src="/assets/js/scroll.js"></script>
+    </body>
+</html>

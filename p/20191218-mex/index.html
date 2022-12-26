@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>bsoj5988 [Achen模拟赛]期望 题解 - sun123zxy's Blog</title>
+
+        <script src="/assets/thirds/jquery/jquery-3.5.1.min.js"></script>
+
+        <link rel="stylesheet" href="/assets/thirds/katex/katex.min.css">
+        <!-- The loading of KaTeX is deferred to speed up page rendering -->
+        <script defer src="/assets/thirds/katex/katex.min.js"></script>
+        <!-- To automatically render math in text elements, include the auto-render extension -->
+        <script defer src="/assets/thirds/katex/auto-render.min.js" onload="renderMathInElement(document.body)"></script>
+        
+        <script src="/assets/thirds/highlight/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script>
+    </head>
+    <body>
+        <div id="home">
+    <div id="main" class="panel panel-content">
+        <div class="post-body">
+    <div class="post-head">
+        <h1 id="post-title">bsoj5988 [Achen模拟赛]期望 题解</h1>
+        <p class="abstract text-vice">
+            
+                “套着期望皮的容斥题。”
+            
+        </p>
+    </div>
+    <div class="post-content"><p><a
+href="https://oj.bashu.com.cn/code/problempage.php?problem_id=5988">bsoj5988</a></p>
+<blockquote>
+<p>【题目背景】</p>
+<p>　　NOI2018 已经过去了许久，2019 届的 BSOIer
+们退役的退役，颓废的颓废，计数能力大不如前。曾经的数数之王 xxyj
+坦言：“我现在算期望都靠枚举”，嘴边还挂着什么“分布列”，什么“样本数据”，然后又继续投身于文化课学习中了。
+为了让 OI 的火炬传递下去，苣蒻 AChen 决定将 xxyj
+退役前随口提到的期望问题交给你来解决。</p>
+<p>【题目描述】</p>
+<p>　　现有 m + 1 个白色的小球排成一列并从一开始编号。每次操作从前 m
+个小球中随机选择一个涂黑。现在执行了 n
+次操作，则编号最小的白球编号的期望是多少？</p>
+<p>【输入】</p>
+<p>　　从文件 mex.in 中读入数据。</p>
+<p>　　输入共一行两个整数 n,m。表示操作次数和白色小球的个数</p>
+<p>【输出】</p>
+<p>　　输出到文件 mex.out 中。</p>
+<p>　　若最小的白球编号的期望为 E，则输出一行表示：<span
+class="math inline">\(((m^n)* E) \mod (10^9 + 7)\)</span></p>
+<p>　　可以看出上式一定是个整数。</p>
+<p>【样例输入】</p>
+<p>1 1</p>
+<p>【样例输出】</p>
+<p>2</p>
+<p>【提示】</p>
+<p><span class="math inline">\(n \le 10^9, m \le 10^6\)</span></p>
+<p>【来源】</p>
+<p>Achen</p>
+</blockquote>
+<p>%%%AChen队爷%%%</p>
+<p>考察对容斥的基础理解，挺不错的一题</p>
+<p>易列答案式</p>
+<p><span class="math display">\[
+\sum_{i=1}^{m+1} P(mex = i) i
+\]</span></p>
+<p>对这种期望，常使用套路化法 <span class="math display">\[
+\sum_{i=0}^m P(mex&gt;i)
+\]</span></p>
+<p>和式里面相当于要求已钦定<span
+class="math inline">\(i\)</span>个确定的球，求随机选<span
+class="math inline">\(n\)</span>次将这<span
+class="math inline">\(i\)</span>个球全部染黑的概率。</p>
+<p>考虑容斥。先随便选，然后减去一个球未染的，然后加上两个球未染的，...
+<span class="math display">\[
+\sum_{i=0}^{m} \sum_{k=0}^{i} (-1)^k C_i^k (\frac{m-k}{m})^n
+\]</span></p>
+<p>是一个类似二项式反演但又不是的容斥</p>
+<p>更换枚举 <span class="math display">\[
+\sum_{k=0}^{m} (-1)^k (\frac{m-k}{m})^n \sum_{i=k}^{m} C_i^k
+\]</span> 又由组合数的性质 <span class="math display">\[
+\sum_{i=k}^{n} C_i^k = C_{n+1}^{k+1}
+\]</span> （容易通过杨辉三角和组合数的递推式证明）</p>
+<p>得 <span class="math display">\[
+\sum_{k=0}^{m} (-1)^k (\frac{m-k}{m})^n C_{m+1}^{k+1}
+\]</span> 直接计算即可。</p>
+<p>数据量如果更大的话，可以线筛出所有<span
+class="math inline">\(n\)</span>次幂以省掉快速幂的<span
+class="math inline">\(\log\)</span>。<del>偷懒不写了（</del></p>
+<pre class="cpp"><code>#include&lt;iostream&gt;
+#include&lt;cstdio&gt;
+#include&lt;cstring&gt;
+#include&lt;cmath&gt;
+#include&lt;ctime&gt;
+#include&lt;cstdlib&gt;
+#include&lt;algorithm&gt;
+#include&lt;queue&gt;
+#include&lt;vector&gt;
+#include&lt;map&gt;
+#include&lt;set&gt;
+using namespace std;
+typedef long long ll;
+const ll MOD=1E9+7;
+
+ll QPow(ll x,ll up){
+    x%=MOD;
+    ll ans=1;
+    while(up)
+        if(up%2==0) x=x*x%MOD,up=up/2;
+        else ans=ans*x%MOD,up--;
+    return ans;
+}
+ll Inv(ll x){
+    return QPow(x,MOD-2);
+}
+
+const ll MXN=1E6+5;
+ll fac[MXN],facInv[MXN];
+void FacInit(ll n){
+    fac[0]=1;for(ll i=1;i&lt;=n;i++) fac[i]=fac[i-1]*i%MOD;
+    facInv[n]=Inv(fac[n]);for(ll i=n-1;i&gt;=1;i--) facInv[i]=facInv[i+1]*(i+1)%MOD;
+    facInv[0]=1;
+}
+ll C(ll n,ll m){
+    if(n&lt;m) return 0;
+    return fac[n]*facInv[m]%MOD*facInv[n-m]%MOD;
+}
+
+ll N,M;
+int main(){
+    scanf(&quot;%lld%lld&quot;,&amp;N,&amp;M);
+    FacInit(M+1);
+    ll Ans=0;
+    for(ll k=0;k&lt;=M;k++){
+        ll p=1;if(k%2==1) p=(-1+MOD)%MOD;
+        Ans+=p*QPow(M-k,N)%MOD*C(M+1,k+1)%MOD;
+        Ans%=MOD;
+    }
+    printf(&quot;%lld&quot;,Ans);
+    return 0;
+}</code></pre>
+</div>
+    <div class="post-tags text-vice" style="text-align: right">
+        <p>tags: 
+            
+                <a href= "/tags#OI" >OI</a>, 
+            
+                <a href= "/tags#数学" >数学</a>, 
+            
+                <a href= "/tags#题解" >题解</a>
+            
+        </p>
+        <p>posted on 2019/12/18 | last modified on 2019/12/18</p>
+    </div>
+    
+        <div class="post-comments">
+            <script src="https://giscus.app/client.js"
+                data-repo="sun123zxy/sun123zxy.github.io"
+                data-repo-id="MDEwOlJlcG9zaXRvcnkzMTAwMzQxNDc="
+                data-category="General"
+                data-category-id="DIC_kwDOEnq-484CQKFr"
+                data-mapping="pathname"
+                data-reactions-enabled="1"
+                data-emit-metadata="0"
+                data-input-position="bottom"
+                data-theme="light"
+                data-lang="en"
+                crossorigin="anonymous">
+            </script>
+        </div>
+    
+</div>
+    </div>
+    <div id="sidebar">
+        
+            <div id="sidebar-profile" class="panel">
+                
+                <div class="panel-content">
+                    <a href="/"><img class="avatar" src="/assets/images/pig.png"></img></a>
+<p class="nickname">sun123zxy</p>
+<div class="nav">
+    <a href="/">Home</a> | 
+    <a href="/p/aboutme">About</a> | 
+    <a href="/tags">Tags</a>
+</div>
+<div class="feed">
+    <img src="/assets/images/feed.png"></img>
+    <a href="/feed.xml">Atom Feed</a>
+</div>
+<p>Next Phantasm...</p>
+                </div>
+            </div>
+        
+            <div id="sidebar-news" class="panel">
+                
+                <h2 class="panel-title">News</h2>
+                
+                <div class="panel-content">
+                    <a href="https://info.flagcounter.com/1Zpv"><img src="https://s05.flagcounter.com/count2/1Zpv/bg_DDDDDD/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_3/labels_0/pageviews_1/flags_0/percent_0/" alt="Flag Counter" border="0"></a>
+
+<p>博客已迁移。访问 <a href="https://blog.sun123zxy.top">blog.sun123zxy.top</a> 获取更多信息。</p>
+                </div>
+            </div>
+        
+            <div id="sidebar-links" class="panel">
+                
+                <h2 class="panel-title">Links</h2>
+                
+                <div class="panel-content">
+                    
+<h3>My Friends</h3>
+<ul>
+    <li><a href="https://www.cnblogs.com/Railgunforever">吸取教训</a></li>
+    <li><a href="https://p9t6g.github.io">p9t6g</a></li>
+    <li><a href="https://tbyangz.github.io">TbYangZ</a></li>
+    <li><a href="https://www.cnblogs.com/ALANALLEN21LOVE28">CJ SYH</a></li>
+</ul>
+
+<h3>Related Sites</h3>
+<ul>
+    <li><a href="http://www.cnblogs.com/sun123zxy">博客园</a></li>
+    <li><a href="http://tools.sun123zxy.top">工具站</a></li>
+</ul>
+                </div>
+            </div>
+        
+            <div id="sidebar-tags" class="panel">
+                
+                <h2 class="panel-title">Tags</h2>
+                
+                <div class="panel-content">
+                    <ul>
+    
+    <li><a href= "/tags#OI" >OI</a></li>
+    
+    <li><a href= "/tags#数学" >数学</a></li>
+    
+    <li><a href= "/tags#高考" >高考</a></li>
+    
+    <li><a href= "/tags#题解" >题解</a></li>
+    
+    <li><a href= "/tags#原创题目" >原创题目</a></li>
+    
+    <li><a href= "/tags#学习笔记" >学习笔记</a></li>
+    
+    <li><a href= "/tags#意识流" >意识流</a></li>
+    
+    <li><a href= "/tags#游记" >游记</a></li>
+    
+    <li><a href= "/tags#Web" >Web</a></li>
+    
+    <li><a href= "/tags#站点相关" >站点相关</a></li>
+    
+    <li><a href= "/tags#Python" >Python</a></li>
+    
+</ul>
+                </div>
+            </div>
+        
+        
+            <div id="contents" class="panel"><h2 class="panel-title">Contents</h2>
+<div class="panel-content"></div>
+<script defer src="/assets/js/contents.js"></script></div>
+        
+    </div>
+    <div class="fclean"></div>
+    <div id="footer" class="text-vice">
+        <p>sun123zxy's Blog | Powered by Jekyll</p>
+    </div>
+</div>
+<div id="leftdown-float-container">
+    <div id="theme-info" class="round-button-handler">
+        <div class="round-button"><img src="/assets/images/info.png"></img></div>
+        <div class="hover-info">Theme Info</div>
+    </div>
+    <div id="theme-switch" class="round-button-handler">
+        <div class="round-button"><img src="/assets/images/switch.png"></img></div>
+        <div class="hover-info">Theme Switch</div>
+    </div>
+</div>
+<div id="rightdown-float-container">
+    <div id="music-player" class="round-button-handler">
+        <div class="round-button"><img src="/assets/images/music.png"></img></div>
+        <div class="hover-info">Music Player</div>
+    </div>
+</div>
+<link rel="stylesheet" href="/assets/css/default.css">
+<link rel="stylesheet" id="night-container">
+<link rel="stylesheet" id="theme-container">
+<div id="mask"></div>
+<script src="/assets/js/theme_data.js"></script>
+<script src="/assets/js/round_button.js"></script>
+<script src="/assets/js/theme_manager.js" defer></script>
+<script src="/assets/js/music_player.js"></script>
+<script src="/assets/js/scroll.js"></script>
+    </body>
+</html>

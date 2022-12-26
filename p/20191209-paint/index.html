@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>涂色游戏 题解 - sun123zxy's Blog</title>
+
+        <script src="/assets/thirds/jquery/jquery-3.5.1.min.js"></script>
+
+        <link rel="stylesheet" href="/assets/thirds/katex/katex.min.css">
+        <!-- The loading of KaTeX is deferred to speed up page rendering -->
+        <script defer src="/assets/thirds/katex/katex.min.js"></script>
+        <!-- To automatically render math in text elements, include the auto-render extension -->
+        <script defer src="/assets/thirds/katex/auto-render.min.js" onload="renderMathInElement(document.body)"></script>
+        
+        <script src="/assets/thirds/highlight/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script>
+    </head>
+    <body>
+        <div id="home">
+    <div id="main" class="panel panel-content">
+        <div class="post-body">
+    <div class="post-head">
+        <h1 id="post-title">涂色游戏 题解</h1>
+        <p class="abstract text-vice">
+            
+                容斥、二项式反演、minmax容斥和树形dp，人类智慧神题。
+            
+        </p>
+    </div>
+    <div class="post-content"><p><a
+href="https://oj.bashu.com.cn/code/problempage.php?problem_id=6412">bsoj6412</a>
+没找到出处。。。</p>
+<blockquote>
+<figure>
+<img src="problem.png" alt="题图" />
+<figcaption aria-hidden="true">题图</figcaption>
+</figure>
+</blockquote>
+<p>题意简述：给一颗树，一次操作定义为随机选择一个点，染掉该点和它周围一圈的点，问期望多少次染黑所有点。</p>
+<p>这是道好题啊！全面考察了容斥、反演、期望和dp，有许多值得注意的细节。</p>
+<h2 id="s-1">一、做法1（容斥/二项式反演+dp）</h2>
+<h3 id="s-1.1">1.1 化式子</h3>
+<p>首先肯定第一个想到的式子就是</p>
+<p><span class="math display">\[
+Ans = \sum_{i=1}^{\infty} i *  P(在染第i次时刚好黑完)
+\]</span></p>
+<p>这是根据期望的定义直接得到的。</p>
+<p>然后发现这个<span
+class="math inline">\(i\)</span>实在是非常的恶心，因为它居然和无穷有关。但既然是一个合法的期望题，这个<span
+class="math inline">\(i\)</span>必然可以找到某种转化的手段把它弄成一个能算的且收敛的东西，比如等比数列级数之类的。</p>
+<p>于是这里有一个套路化法 <span class="math display">\[
+\sum_{i=1}^{\infty} i *  P(x=i) = \sum_{i=0}^{\infty} P(x&gt;i)
+\]</span></p>
+<p>（<span class="math inline">\(P(A)\)</span>代表事件<span
+class="math inline">\(A\)</span>发生的概率）</p>
+<p>就是改了改枚举的方式，随便想一想应该能够明白了吧（</p>
+<p>总之，根据上式我们就可以得到 <span class="math display">\[
+Ans = \sum_{i=0}^{\infty} P(染i次未黑完)
+\]</span></p>
+<p>我们成功把<span class="math inline">\(i\)</span>丢到了<span
+class="math inline">\(P\)</span>里面去。但是我们还是没有办法求这个东西。</p>
+<p>发现虽然选点可以进行无数次，但是最多只会选有限个点，许多选点是重复的。用实际选择的点的个数，我们可以在不可计算的无限和可计算的有限之间搭上一座桥梁。我们考虑将上面的<span
+class="math inline">\(P\)</span>进行一个拆分，得到 <span
+class="math display">\[
+Ans = \sum_{i=0}^{\infty} \sum_{k=0}^{n} P(选i次恰好选中某k个点) *
+N(k个点未黑完整棵树)
+\]</span></p>
+<p><span class="math inline">\(N(A)\)</span>代表事件<span
+class="math inline">\(A\)</span>的方案数</p>
+<p>注意式子中“某”的含义。可以这样理解这个式子：</p>
+<p>我钦定了某<span class="math inline">\(k\)</span>个点</p>
+<p>首先我想知道：进行<span
+class="math inline">\(i\)</span>次随机选择，选中且只选中这<span
+class="math inline">\(k\)</span>个点的概率</p>
+<p>然后再判断这<span
+class="math inline">\(k\)</span>个点是否能让整棵树黑完。如果不能，则将这部分概率计入。</p>
+<p>将所有可能钦定的情况合起来就是<span
+class="math inline">\(N\)</span>，而选择的概率实际上和树形结构无关，选中任意<span
+class="math inline">\(k\)</span>个点的概率都是一样的，所以直接乘起来即可。</p>
+<p>好，理解了上式，我们来仔细研究<span
+class="math inline">\(P\)</span>和<span
+class="math inline">\(N\)</span>到底是什么。</p>
+<h3 id="s-1.2">1.2 容斥/二项式反演</h3>
+<p>首先研究<span
+class="math inline">\(P\)</span>。首先如果恰好选中某<span
+class="math inline">\(k\)</span>个点，那么必然先得保证这<span
+class="math inline">\(i\)</span>次都不能选中其他的点。概率是 <span
+class="math display">\[
+(\frac{k}{n})^i
+\]</span></p>
+<p>但这样计算显然是有问题的。因为可能出现有点一次都没有被选中的情况，而这不满足我们“恰好选中”的要求。换句话说，我们只能计算<span
+class="math inline">\(P(|被选中的点| \le
+p)\)</span>。而实际上，我们需要的是 <span
+class="math inline">\(P(|选中的点集| = p)\)</span>。</p>
+<p><del>容易</del>想到容斥掉它。</p>
+<p>考虑枚举一次都没有被选中的点，经过仔细思考，我们能够艰难的得到 <span
+class="math display">\[
+P(选i次恰好选中某k个点) = \sum_{p=0}^k C_k^p (-1)^p (\frac{k-p}{n})^i
+\]</span></p>
+<p>我无力解释这个式子...各位自己尝试理解一下吧...</p>
+<p>把某个点一次都没有被选中画成一个圆圈，用Venn图的形式可能有助于理解。</p>
+<p>虽然难以理解...不过好在可以用二项式反演推导。 <span
+class="math display">\[
+f(n) = \sum_{k=0}^n C_n^k g(k) \iff g(n) = \sum_{k=0}^n C_n^k (-1)^k
+f(n-k)
+\]</span></p>
+<p>套入本题 <span class="math display">\[
+g_i(k) = P(选i次恰好选中某k个点)
+\]</span></p>
+<p><span class="math display">\[
+f_i(k) = (\frac{k}{n})^i
+\]</span></p>
+<p>这样就好懂多了，，</p>
+<p>不管怎么说，我们终于搞到了<span
+class="math inline">\(P\)</span>表达式，而且这个表达式里<span
+class="math inline">\(i\)</span>是指数！带回原式说不定可以用等比级数干掉它。</p>
+<h3 id="s-1.3">1.3 回到答案式</h3>
+<p>为方便书写，令<span class="math inline">\(a_k =
+N(k个点未黑完整棵树)\)</span> <span class="math display">\[
+\begin{aligned}
+Ans &amp;= \sum_{i=0}^{\infty} \sum_{k=0}^{n} a_k \sum_{p=0}^k C_k^p
+(-1)^p (\frac{k-p}{n})^i \\
+    &amp;= \sum_{k=0}^{n} a_k \sum_{p=0}^k C_k^p (-1)^{k-p}
+\sum_{i=0}^{\infty} (\frac{p}{n})^i \\
+\end{aligned}
+\]</span></p>
+<p>由于当<span class="math inline">\(|q| &lt; 1\)</span>时，有 <span
+class="math display">\[
+\begin{aligned}
+\sum_{i=0}^{\infty} q^i &amp;= \lim_{n \to \infty} \frac{q^{n+1}-1}{q-1}
+\\
+&amp;= \frac{1}{1-q}
+\end{aligned}
+\]</span></p>
+<p>故 <span class="math display">\[
+Ans = \sum_{k=0}^{n} a_k \sum_{p=0}^k C_k^p (-1)^{k-p} \frac{n}{n-p}
+\]</span></p>
+<p>（当<span
+class="math inline">\(k=p=n\)</span>时，由于上一步转化要求<span
+class="math inline">\(|q|&lt;1\)</span>，而此时<span
+class="math inline">\(|q|=1\)</span>，会出现级数发散的情况。但发现<span
+class="math inline">\(a_n\)</span>显然一定等于<span
+class="math inline">\(0\)</span>，所以直接不算<span
+class="math inline">\(k=n\)</span>的情况即可）</p>
+<p>直接枚举是<span
+class="math inline">\(O(n^2)\)</span>的，现在我们只需要求出每一个<span
+class="math inline">\(a_k = N(k个点未黑完整棵树)\)</span></p>
+<h3 id="s-1.4">1.4 树形dp</h3>
+<p>首先可以做一步简单容斥简化问题</p>
+<p><span class="math display">\[
+N(k个点未黑完整棵树) = C_n^k - N(k个点黑完整棵树)
+\]</span></p>
+<p>求<span
+class="math inline">\(N(k个点黑完整棵树)\)</span>，很容易想到树上背包</p>
+<p>实际上就是在树上分配选点，也就是一个背包，而方案数背包的实质是卷积，所以就是用树形dp维护卷积合并。</p>
+<p>开始写状态。</p>
+<p><span class="math inline">\(f[u][0/1][0/1]\)</span>表示只考虑以<span
+class="math inline">\(u\)</span>为根的子树，父亲是否被选择，自己是否被选择的方案数。（可能有更简单的状态表示，但我觉得这种更好想更靠谱）</p>
+<p>随便写写就有转移方程了。</p>
+<p><span class="math display">\[
+f[u][0][0] = f[u][1][0] - \prod_v f[v][0][0]
+\]</span></p>
+<p>没有父亲援助，自己也不选，只能靠儿子。儿子节点只需要有一个选就可以养活自己。也就是儿子随便乱选减去儿子一个都不选的情况。
+<span class="math display">\[
+f[u][0][1] = I * \prod_v (f[v][1][0] + f[v][1][1])
+\]</span></p>
+<p>自己选了，上下随便。 <span class="math display">\[
+f[u][1][0] = \prod_v ( f[v][0][0] + f[v][0][1] )
+\]</span></p>
+<p>父亲选了，自己不选，下面随便。 <span class="math display">\[
+f[u][1][1] = f[u][0][1]
+\]</span></p>
+<p>自己选了，上下随便。</p>
+<p>照着dp即可。 <span class="math display">\[
+N(k个点黑完整棵树) = f[root][0][0][k]+f[root][0][1][k]
+\]</span></p>
+<p>顺着之前倒着带回去行了。</p>
+<h3 id="s-1.5">1.5 时间复杂度</h3>
+<h4 id="s-1.5.1">1.5.1 答案式</h4>
+<p>显然是<span class="math inline">\(O(n^2)\)</span>的。</p>
+<h4 id="s-1.5.2">1.5.2 树形dp</h4>
+<p>一次卷积<span class="math inline">\(O(n ^
+2)\)</span>，会向上合并<span
+class="math inline">\(O(n)\)</span>次...</p>
+<p>诶？这不是<span class="math inline">\(O(n^3)\)</span>的吗？</p>
+<p>实则不然。</p>
+<p>设<span class="math inline">\(sz[u]\)</span>为以<span
+class="math inline">\(u\)</span>为根的子树大小。显然可能涉及的卷积长度<span
+class="math inline">\(len \le sz[u]\)</span></p>
+<p>于是考虑每个节点<span
+class="math inline">\(u\)</span>下的所有儿子<span
+class="math inline">\(v\)</span>合并起来的耗时。 <span
+class="math display">\[
+\sum_{v_1 \not= v_2} sz[v_1] *sz[v_2] = sz[u]^2 - \sum_v sz[v]^2 \\
+\]</span></p>
+<p>后面减去的和式，将抵消掉所有儿子节点产生的时间复杂度！</p>
+<p>所以真正的复杂度是<span class="math inline">\(O(n^2)\)</span></p>
+<p><del>妙啊</del></p>
+<p>这里提供另一道题 <a href="https://loj.ac/problem/6289">loj6289
+花朵</a> ，其部分分解法也是这种方式证明时间复杂度</p>
+<p>还要优化的话，可以用NTT来做卷积，还可以用堆来实现从小到大合并减少浪费的时间，类似分治NTT。但都只是常数级优化。</p>
+<h3 id="s-1.6">1.6 总结</h3>
+<p>爆拆期望得无穷级数，尝试去掉无穷，套路化法将<span
+class="math inline">\(i\)</span>化入<span
+class="math inline">\(P\)</span>。</p>
+<p>拆掉<span
+class="math inline">\(P\)</span>在无穷与有限间建立联系，分别处理<span
+class="math inline">\(P\)</span>和<span
+class="math inline">\(N\)</span>。</p>
+<p><span
+class="math inline">\(P\)</span>可容斥得出，带回原式用等比级数干掉无穷的<span
+class="math inline">\(i\)</span></p>
+<p><span
+class="math inline">\(N\)</span>用树上背包可解，仔细推转移即可</p>
+<h3 id="s-1.7">1.7 Code</h3>
+<pre class="cpp"><code>#include&lt;iostream&gt;
+#include&lt;cstdio&gt;
+#include&lt;cmath&gt;
+#include&lt;cstring&gt;
+#include&lt;ctime&gt;
+#include&lt;cstdlib&gt;
+#include&lt;algorithm&gt;
+#include&lt;queue&gt;
+#include&lt;vector&gt;
+#include&lt;map&gt;
+#include&lt;set&gt;
+typedef long long ll;
+using namespace std;
+
+ll Rd(){
+    ll ans=0;char c=getchar();
+    while(c&lt;&#39;0&#39;||c&gt;&#39;9&#39;) c=getchar();
+    while(c&gt;=&#39;0&#39;&amp;&amp;c&lt;=&#39;9&#39;) ans=ans*10+c-&#39;0&#39;,c=getchar();
+    return ans;
+}
+
+const ll MOD=998244353;
+ll QPow(ll x,ll up){
+    x=(x+MOD)%MOD;
+    ll ans=1;
+    while(up)
+        if(up%2==0) x=x*x%MOD,up/=2;
+        else ans=ans*x%MOD,up--;
+    return ans;
+}
+ll Inv(ll x){
+    return QPow(x,MOD-2);
+}
+
+const ll PTN=1005;
+ll N;
+ll fac[PTN],facInv[PTN];
+void FacInit(){
+    fac[0]=1;for(ll i=1;i&lt;=N;i++) fac[i]=fac[i-1]*i%MOD;
+    facInv[N]=Inv(fac[N]);for(ll i=N-1;i&gt;=1;i--) facInv[i]=facInv[i+1]*(i+1)%MOD;
+    facInv[0]=1;
+}
+ll C(ll n,ll m){
+    if(n&lt;m) return 0;
+    return fac[n]*facInv[m]%MOD*facInv[n-m]%MOD;
+}
+
+struct Edge{
+    ll u,v;ll nxt;
+}edge[PTN*2];
+ll graM,last[PTN];
+void GraphInit(){graM=0;for(ll i=0;i&lt;PTN;i++) last[i]=0;}
+void AddBscEdge(ll u,ll v){
+    edge[++graM]=(Edge){u,v,last[u]};
+    last[u]=graM;
+}
+void AddDbEdge(ll u,ll v){
+    AddBscEdge(u,v);AddBscEdge(v,u);
+}
+
+class Func{public:
+    ll sav[PTN];ll len;
+    Func(){}
+    Func(ll len){
+        this-&gt;len=len;
+        for(ll i=0;i&lt;=len;i++) sav[i]=0;
+    }
+    void Resize(ll nwLen){
+        for(ll i=len+1;i&lt;=nwLen;i++) sav[i]=0;
+        len=nwLen;
+    }
+    ll&amp; operator [] (ll idx){return sav[idx];}
+    /*void Debug(){
+        cout&lt;&lt;len&lt;&lt;&quot;:&quot;;
+        for(ll i=0;i&lt;=len;i++) cout&lt;&lt;sav[i]&lt;&lt;&quot;,&quot;;cout&lt;&lt;endl;
+    }*/
+};
+Func operator + (Func A,Func B){
+    Func C(max(A.len,B.len));
+    A.Resize(C.len);B.Resize(C.len);
+    for(ll i=0;i&lt;=C.len;i++) C[i]=A[i]+B[i]%MOD;
+    return C;
+}
+Func operator - (Func A,Func B){
+    Func C(max(A.len,B.len));
+    A.Resize(C.len);B.Resize(C.len);
+    for(ll i=0;i&lt;=C.len;i++) C[i]=A[i]-B[i]%MOD;
+    return C;
+}
+Func operator * (Func A,Func B){
+    Func C(A.len+B.len);
+    for(ll i=0;i&lt;=A.len;i++)
+        for(ll j=0;j&lt;=B.len;j++)
+            C[i+j]=(C[i+j]+A[i]*B[j])%MOD;
+    return C;
+}
+Func I(){
+    Func A(1);A[1]=1;return A;
+}
+Func E(){
+    Func A(0);A[0]=1;return A;
+}
+Func f[PTN][2][2];
+void FDFS(ll u,ll father){
+    Func s00,s00_01,s10_11;
+    s00=s00_01=s10_11=E();
+    for(ll i=last[u];i!=0;i=edge[i].nxt){
+        ll v=edge[i].v;if(v==father) continue;
+        FDFS(v,u);
+        s00=s00*f[v][0][0];
+        s00_01=s00_01*(f[v][0][0]+f[v][0][1]);
+        s10_11=s10_11*(f[v][1][0]+f[v][1][1]);
+    }
+    f[u][0][0]=s00_01-s00;
+    f[u][0][1]=I()*s10_11;
+    f[u][1][0]=s00_01;
+    f[u][1][1]=I()*s10_11;
+}
+ll A[PTN];
+void Solve(){
+    FDFS(1,0);
+    for(ll k=0;k&lt;=N;k++) A[k]=(C(N,k)-(f[1][0][0][k]+f[1][0][1][k])%MOD+MOD)%MOD;
+    ll Ans=0;
+    for(ll k=0;k&lt;N;k++){//注意&lt;N 
+        ll t=0;
+        for(ll p=0;p&lt;=k;p++){
+            ll alpha;
+            if((k-p)%2==0) alpha=1;
+            else alpha=(-1+MOD)%MOD;
+            t=(t+C(k,p)*alpha%MOD*N%MOD*Inv(N-p)%MOD)%MOD;
+        }
+        t=t*A[k]%MOD;
+        Ans=(Ans+t)%MOD;
+    }
+    cout&lt;&lt;Ans;
+}
+int main(){
+    N=Rd();FacInit();
+    GraphInit();
+    for(ll i=1;i&lt;N;i++){
+        ll u=Rd(),v=Rd();
+        AddDbEdge(u,v);
+    }
+    Solve();
+    return 0;
+}</code></pre>
+<h2 id="s-2">二、做法2（minmax容斥+dp）</h2>
+<h3 id="s-2.1">2.1 minmax容斥</h3>
+<p>minmax容斥标准式： <span class="math display">\[
+\max(S) = \sum_{T \subseteq S \\ T \not= \varnothing} (-1)^{|T|-1}
+\min(T)
+\]</span></p>
+<p>由于期望具有线性性，它可以拓展到期望： <span class="math display">\[
+E(\max(S)) = \sum_{T \subseteq S \\ T \not= \varnothing} (-1)^{|T|-1}
+E(\min(T))
+\]</span></p>
+<p>然后把这个式子映射到本题中来。（下文把操作了多少次称为“时间”）</p>
+<p><span
+class="math inline">\(S\)</span>就是整棵树。集合中的元素可以看做每一个点第一次被染成黑色的时间，于是<span
+class="math inline">\(\max(S)\)</span>就表示染黑集合<span
+class="math inline">\(S\)</span>中所有点的耗时；<span
+class="math inline">\(\min(S)\)</span>表示至少染黑集合<span
+class="math inline">\(S\)</span>中的某一个点的耗时。</p>
+<p>套上期望后：<span
+class="math inline">\(E(\max(S))\)</span>表示染黑集合中所有点的期望耗时，也就是本题所要求的答案；<span
+class="math inline">\(E(\min(T))\)</span>表示至少染黑集合中的某一个点的期望耗时。</p>
+<p>捋一下思路，由于期望不满足<span class="math inline">\(E(\max(S)) =
+\max_{x \in S} E(x)\)</span>，无法直接遍历求<span
+class="math inline">\(\max\)</span>。但是因为期望具有线性性，可以借助minmax容斥来达到目的。
+（这是一类套路题型）</p>
+<h3 id="s-2.2">2.2 处理 <span
+class="math inline">\(E(\min(T))\)</span></h3>
+<p>于是思考<span
+class="math inline">\(E(\min(T))\)</span>是否容易求得。容易列出： <span
+class="math display">\[
+E(\min(T)) = \frac{|U_T|}{n} + (1 - \frac{|U_T|}{n})(1 + E(\min(T)))
+\]</span></p>
+<p>其中<span class="math inline">\(|U_T|\)</span>表示选择后能让<span
+class="math inline">\(T\)</span>中某个节点变黑的点的集合。</p>
+<p>解得 <span class="math display">\[
+E(\min(T)) = \frac{n}{|U_T|}
+\]</span></p>
+<p>补充一点，显然<span class="math inline">\(S\)</span>、<span
+class="math inline">\(T\)</span>、<span
+class="math inline">\(U_T\)</span>有这样的关系 <span
+class="math display">\[
+T \subseteq U_T \subseteq S
+\]</span></p>
+<p>将表达式带入原式中 <span class="math display">\[
+E(\max(S)) = \sum_{T \subseteq S \\ T \not= \varnothing} (-1)^{|T|-1}
+\frac{n}{|U_T|}
+\]</span></p>
+<p>枚举子集是复杂度的瓶颈。不过发现枚举中许多项的<span
+class="math inline">\(|U_T|\)</span>都是相同的，考虑把它单独拿出来枚举。
+<span class="math display">\[
+E(\max(S)) = \sum_{u=1}^n \frac{n}{u} \sum_{T \subseteq S \\ T \not=
+\varnothing \\ |U_T|=u} (-1)^{|T|-1}
+\]</span></p>
+<p>也就是说，现在我们只需快速求得 <span class="math display">\[
+\sum_{T \subseteq S \\ T \not= \varnothing \\ |U_T|=u} (-1)^{|T|-1}
+\]</span></p>
+<p>思考这式子的意义。其实它就是一个带上了容斥系数的所有<span
+class="math inline">\(T\)</span>的方案数之和，也就是<span
+class="math inline">\(|T|\)</span>为奇的方案数减去<span
+class="math inline">\(|T|\)</span>为偶的方案数。</p>
+<p>尝试通过树形dp解决</p>
+<h3 id="s-2.3">2.3 树形dp</h3>
+<p>首先简单考虑一下所需的状态。考虑以某个点为根的子树，我们需要记录<span
+class="math inline">\(|U_T|\)</span>，这是我们上面枚举的基础；<span
+class="math inline">\(|T|\)</span>是容斥系数，我们需要记录它的奇偶性。</p>
+<p>可以想到转移大概的形式是在<span
+class="math inline">\(U_T\)</span>上的卷积。</p>
+<h4 id="s-2.3.1">2.3.1 状态压缩</h4>
+<p>首先有一个小Trick，可以压掉记录<span
+class="math inline">\(|T|\)</span>奇偶性这一维 <span
+class="math display">\[
+\sum_{T \subseteq S \\ T \not= \varnothing \\ |U_T|=u} (-1)^{|T|-1} = -
+\sum_{T \subseteq S \\ T \not= \varnothing \\ |U_T|=u} (-1)^{|T|}
+\]</span></p>
+<p>根据上式，我们在dp时求<span
+class="math inline">\(|T|\)</span>为偶的方案数减去<span
+class="math inline">\(|T|\)</span>为奇的方案数，最后计算答案时乘上个<span
+class="math inline">\(-1\)</span>即可。</p>
+<p>这么做的原因是可以压缩掉记录<span
+class="math inline">\(|T|\)</span>奇偶性这一维。</p>
+<h5 id="s-2.3.1.1">2.3.1.1 对于转移</h5>
+<p>比如有两个对象<span class="math inline">\(A=(x_1,y_1)\)</span>，<span
+class="math inline">\(B(x_2,y_2)\)</span>需要合并为<span
+class="math inline">\(C\)</span>（第1个参数表示<span
+class="math inline">\(|T|\)</span>为偶的方案数，第2个参数表示<span
+class="math inline">\(|T|\)</span>为奇的方案数） <span
+class="math display">\[
+C = (x_1 x_2 + y_1 y_2, x_1 y_2 + x_2 y_1)
+\]</span></p>
+<p>如果将对象改写为单个变量记录：<span class="math inline">\(A=x_1 -
+y_1\)</span>，<span class="math inline">\(B = x_2 - y_2\)</span> <span
+class="math display">\[
+\begin{aligned}
+C &amp;= x_1 x_2 + y_1 y_2 - (x_1 y_2 + x_2 y_1) \\
+&amp;= (x_1 - y_1) (x_2 - y_2) \\
+&amp;= A B
+\end{aligned}
+\]</span></p>
+<p>而对象的值就是我们所求的（考虑容斥系数的方案数）。成功压缩。</p>
+<p>如果不做上面那一个Trick的转化，压缩状态需要 正*正=负 和
+负*负=正，而这显然是不成立的。</p>
+<h5 id="s-2.3.1.2">2.3.1.2 对于新增</h5>
+<p>如果所有情况的<span
+class="math inline">\(T\)</span>内新增一个节点，原来<span
+class="math inline">\(|T|\)</span>为奇的变为偶，原来为偶的变为奇。</p>
+<p>如果不压缩，操作应该是交换<span
+class="math inline">\(x\)</span>和<span
+class="math inline">\(y\)</span></p>
+<p>如果压缩，只需对dp值乘上<span
+class="math inline">\(-1\)</span>即可</p>
+<h4 id="s-2.3.2">2.3.2 设置状态并处理转移</h4>
+<p>我们的dp实际上是用背包分配<span
+class="math inline">\(|U_T|\)</span>。</p>
+<p>状态压缩后，剩下的主要问题在于合并时<span
+class="math inline">\(|U_T|\)</span>、<span
+class="math inline">\(|T|\)</span>发生的变化对dp值造成的影响，而这变化与当前点<span
+class="math inline">\(u\)</span>到底属于哪个集合密切相关。</p>
+<p>由于转移情况复杂，而背包的本质是卷积，所以用封装性良好的卷积实现。</p>
+<p>令<span class="math inline">\(f[u][d=0/1/2]\)</span>表示仅考虑<span
+class="math inline">\(S\)</span>是<span
+class="math inline">\(u\)</span>为根的子树时，以<span
+class="math inline">\(x\)</span>为下标的列表 <span
+class="math display">\[
+\{\sum_{T \subseteq S \\ T \not= \varnothing \\ |U_T|=x \\ u \in Q_d}
+(-1)^{|T|} \Large | \normalsize \ x \in [0,|S|]\}
+\]</span></p>
+<p><span class="math inline">\(Q_d\)</span>是对<span
+class="math inline">\(u\)</span>的限制，具体为</p>
+<p><span class="math inline">\(Q_0\)</span>：<span
+class="math inline">\(u \in S\)</span>且<span class="math inline">\(u
+\not \in U_T\)</span></p>
+<p><span class="math inline">\(Q_1\)</span>：<span
+class="math inline">\(u \in U_T\)</span>且<span class="math inline">\(u
+\not \in T\)</span></p>
+<p><span class="math inline">\(Q_2\)</span>：<span
+class="math inline">\(u \in T\)</span></p>
+<p>定义<span class="math inline">\(I\)</span>，<span
+class="math inline">\(I[1]=1\)</span>​，其余皆为<span
+class="math inline">\(0\)</span>，结合卷积可以表示向<span
+class="math inline">\(U_T\)</span>内新增一个点。</p>
+<p>我们开始处理转移。 <span class="math display">\[
+f[u][0] = \prod_{v} f[v][0] + f[v][1]
+\]</span></p>
+<p>意思是若<span class="math inline">\(u\)</span>不在<span
+class="math inline">\(U_T\)</span>里，则它的所有儿子一定不能在<span
+class="math inline">\(T\)</span>里。 <span class="math display">\[
+f[u][1] = \left( \left( \prod_v f[v][0] + f[v][1] +f[v][2] \right) -
+f[u][0] \right) * I
+\]</span></p>
+<p>若<span class="math inline">\(u\)</span>在<span
+class="math inline">\(U_T\)</span>内而<span
+class="math inline">\(u\)</span>不在<span
+class="math inline">\(T\)</span>内，则<span
+class="math inline">\(u\)</span>的儿子中至少有一个是<span
+class="math inline">\(T\)</span>中的点。这可以转化为所有情况的答案减去所有儿子都不在<span
+class="math inline">\(T\)</span>中的答案。最后卷上<span
+class="math inline">\(I\)</span>为<span
+class="math inline">\(U_T\)</span>新增<span
+class="math inline">\(u\)</span>。 <span class="math display">\[
+f[u][2] = - \left( I * \prod_v \left( f[v][0] * I + f[v][1] + f[v][2]
+\right) \right)
+\]</span></p>
+<p>若<span class="math inline">\(u\)</span>在<span
+class="math inline">\(T\)</span>内，那些本来不在<span
+class="math inline">\(U_T\)</span>内的<span
+class="math inline">\(u\)</span>的儿子现在就应该属于<span
+class="math inline">\(U_T\)</span>了。然后既然<span
+class="math inline">\(u\)</span>属于<span
+class="math inline">\(T\)</span>，那么<span
+class="math inline">\(u\)</span>也属于<span
+class="math inline">\(U_T\)</span>，卷上<span
+class="math inline">\(I\)</span>为<span
+class="math inline">\(U_T\)</span>新增<span
+class="math inline">\(u\)</span>。最后，由于<span
+class="math inline">\(T\)</span>新增了个点，也就是说所有项的容斥系数<span
+class="math inline">\(+1\)</span>，整体变号即可。</p>
+<p>最后算答案，参考早前化出的答案式即可。</p>
+<h3 id="s-2.4">2.4 时间复杂度</h3>
+<p>答案式部分显然<span class="math inline">\(O(n)\)</span></p>
+<p>树形dp卷积的时间复杂度为<span
+class="math inline">\(O(n^2)\)</span>，见做法1对dp的时间复杂度证明。</p>
+<h3 id="s-2.5">2.5 总结</h3>
+<p>首先我们发现这道题适用于minmax容斥的套路，于是将难求的<span
+class="math inline">\(E(max(S))\)</span>转化到容易求的<span
+class="math inline">\(E(min(T))\)</span>。</p>
+<p>然后我们再想办法优化枚举子集，发现<span
+class="math inline">\(U_T\)</span>是一个关键的变量，于是将其提出来单独枚举，问题转化为求带有容斥系数的方案数。</p>
+<p>回头观察题面发现是树状结构，必然有其特殊性质，于是猜想用树形dp解决。讨论合并时<span
+class="math inline">\(U_T\)</span>和<span
+class="math inline">\(T\)</span>是如何变化的，能够列出转移方程式。在中间想到了压缩状态，简化了dp。</p>
+<h3 id="s-2.6">2.6 Code</h3>
+<pre class="cpp"><code>#include&lt;iostream&gt;
+#include&lt;cstdio&gt;
+#include&lt;cstring&gt;
+#include&lt;cmath&gt;
+#include&lt;ctime&gt;
+#include&lt;cstdlib&gt;
+#include&lt;algorithm&gt;
+#include&lt;queue&gt;
+#include&lt;vector&gt;
+#include&lt;map&gt;
+#include&lt;set&gt;
+using namespace std;
+typedef long long ll;
+ll Rd(){
+    ll ans=0;char c=getchar();
+    while(c&lt;&#39;0&#39;||c&gt;&#39;9&#39;) c=getchar();
+    while(c&gt;=&#39;0&#39;&amp;&amp;c&lt;=&#39;9&#39;) ans=ans*10+c-&#39;0&#39;,c=getchar();
+    return ans;
+}
+
+const ll MOD=998244353;
+ll QPow(ll x,ll up){
+    x=(x+MOD)%MOD;
+    ll ans=1;
+    while(up)
+        if(up%2==0) x=x*x%MOD,up/=2;
+        else ans=ans*x%MOD,up--;
+    return ans;
+}
+ll Inv(ll x){
+    return QPow(x,MOD-2);
+}
+
+const ll PTN=1E3+5;
+struct Edge{
+    ll u,v;ll nxt;
+}edge[PTN*2];
+ll N,graM,last[PTN];
+void GraphInit(){graM=0;for(ll i=0;i&lt;PTN;i++) last[i]=0;}
+void AddBscEdge(ll u,ll v){
+    edge[++graM]=(Edge){u,v,last[u]};
+    last[u]=graM;
+}
+void AddDbEdge(ll u,ll v){
+    AddBscEdge(u,v);AddBscEdge(v,u);
+}
+
+class Func{public:
+    ll sav[PTN];
+    ll len;
+    ll&amp; operator [] (ll idx){return sav[idx];}
+    Func(){}
+    Func(ll len){
+        this-&gt;len=len;
+        for(ll i=0;i&lt;=len;i++) sav[i]=0;
+    }
+    void Expand(ll nwLen){
+        for(ll i=len+1;i&lt;=nwLen;i++) sav[i]=0;
+        len=nwLen;
+    }
+    Func operator - (){
+        Func B;B.len=len;
+        for(ll i=0;i&lt;=len;i++) B[i]=(-sav[i]+MOD)%MOD;
+        return B;
+    }
+    /*void Debug(){
+        cout&lt;&lt;len&lt;&lt;&quot;:&quot;;
+        for(ll i=0;i&lt;=len;i++) cout&lt;&lt;sav[i]&lt;&lt;&#39;,&#39;;cout&lt;&lt;endl;
+    }*/
+};
+Func E(){
+    Func A(0);A[0]=1;
+    return A;
+}
+Func I(){
+    Func A(1);A[1]=1;
+    return A;
+}
+Func operator + (Func A,Func B){
+    Func C(max(A.len,B.len));
+    A.Expand(C.len);B.Expand(C.len);
+    for(ll i=0;i&lt;=C.len;i++) C[i]=(A[i]+B[i])%MOD;
+    return C;
+}
+Func operator - (Func A,Func B){
+    Func C(max(A.len,B.len));
+    A.Expand(C.len);B.Expand(C.len);
+    for(ll i=0;i&lt;=C.len;i++) C[i]=(A[i]-B[i]+MOD)%MOD;
+    return C;
+}
+Func operator * (Func A,Func B){
+    Func C(A.len+B.len);
+    for(ll i=0;i&lt;=A.len;i++)
+        for(ll j=0;j&lt;=B.len;j++)
+            C[i+j]=(C[i+j]+A[i]*B[j])%MOD;
+    return C;
+}
+
+Func f[PTN][3];
+void DFS(ll u,ll fa){
+    f[u][0]=f[u][1]=f[u][2]=E();
+    for(ll i=last[u];i!=0;i=edge[i].nxt){
+        ll v=edge[i].v;if(v==fa) continue;
+        DFS(v,u);
+        f[u][0]=f[u][0]*(f[v][0]    +f[v][1]);
+        f[u][1]=f[u][1]*(f[v][0]    +f[v][1]+f[v][2]);
+        f[u][2]=f[u][2]*(f[v][0]*I()+f[v][1]+f[v][2]);
+    }
+    f[u][1]=(f[u][1]-f[u][0])*I();
+    f[u][2]=-(f[u][2]*I());
+}
+void Solve(){
+    DFS(1,0);
+    ll Ans=0;
+    for(ll i=1;i&lt;=N;i++){//注意从1开始，因为minmax容斥不包含空集 
+        Ans=(Ans+N*Inv(i)%MOD*(f[1][0][i]+f[1][1][i]+f[1][2][i]))%MOD;
+    }
+    cout&lt;&lt;(-Ans+MOD)%MOD;
+}
+int main(){
+    N=Rd();
+    GraphInit();
+    for(ll i=1;i&lt;N;i++){
+        ll u=Rd(),v=Rd();
+        AddDbEdge(u,v);
+    }
+    Solve();
+    return 0;
+}</code></pre>
+<h2 id="s-3">三、总结</h2>
+<p>这道题简直人类智慧（</p>
+<p>解题思路很具有参考价值，实为一道期望好题！</p>
+<p>上周末看到这道题，因为全网都找不到出处也没题解，硬是对着一张题解截图（解法1）和先比我写出来的Waper爷的代码（解法2）杠出来了</p>
+<p>我现在感觉我整个人都升华了.jpg</p>
+</div>
+    <div class="post-tags text-vice" style="text-align: right">
+        <p>tags: 
+            
+                <a href= "/tags#OI" >OI</a>, 
+            
+                <a href= "/tags#数学" >数学</a>, 
+            
+                <a href= "/tags#学习笔记" >学习笔记</a>, 
+            
+                <a href= "/tags#题解" >题解</a>
+            
+        </p>
+        <p>posted on 2019/12/09 | last modified on 2019/12/09</p>
+    </div>
+    
+        <div class="post-comments">
+            <script src="https://giscus.app/client.js"
+                data-repo="sun123zxy/sun123zxy.github.io"
+                data-repo-id="MDEwOlJlcG9zaXRvcnkzMTAwMzQxNDc="
+                data-category="General"
+                data-category-id="DIC_kwDOEnq-484CQKFr"
+                data-mapping="pathname"
+                data-reactions-enabled="1"
+                data-emit-metadata="0"
+                data-input-position="bottom"
+                data-theme="light"
+                data-lang="en"
+                crossorigin="anonymous">
+            </script>
+        </div>
+    
+</div>
+    </div>
+    <div id="sidebar">
+        
+            <div id="sidebar-profile" class="panel">
+                
+                <div class="panel-content">
+                    <a href="/"><img class="avatar" src="/assets/images/pig.png"></img></a>
+<p class="nickname">sun123zxy</p>
+<div class="nav">
+    <a href="/">Home</a> | 
+    <a href="/p/aboutme">About</a> | 
+    <a href="/tags">Tags</a>
+</div>
+<div class="feed">
+    <img src="/assets/images/feed.png"></img>
+    <a href="/feed.xml">Atom Feed</a>
+</div>
+<p>Next Phantasm...</p>
+                </div>
+            </div>
+        
+            <div id="sidebar-news" class="panel">
+                
+                <h2 class="panel-title">News</h2>
+                
+                <div class="panel-content">
+                    <a href="https://info.flagcounter.com/1Zpv"><img src="https://s05.flagcounter.com/count2/1Zpv/bg_DDDDDD/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_3/labels_0/pageviews_1/flags_0/percent_0/" alt="Flag Counter" border="0"></a>
+
+<p>博客已迁移。访问 <a href="https://blog.sun123zxy.top">blog.sun123zxy.top</a> 获取更多信息。</p>
+                </div>
+            </div>
+        
+            <div id="sidebar-links" class="panel">
+                
+                <h2 class="panel-title">Links</h2>
+                
+                <div class="panel-content">
+                    
+<h3>My Friends</h3>
+<ul>
+    <li><a href="https://www.cnblogs.com/Railgunforever">吸取教训</a></li>
+    <li><a href="https://p9t6g.github.io">p9t6g</a></li>
+    <li><a href="https://tbyangz.github.io">TbYangZ</a></li>
+    <li><a href="https://www.cnblogs.com/ALANALLEN21LOVE28">CJ SYH</a></li>
+</ul>
+
+<h3>Related Sites</h3>
+<ul>
+    <li><a href="http://www.cnblogs.com/sun123zxy">博客园</a></li>
+    <li><a href="http://tools.sun123zxy.top">工具站</a></li>
+</ul>
+                </div>
+            </div>
+        
+            <div id="sidebar-tags" class="panel">
+                
+                <h2 class="panel-title">Tags</h2>
+                
+                <div class="panel-content">
+                    <ul>
+    
+    <li><a href= "/tags#OI" >OI</a></li>
+    
+    <li><a href= "/tags#数学" >数学</a></li>
+    
+    <li><a href= "/tags#高考" >高考</a></li>
+    
+    <li><a href= "/tags#题解" >题解</a></li>
+    
+    <li><a href= "/tags#原创题目" >原创题目</a></li>
+    
+    <li><a href= "/tags#学习笔记" >学习笔记</a></li>
+    
+    <li><a href= "/tags#意识流" >意识流</a></li>
+    
+    <li><a href= "/tags#游记" >游记</a></li>
+    
+    <li><a href= "/tags#Web" >Web</a></li>
+    
+    <li><a href= "/tags#站点相关" >站点相关</a></li>
+    
+    <li><a href= "/tags#Python" >Python</a></li>
+    
+</ul>
+                </div>
+            </div>
+        
+        
+            <div id="contents" class="panel"><h2 class="panel-title">Contents</h2>
+<div class="panel-content"></div>
+<script defer src="/assets/js/contents.js"></script></div>
+        
+    </div>
+    <div class="fclean"></div>
+    <div id="footer" class="text-vice">
+        <p>sun123zxy's Blog | Powered by Jekyll</p>
+    </div>
+</div>
+<div id="leftdown-float-container">
+    <div id="theme-info" class="round-button-handler">
+        <div class="round-button"><img src="/assets/images/info.png"></img></div>
+        <div class="hover-info">Theme Info</div>
+    </div>
+    <div id="theme-switch" class="round-button-handler">
+        <div class="round-button"><img src="/assets/images/switch.png"></img></div>
+        <div class="hover-info">Theme Switch</div>
+    </div>
+</div>
+<div id="rightdown-float-container">
+    <div id="music-player" class="round-button-handler">
+        <div class="round-button"><img src="/assets/images/music.png"></img></div>
+        <div class="hover-info">Music Player</div>
+    </div>
+</div>
+<link rel="stylesheet" href="/assets/css/default.css">
+<link rel="stylesheet" id="night-container">
+<link rel="stylesheet" id="theme-container">
+<div id="mask"></div>
+<script src="/assets/js/theme_data.js"></script>
+<script src="/assets/js/round_button.js"></script>
+<script src="/assets/js/theme_manager.js" defer></script>
+<script src="/assets/js/music_player.js"></script>
+<script src="/assets/js/scroll.js"></script>
+    </body>
+</html>

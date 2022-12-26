@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>树的解构 题解 - sun123zxy's Blog</title>
+
+        <script src="/assets/thirds/jquery/jquery-3.5.1.min.js"></script>
+
+        <link rel="stylesheet" href="/assets/thirds/katex/katex.min.css">
+        <!-- The loading of KaTeX is deferred to speed up page rendering -->
+        <script defer src="/assets/thirds/katex/katex.min.js"></script>
+        <!-- To automatically render math in text elements, include the auto-render extension -->
+        <script defer src="/assets/thirds/katex/auto-render.min.js" onload="renderMathInElement(document.body)"></script>
+        
+        <script src="/assets/thirds/highlight/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script>
+    </head>
+    <body>
+        <div id="home">
+    <div id="main" class="panel panel-content">
+        <div class="post-body">
+    <div class="post-head">
+        <h1 id="post-title">树的解构 题解</h1>
+        <p class="abstract text-vice">
+            
+                一道并不是特别难但没有切掉的期望题。
+            
+        </p>
+    </div>
+    <div class="post-content"><p><a
+href="https://oj.bashu.com.cn/code/problempage.php?problem_id=7076">bsoj7076</a>，没找到出处...</p>
+<blockquote>
+<p>树的解构</p>
+<p>Mivik 喜欢 Eprom 的解构俱乐部，于是他想解构一棵树。</p>
+<p>Mivik 找到了一棵以 <span class="math inline">\(1\)</span> 为根的有
+<span class="math inline">\(n\)</span> 个结点的有根外向树。Mivik 会进行
+<span class="math inline">\((n−1)\)</span> 次操作，每次 Mivik
+都会从未删掉的边中等概率选择一条边将其删去。记这条边为 <span
+class="math inline">\(a \to b\)</span> ，则删去这条边的代价是删边时
+<span class="math inline">\(b\)</span> 的子树大小（包括 <span
+class="math inline">\(b\)</span> 自己）；删去这条边后 <span
+class="math inline">\(b\)</span> 为根的子树会形成一棵新的以 <span
+class="math inline">\(b\)</span> 为根的有根树。</p>
+<p>Mivik 想知道，他进行这 <span class="math inline">\((n−1)\)</span>
+次操作后期望的代价总和是多少。由于 Mivik
+不喜欢太大的数，你只需要输出期望的值对 <span class="math inline">\(10^9
++ 7\)</span> 取模的结果。</p>
+<p>对于所有测试点，满足 <span class="math inline">\(1 \le n \le 2 \times
+10^6\)</span> 。保证给出的有根树合法。</p>
+</blockquote>
+<p>一道并不是特别难但没有切掉的期望题。</p>
+<p>考场写了链过后就一直在想怎么拆树，无果而终。然后想到解决排列问题的一个常见的思路是考虑所有排列方案的贡献和，最后乘个
+<span class="math inline">\(\frac{1}{(n-1)!}\)</span>
+就可以了。尝试在树形dp边的排列顺序，同样无果而终。</p>
+<p>对整体dp不好做，那就转而思考每个点对答案的贡献。</p>
+<p>考虑从树上某个深度（到根需经过的边数）为 <span
+class="math inline">\(d_u\)</span> 的点 <span
+class="math inline">\(u\)</span>
+，其向上到根的路径上各边的相对删除顺序可以用一个阶为 <span
+class="math inline">\(d_u\)</span> 的排列 <span
+class="math inline">\(P\)</span>
+表示。若只考虑该路径，设此时对答案的贡献为 <span
+class="math inline">\(f_u(P)\)</span> ，我们尝试化简 <span
+class="math inline">\(\sum_{P \in \mathrm{perm(d_u)}} f_u(P)\)</span>
+。（其中 <span class="math inline">\(\mathrm{perm(n)}\)</span> 表示所有
+<span class="math inline">\(n\)</span> 阶排列的集合）</p>
+<p>对于其中某条位置为 <span class="math inline">\(i\)</span>
+的边，若其被删除时点 <span class="math inline">\(u\)</span>
+可对答案产生贡献，则必须保证删除该边时该边与 <span
+class="math inline">\(u\)</span> 仍然连通，也就是对于任意位置为 <span
+class="math inline">\(j\)</span> 且 <span class="math inline">\(j &lt;
+i\)</span> 的的边，有 <span class="math inline">\(P_j &gt; P_i\)</span>
+。换句话说，若从后往前 （从上至下）决定边的删除时间，那么一条删除时间为
+<span class="math inline">\(x\)</span> 的边必须在 <span
+class="math inline">\([1,x]\)</span>
+中最后被选中才能满足上述条件。显然其发生概率为 <span
+class="math inline">\(\frac{1}{x}\)</span> ，故在所有排列中 <span
+class="math inline">\(x\)</span> 产生贡献的次数为 <span
+class="math inline">\(\frac{d_u !}{x}\)</span> 。因此 <span
+class="math display">\[
+\sum_{P \in \mathrm{perm(d_u)}} f_u(P) = \sum_{x=1}^{d_u} \frac{d_u!}{x}
+\]</span> <span class="math inline">\(P\)</span>
+的相对顺序已经确定，而在整棵树中还有其他边的相对顺序未被决定，因此点
+<span class="math inline">\(u\)</span> 的总贡献还要再乘上对 <span
+class="math inline">\(P\)</span> 消序后的全部排列方案数 <span
+class="math display">\[
+\frac{(n-1)!}{d_u!} \sum_{x=1}^{d_u} \frac{d_u!}{x} = (n-1)!
+\sum_{x=1}^{d_u} \frac{1}{x}
+\]</span> 整合所有点的贡献并乘上概率就是最终的期望 <span
+class="math display">\[
+\begin{aligned} \mathrm{ans} &amp;= \frac{1}{(n-1)!} \sum_{u=1}^n (n-1)!
+\sum_{x=1}^{d_u} \frac{1}{x} \\ &amp;= \sum_{u=1}^n \sum_{x=1}^{d_u}
+\frac{1}{x} \end{aligned}
+\]</span> <del>意外的约掉了好多玩意儿呢</del></p>
+<p>线性求逆元并前缀和即可 <span class="math inline">\(O(n)\)</span>
+解决。</p>
+<pre class="cpp"><code>#include&lt;iostream&gt;
+#include&lt;cstdio&gt;
+#include&lt;cmath&gt;
+#include&lt;cstring&gt;
+#include&lt;ctime&gt;
+#include&lt;cstdlib&gt;
+#include&lt;queue&gt;
+#include&lt;algorithm&gt;
+#include&lt;map&gt;
+#include&lt;set&gt;
+#include&lt;vector&gt;
+using namespace std;
+typedef long long ll;
+ll Rd(){
+    int ans=0;bool fh=0;char c=getchar();
+    while(c&lt;&#39;0&#39;||c&gt;&#39;9&#39;){if(c==&#39;-&#39;) fh=1; c=getchar();}
+    while(c&gt;=&#39;0&#39;&amp;&amp;c&lt;=&#39;9&#39;) ans=ans*10+c-&#39;0&#39;,c=getchar();
+    if(fh) ans=-ans;
+    return ans;
+}
+typedef vector&lt;ll&gt; Vec;
+typedef vector&lt;ll&gt;::iterator IVec;
+#define foreach(it,v) for(IVec it=v.begin();it!=v.end();it++)
+const ll MOD=1E9+7;
+#define _ %MOD
+ll PMod(ll x){
+    if(x&lt;0) return x+MOD;
+    else if(x&gt;=MOD) return x-=MOD;
+    else return x;
+}
+
+const ll MXN=2E6+5;
+ll N;Vec chd[MXN];
+
+ll dep[MXN];
+void InfoDFS(ll u,ll depth){
+    dep[u]=depth;
+    foreach(it,chd[u]) InfoDFS((*it),depth+1); 
+}
+
+ll inv[MXN],sInv[MXN];
+void SpawnInv(){
+    inv[1]=1;for(ll i=2;i&lt;=N;i++) inv[i]=PMod(-(MOD/i)*inv[MOD%i]_); 
+    sInv[1]=inv[1];for(ll i=2;i&lt;=N;i++) sInv[i]=PMod(sInv[i-1]+inv[i]);
+}
+void Solve(){
+    SpawnInv(); 
+    InfoDFS(1,0);
+    ll ans=0;
+    for(ll u=1;u&lt;=N;u++) ans=PMod(ans+sInv[dep[u]]);
+    printf(&quot;%lld&quot;,ans); 
+}
+int main(){
+    //freopen(&quot;deconstruct.in&quot;,&quot;r&quot;,stdin);
+    //freopen(&quot;deconstruct.out&quot;,&quot;w&quot;,stdout);
+    N=Rd();
+    for(ll i=2;i&lt;=N;i++) chd[Rd()].push_back(i);
+    Solve();
+    return 0;
+}</code></pre>
+</div>
+    <div class="post-tags text-vice" style="text-align: right">
+        <p>tags: 
+            
+                <a href= "/tags#OI" >OI</a>, 
+            
+                <a href= "/tags#数学" >数学</a>, 
+            
+                <a href= "/tags#题解" >题解</a>
+            
+        </p>
+        <p>posted on 2020/11/27 | last modified on 2020/11/27</p>
+    </div>
+    
+        <div class="post-comments">
+            <script src="https://giscus.app/client.js"
+                data-repo="sun123zxy/sun123zxy.github.io"
+                data-repo-id="MDEwOlJlcG9zaXRvcnkzMTAwMzQxNDc="
+                data-category="General"
+                data-category-id="DIC_kwDOEnq-484CQKFr"
+                data-mapping="pathname"
+                data-reactions-enabled="1"
+                data-emit-metadata="0"
+                data-input-position="bottom"
+                data-theme="light"
+                data-lang="en"
+                crossorigin="anonymous">
+            </script>
+        </div>
+    
+</div>
+    </div>
+    <div id="sidebar">
+        
+            <div id="sidebar-profile" class="panel">
+                
+                <div class="panel-content">
+                    <a href="/"><img class="avatar" src="/assets/images/pig.png"></img></a>
+<p class="nickname">sun123zxy</p>
+<div class="nav">
+    <a href="/">Home</a> | 
+    <a href="/p/aboutme">About</a> | 
+    <a href="/tags">Tags</a>
+</div>
+<div class="feed">
+    <img src="/assets/images/feed.png"></img>
+    <a href="/feed.xml">Atom Feed</a>
+</div>
+<p>Next Phantasm...</p>
+                </div>
+            </div>
+        
+            <div id="sidebar-news" class="panel">
+                
+                <h2 class="panel-title">News</h2>
+                
+                <div class="panel-content">
+                    <a href="https://info.flagcounter.com/1Zpv"><img src="https://s05.flagcounter.com/count2/1Zpv/bg_DDDDDD/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_3/labels_0/pageviews_1/flags_0/percent_0/" alt="Flag Counter" border="0"></a>
+
+<p>博客已迁移。访问 <a href="https://blog.sun123zxy.top">blog.sun123zxy.top</a> 获取更多信息。</p>
+                </div>
+            </div>
+        
+            <div id="sidebar-links" class="panel">
+                
+                <h2 class="panel-title">Links</h2>
+                
+                <div class="panel-content">
+                    
+<h3>My Friends</h3>
+<ul>
+    <li><a href="https://www.cnblogs.com/Railgunforever">吸取教训</a></li>
+    <li><a href="https://p9t6g.github.io">p9t6g</a></li>
+    <li><a href="https://tbyangz.github.io">TbYangZ</a></li>
+    <li><a href="https://www.cnblogs.com/ALANALLEN21LOVE28">CJ SYH</a></li>
+</ul>
+
+<h3>Related Sites</h3>
+<ul>
+    <li><a href="http://www.cnblogs.com/sun123zxy">博客园</a></li>
+    <li><a href="http://tools.sun123zxy.top">工具站</a></li>
+</ul>
+                </div>
+            </div>
+        
+            <div id="sidebar-tags" class="panel">
+                
+                <h2 class="panel-title">Tags</h2>
+                
+                <div class="panel-content">
+                    <ul>
+    
+    <li><a href= "/tags#OI" >OI</a></li>
+    
+    <li><a href= "/tags#数学" >数学</a></li>
+    
+    <li><a href= "/tags#高考" >高考</a></li>
+    
+    <li><a href= "/tags#题解" >题解</a></li>
+    
+    <li><a href= "/tags#原创题目" >原创题目</a></li>
+    
+    <li><a href= "/tags#学习笔记" >学习笔记</a></li>
+    
+    <li><a href= "/tags#意识流" >意识流</a></li>
+    
+    <li><a href= "/tags#游记" >游记</a></li>
+    
+    <li><a href= "/tags#Web" >Web</a></li>
+    
+    <li><a href= "/tags#站点相关" >站点相关</a></li>
+    
+    <li><a href= "/tags#Python" >Python</a></li>
+    
+</ul>
+                </div>
+            </div>
+        
+        
+            <div id="contents" class="panel"><h2 class="panel-title">Contents</h2>
+<div class="panel-content"></div>
+<script defer src="/assets/js/contents.js"></script></div>
+        
+    </div>
+    <div class="fclean"></div>
+    <div id="footer" class="text-vice">
+        <p>sun123zxy's Blog | Powered by Jekyll</p>
+    </div>
+</div>
+<div id="leftdown-float-container">
+    <div id="theme-info" class="round-button-handler">
+        <div class="round-button"><img src="/assets/images/info.png"></img></div>
+        <div class="hover-info">Theme Info</div>
+    </div>
+    <div id="theme-switch" class="round-button-handler">
+        <div class="round-button"><img src="/assets/images/switch.png"></img></div>
+        <div class="hover-info">Theme Switch</div>
+    </div>
+</div>
+<div id="rightdown-float-container">
+    <div id="music-player" class="round-button-handler">
+        <div class="round-button"><img src="/assets/images/music.png"></img></div>
+        <div class="hover-info">Music Player</div>
+    </div>
+</div>
+<link rel="stylesheet" href="/assets/css/default.css">
+<link rel="stylesheet" id="night-container">
+<link rel="stylesheet" id="theme-container">
+<div id="mask"></div>
+<script src="/assets/js/theme_data.js"></script>
+<script src="/assets/js/round_button.js"></script>
+<script src="/assets/js/theme_manager.js" defer></script>
+<script src="/assets/js/music_player.js"></script>
+<script src="/assets/js/scroll.js"></script>
+    </body>
+</html>

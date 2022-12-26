@@ -1,0 +1,9 @@
+:root {
+    --text-color-theme-first: #7abaff;
+    --text-color-theme-second: #ceddec;
+
+    --strip-color: #0e376e;
+    --background-color-theme: #0c4a8c7d;
+    
+    --background-image: url(/assets/images/bg/bambooForest.jpg);
+}

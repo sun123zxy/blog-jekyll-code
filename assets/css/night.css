@@ -1,0 +1,31 @@
+:root{
+    --text-color: #ddd;
+    --text-color-title: #ddd;
+    --text-color-vice: #999;
+    --background-color: #000000b5;
+
+    --text-color-theme-first: #7abaff;
+    --text-color-theme-second: #ceddec;
+
+    --strip-color: #144382;
+    --shadow-color: black;
+    --background-color-theme: #0c4a8c7d;
+
+    --background-image: linear-gradient(black,black);
+
+    --highlight-color-comment: #64c164;
+}
+
+/*Chrome scrollbar darkize*/
+::-webkit-scrollbar{
+    width: unset;
+}
+::-webkit-scrollbar-thumb{
+    background-color: rgb(50,50,50,.5);
+}
+::-webkit-scrollbar-thumb:hover{
+    background-color: rgb(50,50,50,.7);
+}
+::-webkit-scrollbar-track{
+    background-color: rgba(50,50,50,.1);
+}

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>关于泰勒展开拉格朗日余项中值点的渐进性 - sun123zxy's Blog</title>
+
+        <script src="/assets/thirds/jquery/jquery-3.5.1.min.js"></script>
+
+        <link rel="stylesheet" href="/assets/thirds/katex/katex.min.css">
+        <!-- The loading of KaTeX is deferred to speed up page rendering -->
+        <script defer src="/assets/thirds/katex/katex.min.js"></script>
+        <!-- To automatically render math in text elements, include the auto-render extension -->
+        <script defer src="/assets/thirds/katex/auto-render.min.js" onload="renderMathInElement(document.body)"></script>
+        
+        <script src="/assets/thirds/highlight/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script>
+    </head>
+    <body>
+        <div id="home">
+    <div id="main" class="panel panel-content">
+        <div class="post-body">
+    <div class="post-head">
+        <h1 id="post-title">关于泰勒展开拉格朗日余项中值点的渐进性</h1>
+        <p class="abstract text-vice">
+            
+                中科大《数学分析教程》第三版问题 4.3.1
+            
+        </p>
+    </div>
+    <div class="post-content"><p>之前学拉格朗日中值定理的时候做到一道涉及到特定函数中值渐进性的题，感觉似乎有一般的结论，推广了一下就是这样了。</p>
+<p>感谢刘导拯救 <span class="math inline">\(n=1\)</span>
+都不会证的我，感谢王佬指出这是中科大《数学分析教程》第三版问题
+4.3.1。</p>
+<blockquote>
+<p>设函数 <span class="math inline">\(f(x)\)</span> 在区间 <span
+class="math inline">\(I\)</span> 上有 <span
+class="math inline">\(n+1\)</span> 阶导数，<span
+class="math inline">\(x_0 \in I\)</span>，<span
+class="math inline">\(f^{(n+1)}(x_0) \not = 0\)</span>；定义函数 <span
+class="math inline">\(T_n(x)\)</span> 为 <span
+class="math inline">\(f(x)\)</span> 在 <span
+class="math inline">\(x=x_0\)</span> 处的 <span
+class="math inline">\(n\)</span> 阶泰勒多项式：</p>
+<p><span class="math display">\[
+T(x) = T_n(x_0+h) = \sum_{k=0}^n \frac{f^{(k)}(x_0)}{k!} h^k
+\]</span></p>
+<p>求证： <span class="math inline">\(f(x)\)</span> 在 <span
+class="math inline">\(x=x_0\)</span> 处带拉格朗日余项的 <span
+class="math inline">\(n-1\)</span> 阶泰勒展开</p>
+<p><span class="math display">\[
+f(x) = f(x_0+h) = T_{n-1}(x_0+h) + \frac{f^{(n)}(x_0+\theta h)}{n!} h^n
+\qquad \theta \in (0,1)
+\]</span></p>
+<p>中的 <span class="math inline">\(\theta\)</span> 满足：</p>
+<p><span class="math display">\[
+\lim_{h \to 0} \theta = \frac 1 {n+1}
+\]</span></p>
+</blockquote>
+<p>非常漂亮的结论啊。</p>
+<p>理一下思路。关键点在于怎么构造出 <span
+class="math inline">\(\theta\)</span>，得想办法把它从 <span
+class="math inline">\(f^{(n)}(x_0+\theta h)\)</span>
+这样的形式中拿出来。或许我们能想到构造</p>
+<p><span class="math display">\[
+\frac{f^{(n)}(x_0+\theta h) - f^{(n)}(x_0)}{\theta h} \to f^{(n+1)}(x_0)
+\qquad (h \to 0)
+\]</span></p>
+<p>这样 <span class="math inline">\(\theta\)</span>
+就可以拿出来单独求极限了。<span class="math inline">\(f^{(n)}(x_0+\theta
+h)\)</span> 可以从 <span class="math inline">\(f(x)\)</span> 的 <span
+class="math inline">\(n-1\)</span> 阶泰勒展开的拉格朗日余项中得到，而
+<span class="math inline">\(f^{(n)}(x_0)\)</span> 和 <span
+class="math inline">\(f^{(n+1)}(x_0)\)</span> 也可以从 <span
+class="math inline">\(f(x)\)</span> 的 <span
+class="math inline">\(n+1\)</span>
+阶带皮亚诺余项的泰勒展开中拿到。于是，下面的证明就十分自然了。</p>
+<p><strong>证明：</strong> 考虑 <span
+class="math inline">\(f(x)\)</span> 的 <span
+class="math inline">\(n-1\)</span> 阶带拉格朗日余项的泰勒展开</p>
+<p><span class="math display">\[
+f(x_0 + h) = T_{n-1}(x_0 + h) + \frac{f^{(n)}(x_0+\theta h)}{n!} h^n
+\]</span></p>
+<p>和 <span class="math inline">\(f(x)\)</span> 的 <span
+class="math inline">\(n+1\)</span> 阶带皮亚诺余项的泰勒展开</p>
+<p><span class="math display">\[
+f(x_0 + h) = T_{n+1}(x_0 + h) + o(h^{n+1}) = T_{n-1}(x_0 + h) +
+\frac{f^{(n)}(x_0)}{n!} h^n + \frac{f^{(n+1)}(x_0)}{(n+1)!} h^{n+1} +
+o(h^{n+1})
+\]</span></p>
+<p>两式相减得</p>
+<p><span class="math display">\[
+\frac{f^{(n)}(x_0+\theta h)}{n!} h^n = \frac{f^{(n)}(x_0)}{n!} h^n +
+\frac{f^{(n+1)}(x_0)}{(n+1)!} h^{n+1} + o(h^{n+1})
+\]</span></p>
+<p>移项整理得</p>
+<p><span class="math display">\[
+\theta \cdot \frac{f^{(n)}(x_0+\theta h)-f^{(n)}(x_0)}{\theta h} =
+\frac{f^{(n+1)}(x_0)}{n+1} + n! \cdot \frac {o(h^{n+1})}{h^{n+1}}
+\]</span></p>
+<p>两侧同时取 <span class="math inline">\(h \to 0\)</span> 即得</p>
+<p><span class="math display">\[
+\lim_{h \to 0} \theta \cdot f^{(n+1)}(x_0) = \frac{f^{(n+1)}(x_0)}{n+1}
+\]</span></p>
+<p>于是由 <span class="math inline">\(f^{(n+1)}(x_0) \not =
+0\)</span>，我们有</p>
+<p><span class="math display">\[
+\lim_{h \to 0} \theta = \frac{1}{n+1}
+\]</span></p>
+<p>得证。</p>
+<hr />
+<p>备考：</p>
+<pre><code>Azpeitia A G. On the Lagrange remainder of the Taylor formula[J]. The American Mathematical Monthly, 1982, 89(5): 311-312.
+Abel U. On the Lagrange remainder of the Taylor formula[J]. The American mathematical monthly, 2003, 110(7): 627-633.</code></pre>
+<p>这两篇论文似乎对这种渐进性有更深入的讨论。</p>
+</div>
+    <div class="post-tags text-vice" style="text-align: right">
+        <p>tags: 
+            
+                <a href= "/tags#数学" >数学</a>, 
+            
+                <a href= "/tags#题解" >题解</a>
+            
+        </p>
+        <p>posted on 2022/11/02 | last modified on 2022/11/02</p>
+    </div>
+    
+        <div class="post-comments">
+            <script src="https://giscus.app/client.js"
+                data-repo="sun123zxy/sun123zxy.github.io"
+                data-repo-id="MDEwOlJlcG9zaXRvcnkzMTAwMzQxNDc="
+                data-category="General"
+                data-category-id="DIC_kwDOEnq-484CQKFr"
+                data-mapping="pathname"
+                data-reactions-enabled="1"
+                data-emit-metadata="0"
+                data-input-position="bottom"
+                data-theme="light"
+                data-lang="en"
+                crossorigin="anonymous">
+            </script>
+        </div>
+    
+</div>
+    </div>
+    <div id="sidebar">
+        
+            <div id="sidebar-profile" class="panel">
+                
+                <div class="panel-content">
+                    <a href="/"><img class="avatar" src="/assets/images/pig.png"></img></a>
+<p class="nickname">sun123zxy</p>
+<div class="nav">
+    <a href="/">Home</a> | 
+    <a href="/p/aboutme">About</a> | 
+    <a href="/tags">Tags</a>
+</div>
+<div class="feed">
+    <img src="/assets/images/feed.png"></img>
+    <a href="/feed.xml">Atom Feed</a>
+</div>
+<p>Next Phantasm...</p>
+                </div>
+            </div>
+        
+            <div id="sidebar-news" class="panel">
+                
+                <h2 class="panel-title">News</h2>
+                
+                <div class="panel-content">
+                    <a href="https://info.flagcounter.com/1Zpv"><img src="https://s05.flagcounter.com/count2/1Zpv/bg_DDDDDD/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_3/labels_0/pageviews_1/flags_0/percent_0/" alt="Flag Counter" border="0"></a>
+
+<p>博客已迁移。访问 <a href="https://blog.sun123zxy.top">blog.sun123zxy.top</a> 获取更多信息。</p>
+                </div>
+            </div>
+        
+            <div id="sidebar-links" class="panel">
+                
+                <h2 class="panel-title">Links</h2>
+                
+                <div class="panel-content">
+                    
+<h3>My Friends</h3>
+<ul>
+    <li><a href="https://www.cnblogs.com/Railgunforever">吸取教训</a></li>
+    <li><a href="https://p9t6g.github.io">p9t6g</a></li>
+    <li><a href="https://tbyangz.github.io">TbYangZ</a></li>
+    <li><a href="https://www.cnblogs.com/ALANALLEN21LOVE28">CJ SYH</a></li>
+</ul>
+
+<h3>Related Sites</h3>
+<ul>
+    <li><a href="http://www.cnblogs.com/sun123zxy">博客园</a></li>
+    <li><a href="http://tools.sun123zxy.top">工具站</a></li>
+</ul>
+                </div>
+            </div>
+        
+            <div id="sidebar-tags" class="panel">
+                
+                <h2 class="panel-title">Tags</h2>
+                
+                <div class="panel-content">
+                    <ul>
+    
+    <li><a href= "/tags#OI" >OI</a></li>
+    
+    <li><a href= "/tags#数学" >数学</a></li>
+    
+    <li><a href= "/tags#高考" >高考</a></li>
+    
+    <li><a href= "/tags#题解" >题解</a></li>
+    
+    <li><a href= "/tags#原创题目" >原创题目</a></li>
+    
+    <li><a href= "/tags#学习笔记" >学习笔记</a></li>
+    
+    <li><a href= "/tags#意识流" >意识流</a></li>
+    
+    <li><a href= "/tags#游记" >游记</a></li>
+    
+    <li><a href= "/tags#Web" >Web</a></li>
+    
+    <li><a href= "/tags#站点相关" >站点相关</a></li>
+    
+    <li><a href= "/tags#Python" >Python</a></li>
+    
+</ul>
+                </div>
+            </div>
+        
+        
+            <div id="contents" class="panel"><h2 class="panel-title">Contents</h2>
+<div class="panel-content"></div>
+<script defer src="/assets/js/contents.js"></script></div>
+        
+    </div>
+    <div class="fclean"></div>
+    <div id="footer" class="text-vice">
+        <p>sun123zxy's Blog | Powered by Jekyll</p>
+    </div>
+</div>
+<div id="leftdown-float-container">
+    <div id="theme-info" class="round-button-handler">
+        <div class="round-button"><img src="/assets/images/info.png"></img></div>
+        <div class="hover-info">Theme Info</div>
+    </div>
+    <div id="theme-switch" class="round-button-handler">
+        <div class="round-button"><img src="/assets/images/switch.png"></img></div>
+        <div class="hover-info">Theme Switch</div>
+    </div>
+</div>
+<div id="rightdown-float-container">
+    <div id="music-player" class="round-button-handler">
+        <div class="round-button"><img src="/assets/images/music.png"></img></div>
+        <div class="hover-info">Music Player</div>
+    </div>
+</div>
+<link rel="stylesheet" href="/assets/css/default.css">
+<link rel="stylesheet" id="night-container">
+<link rel="stylesheet" id="theme-container">
+<div id="mask"></div>
+<script src="/assets/js/theme_data.js"></script>
+<script src="/assets/js/round_button.js"></script>
+<script src="/assets/js/theme_manager.js" defer></script>
+<script src="/assets/js/music_player.js"></script>
+<script src="/assets/js/scroll.js"></script>
+    </body>
+</html>
